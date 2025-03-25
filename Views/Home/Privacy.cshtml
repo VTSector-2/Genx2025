@@ -4077,7 +4077,7 @@
 </style>
  <script type="text/javascript" >
         // Load the Visualization API and the corechart package.
-        google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.load('current', { 'packages': ['corechart'] });
 
     // Set a callback to run when the Google Visualization API is loaded.
     google.charts.setOnLoadCallback(drawChart);
@@ -4130,12 +4130,24 @@
         chart.draw(data, options);
 
 
-        var optionsSemiCart = {
-            title:'My Daily Activities',
-            pieHole: 0.4,
+        var dataSemi = google.visualization.arrayToDataTable([
+            ['Task', 'Hours per Day'],
+            ['Work', 8],
+            ['Eat', 2],
+            ['Commute', 2],
+            ['Watch TV', 2],
+            ['Sleep', 8],
+            ['Other', 2]
+        ]);
+
+
+
+        // Set chart options
+        var optionsSemi = {
+            title: 'My Daily Activities',
             width: 900,
             height: 500,
-            pieStartAngle: 90,
+            pieStartAngle: 180,
             slices: {
                 0: { offset: 0.1 },
                 1: { offset: 0.1 },
@@ -4144,10 +4156,14 @@
                 4: { offset: 0.1 },
                 5: { offset: 0.1 }
             }
+
         };
+
         // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(document.getElementById('semicirclechart'));
-        chart.draw(data, optionsSemiCart);
+        var chart = new google.visualization.PieChart(document.getElementById('gaugechart'));
+        chart.draw(dataSemi, optionsSemi);
+
+
 
 
 
@@ -5028,11 +5044,7 @@
                             </div>
                         </div>
                         <div class="half-donut-chart">
-                            <div class="ellipse-92"></div>
-                            <div class="ellipse-93"></div>
-                            <div class="_0">50 Days</div>
-                            <div class="no">0 Days</div>
-                            <div class="no2">0 Days</div>
+                            <div id="gaugechart" style="width: 350px; height: 100px;"></div>
                         </div>
                     </div>
                 </div>
@@ -5282,7 +5294,8 @@
 @* <div>
     <div id="piechart" style="width: 900px; height: 500px;"></div>
 </div>
-<div id="semicirclechart" style="width: 900px; height: 500px;"></div> *@
+<div id="gaugechart" style="width: 350px; height: 100px;"></div> *@
+
 
 
 
