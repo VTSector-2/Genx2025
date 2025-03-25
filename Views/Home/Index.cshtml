@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model IEnumerable<Hackathon.Models.Site>
+
+<div class="text-center">
+    <h1 class="display-4">Hackathon 2025</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Code</th>
+                <th>Address</th>
+                <th>Lat</th>
+                <th>Long</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Site_PK</td>
+                    <td>@item.Site_Name</td>
+                    <td>@item.Site_Code</td>
+                    <td>@item.Site_Address_1</td>
+                    <td>@item.Site_Latitude</td>
+                    <td>@item.Site_Longitude</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+     <title>Google Map with Marker</title>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+    <script>
+        var viewModel = @Html.Raw(Json.Serialize(Model));
+        var locations = [
+            { lat: -34.397, lng: 150.644 },
+            { lat: -35.297, lng: 149.644 },
+            { lat: -33.867, lng: 151.207 }
+        ];
+
+        function initMap() {
+            viewModel.map(i => locations.push({ lat: i.Site_Latitude, lng: i.Site_Longitude }));
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 6,
+                center: locations[0]
+            });
+            locations.forEach(function (location) {
+                var marker = new google.maps.Marker({
+                    position: location,
+                    map: map
+                });
+            });
+        }
+    </script>
+    <div id="map"></div>
+   
+
+</div>
