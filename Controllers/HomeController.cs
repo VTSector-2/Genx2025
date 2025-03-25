@@ -31,6 +31,20 @@ namespace Hackathon.Controllers
 
         public IActionResult Privacy()
         {
+            var data = _dbContext.Risk.
+                Where(risk => !string.IsNullOrEmpty(risk.SiteName)
+                    && !string.IsNullOrEmpty(risk.RiskTitle)
+                    && !string.IsNullOrEmpty(risk.RiskDescription)
+                    && !string.IsNullOrEmpty(risk.RiskCategory)
+                    && !string.IsNullOrEmpty(risk.RiskSubCategory)
+                    && !string.IsNullOrEmpty(risk.Likelihood)
+                    && !string.IsNullOrEmpty(risk.Impact)
+                    && !string.IsNullOrEmpty(risk.RiskLevel)
+                    && !string.IsNullOrEmpty(risk.RiskStatus)
+                    && !string.IsNullOrEmpty(risk.CreatedDateTime)
+                    && !string.IsNullOrEmpty(risk.LastUpdatedDateTime))
+                .Take(50).ToList(); ;
+
             return View();
         }
 
