@@ -4085,89 +4085,104 @@
     // Callback that creates and populates a data table,
     // instantiates the pie chart, passes in the data and
     // draws it.
-    function drawChart() {
+     function drawChart() {
 
-        // Create the data table.
-        var dataPiechart = google.visualization.arrayToDataTable([
-            ['Task', 'Hours per Day'],
-            ['Work', 8],
-            ['Eat', 2],
-            ['Commute', 2],
-            ['Watch TV', 2],
-            ['Sleep', 8],
-            ['Other', 2]
-        ]);
+         // Create the data table.
+         var dataPiechart = google.visualization.arrayToDataTable([
+             ['Task', 'Hours per Day'],
+             ['Work', 8],
+             ['Eat', 2],
+             ['Commute', 2],
+             ['Watch TV', 2],
+             ['Sleep', 8],
+             ['Other', 2]
+         ]);
 
-        // Set chart options
-        var optionsPiechart = {
-            'title': 'My Daily Activities',
-            'width': 900,
-            'height': 500
-        };
+         // Set chart options
+         var optionsPiechart = {
+             'title': 'My Daily Activities',
+             'width': 900,
+             'height': 500
+         };
 
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-        chart.draw(dataPiechart, optionsPiechart);
+         // Instantiate and draw our chart, passing in some options.
+         var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+         chart.draw(dataPiechart, optionsPiechart);
 
-        // Load the data table.
-        var data = google.visualization.arrayToDataTable([
-            ['2021', 'Year: 2021-2025'],
-            ['2022', 5],
-            ['2023', 15],
-            ['2024', 30],
-            ['2025', 20],
-            ['Sleep', 36]
-        ]);
-        // Set chart options
-        var options = {
-            title: 'Year: 2021-2025',
-            width: 400,
-            bars: 'vertical' // Required for Material Bar Charts.
-        };
+         // Load the data table.
+         var data = google.visualization.arrayToDataTable([
+             ['2021', 'Year: 2021-2025'],
+             ['2022', 5],
+             ['2023', 15],
+             ['2024', 30],
+             ['2025', 20],
+             ['Sleep', 36]
+         ]);
+         // Set chart options
+         var options = {
+             title: 'Year: 2021-2025',
+             width: 400,
+             bars: 'vertical' // Required for Material Bar Charts.
+         };
 
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.ColumnChart(document.getElementById('barchart'));
-        chart.draw(data, options);
+         // Instantiate and draw our chart, passing in some options.
+         var chart = new google.visualization.ColumnChart(document.getElementById('barchart'));
+         chart.draw(data, options);
+     }
 
+    document.addEventListener('DOMContentLoaded', function () {
+        Highcharts.chart('semidonutchart', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: 0,
+                plotShadow: false
+            },
+            title: {
+                text: 'Day without </br> OSHA Recordable </br>incident',
+                align: 'center',
+                verticalAlign: 'middle',
+                y: 60,
+                style: {
+                    fontSize: '10px'
+                }
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            accessibility: {
+                point: {
+                    valueSuffix: '%'
+                }
+            },
+            plotOptions: {
+                pie: {
+                    dataLabels: {
+                        enabled: true,
+                        distance: -50,
+                        style: {
+                            fontWeight: 'bold',
+                            color: 'white',
+                            fontSize: '10px'
+                        }
+                    },
+                    startAngle: -90,
+                    endAngle: 90,
+                    center: ['50%', '75%'],
+                    size: '110%'
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'Days',
+                innerSize: '50%',
+                data: [
+                    ['Days with OSHA', 10],
+                    ['Days without OSHA', 90]
+                ]
+            }]
+        });
+    });
 
-        var dataSemi = google.visualization.arrayToDataTable([
-            ['Task', 'Hours per Day'],
-            ['Work', 8],
-            ['Eat', 2],
-            ['Commute', 2],
-            ['Watch TV', 2],
-            ['Sleep', 8],
-            ['Other', 2]
-        ]);
-
-
-
-        // Set chart options
-        var optionsSemi = {
-            title: 'My Daily Activities',
-            width: 900,
-            height: 500,
-            pieStartAngle: 180,
-            slices: {
-                0: { offset: 0.1 },
-                1: { offset: 0.1 },
-                2: { offset: 0.1 },
-                3: { offset: 0.1 },
-                4: { offset: 0.1 },
-                5: { offset: 0.1 }
-            }
-
-        };
-
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(document.getElementById('gaugechart'));
-        chart.draw(dataSemi, optionsSemi);
-
-
-
-
-
-    }
 </script>
 
 <div class="desktop-5">
@@ -5044,7 +5059,7 @@
                             </div>
                         </div>
                         <div class="half-donut-chart">
-                            <div id="gaugechart" style="width: 350px; height: 100px;"></div>
+                            <div id="semidonutchart" style="width: 200px; height: 100px;"></div>
                         </div>
                     </div>
                 </div>
@@ -5291,10 +5306,10 @@
         </div>
     </div>
 </div>
-@* <div>
+<div>
     <div id="piechart" style="width: 900px; height: 500px;"></div>
 </div>
-<div id="gaugechart" style="width: 350px; height: 100px;"></div> *@
+
 
 
 
