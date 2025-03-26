@@ -1,7 +1,7 @@
 ﻿using Hackathon.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Hackathon.DB
+namespace Hackathon.DataContext
 {
     public class ApplicationDbContext : DbContext
     {

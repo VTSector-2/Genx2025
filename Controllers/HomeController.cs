@@ -1,8 +1,6 @@
-using Hackathon.DB;
 using Hackathon.Interfaces;
 using Hackathon.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
 
 namespace Hackathon.Controllers
