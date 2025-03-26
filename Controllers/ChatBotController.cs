@@ -34,7 +34,8 @@ namespace Hackathon.Controllers
                 return BadRequest(new { reply = "Please send a valid message." });
             }
 
-            string siteName = "Site20";
+            string siteName = userMessage.SiteId;
+
             // Process the user message and generate a response
             string reply = "";
 
@@ -97,6 +98,7 @@ namespace Hackathon.Controllers
     public class UserMessage
     {
         public string Message { get; set; }
+        public string SiteId { get; set; }
         public List<string> History { get; set; }
     }
 
