@@ -20,6 +20,11 @@ namespace Hackathon.Controllers
             _aiService = aiService;
         }
 
+        /// <summary>
+        /// Function to send a message to the AI and get a response
+        /// </summary>
+        /// <param name="userMessage"></param>
+        /// <returns></returns>
         [HttpPost("SendMessage")]
         public async Task<IActionResult> SendMessage([FromBody] UserMessage userMessage)
         {
@@ -29,7 +34,8 @@ namespace Hackathon.Controllers
                 return BadRequest(new { reply = "Please send a valid message." });
             }
 
-            string siteName = "Site20";
+            string siteName = userMessage.SiteId;
+
             // Process the user message and generate a response
             string reply = "";
 
@@ -45,6 +51,13 @@ namespace Hackathon.Controllers
             return Ok(new { reply });
         }
 
+        /// <summary>
+        /// Function to fetch risks from the database and send them to the AI for processing
+        /// </summary>
+        /// <param name="userMessage"></param>
+        /// <param name="siteName"></param>
+        /// <param name="userHistory"></param>
+        /// <returns></returns>
         private async Task<string> GetResponseFromDatabase(string userMessage, string siteName, List<string> userHistory)
         {
             // Fetch risks associated with the specified site
@@ -85,6 +98,7 @@ namespace Hackathon.Controllers
     public class UserMessage
     {
         public string Message { get; set; }
+        public string SiteId { get; set; }
         public List<string> History { get; set; }
     }
 

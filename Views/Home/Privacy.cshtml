@@ -601,6 +601,7 @@
     const chatButton = document.getElementById('chat-button');
     const userInput = document.getElementById('user-input');
     let conversationHistory = [];
+    let selectedSiteId = null;
 
     function toggleChat() {
         const chatbot = document.getElementById('chatbot');
@@ -628,9 +629,9 @@
         // Clear input
         userInput.value = '';
 
-        // Create and display the loading message
+        // Show loading message
         const loadingMessage = document.createElement('div');
-        loadingMessage.className = 'bot-message loading-message'; // Optional class for styling
+        loadingMessage.className = 'bot-message loading-message';
         loadingMessage.innerHTML = 'Ellis is typing<span class="blinking-dots">...</span>';
         document.getElementById('messages').appendChild(loadingMessage);
 
@@ -638,13 +639,21 @@
         const chatBody = document.getElementById('chat-body');
         chatBody.scrollTop = chatBody.scrollHeight;
 
-        // Send message to server
+        // Get the selected site ID from the dropdown
+        const siteSelect = document.getElementById('site_address');
+        const selectedSiteId = siteSelect.options[siteSelect.selectedIndex].text;
+
+        // Send message to server along with selected site information
         fetch('/ChatBot/SendMessage', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ message: userMessage, history: conversationHistory })
+            body: JSON.stringify({
+                message: userMessage,
+                history: conversationHistory,
+                siteId: selectedSiteId // Include the selected site ID
+            })
         })
             .then(response => response.json())
             .then(data => {
@@ -661,6 +670,7 @@
                 loadingMessage.remove();
             });
     }
+
 
     function displayMessage(sender, message) {
         const messagesDiv = document.getElementById('messages');
@@ -679,7 +689,7 @@
         messagesDiv.appendChild(messageDiv);
 
         // Scroll to the bottom of the chat body
-        chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
+        chatBody.scrollTop = chatBody.scrollHeight;
     }
 
     function refreshDashboard(data) {
@@ -766,7 +776,7 @@
 
     userInput.addEventListener('keypress', function (event) {
         if (event.key === 'Enter') {
-            sendMessage(); // Call the sendMessage function when Enter is pressed
+            sendMessage(); 
             event.preventDefault(); // Prevent the default action (e.g., form submission)
         }
     });
@@ -778,6 +788,7 @@
         return message
             .replace(/###/g, '') // Convert headings (if any)
             .replace(/---/g, '<hr>') // Convert horizontal lines (if any)
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Convert *bold* text
             .replace(/\*(.*?)\*/g, '<strong>$1</strong>') // Convert *bold* text
             .replace(/\n/g, '<br>'); // Convert line breaks for better text formatting
     }
