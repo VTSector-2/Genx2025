@@ -45,6 +45,12 @@ namespace Hackathon.Services
             return completion.Content[0].Text.ToString();
         }
 
+        /// <summary>
+        /// Overloaded function for contexual responses.
+        /// </summary>
+        /// <param name="prompt"></param>
+        /// <param name="history"></param>
+        /// <returns></returns>
         public async Task<string> GetOpenAIResponse(string prompt, List<string> history)
         {
             var chatClient = _openAIClient.GetChatClient(_deploymentName);
