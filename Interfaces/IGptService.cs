@@ -6,6 +6,6 @@ namespace Hackathon.Interfaces
     {
         Task<string> GetOpenAIResponse(string prompt);
 
-        List<string> CreateRiskPromptAsync(List<Risk> data);
+        Task<List<GptQuestionnaire>> GetRiskDataAnalysis(List<Risk> riskData);
     }
 }

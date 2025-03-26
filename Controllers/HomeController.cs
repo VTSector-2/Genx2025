@@ -9,11 +9,13 @@ namespace Hackathon.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IDataService _dataService;
+        private readonly IGptService _gptService;
 
-        public HomeController(ILogger<HomeController> logger, IDataService dataService)
+        public HomeController(ILogger<HomeController> logger, IDataService dataService, IGptService gptService)
         {
             _logger = logger;
             _dataService = dataService;
+            _gptService = gptService;
         }
 
         public IActionResult Index()
@@ -27,6 +29,8 @@ namespace Hackathon.Controllers
         {
             //default number of records are 50
             var data = _dataService.GetRiskData(numberOfRecords: 50);
+            var analysis = _gptService.GetRiskDataAnalysis(data);
+
             return View();
         }
 
