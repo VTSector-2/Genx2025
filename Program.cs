@@ -12,7 +12,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiSettings"));
 
 builder.Services.AddSingleton<IGptService, GptService>();
-builder.Services.AddSingleton<IDataService, DataService>();
+builder.Services.AddScoped<IDataService, DataService>();
 
 builder.Services.AddControllersWithViews();
 
