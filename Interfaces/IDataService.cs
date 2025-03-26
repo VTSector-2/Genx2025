@@ -6,5 +6,6 @@ namespace Hackathon.Interfaces
     {
         List<Risk> GetRiskData(int numberOfRecords);
         List<Site> GetSiteData(int numberOfRecords);
-    }
+        DashboardViewModel? GetDashboardData(List<Risk> data, int siteId, string siteName);
+	}
 }
