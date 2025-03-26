@@ -30,7 +30,16 @@ namespace Hackathon.Controllers
             //default number of records are 50
             var data = _dataService.GetRiskData(numberOfRecords: 50);
             var analysis = _gptService.GetRiskDataAnalysis(data);
+            var viewModel = new DashboardViewModel
+            {
+                Sites = data.Select(s => new Site() { Site_PK = s.SiteId_Pk, Site_Name = s.SiteName }).DistinctBy(d=>d.Site_Name).ToList(),
+            };
 
+            return View(viewModel);
+        }
+
+        public IActionResult DataLoader()
+        {
             return View();
         }
 
