@@ -49,12 +49,8 @@
             animation: { duration: 1000, easing: 'out' }
         };
 
-
         var chart = new google.visualization.Gauge(document.getElementById('gauge_chart'));
         chart.draw(dataSpeed, optionsSpeed);
-
-
-
      }
 </script>
 
@@ -641,8 +637,6 @@
                 loadingMessage.remove();
             });
     }
-
-
 
     function displayMessage(sender, message) {
         const messagesDiv = document.getElementById('messages');
