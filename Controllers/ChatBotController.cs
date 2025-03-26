@@ -48,7 +48,7 @@ namespace Hackathon.Controllers
         private async Task<string> GetResponseFromDatabase(string userMessage, string siteName, List<string> userHistory)
         {
             // Fetch risks associated with the specified site
-            var risks = await _context.Risks
+            var risks = await _context.Risk
                 .Where(r => r.SiteName == siteName) // Filter by SiteName
                 .ToListAsync();
 
