@@ -3,8 +3,8 @@
     public class DashboardViewModel
     {
         public List<Site> Sites { get; set; }
-        public RsikViewModel RiskRegister { get; set; }
-        public RsikAnalysisViewModel RsikAnalysis { get; set; }
+        public RiskViewModel RiskRegister { get; set; }
+        public RiskAnalysisViewModel RsikAnalysis { get; set; }
         public SafetyAnalysisViewModel SafetyAnalysis { get; set; }
     }
 

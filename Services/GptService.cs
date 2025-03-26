@@ -99,10 +99,10 @@ namespace Hackathon.Services
             var data = await GetOpenAIResponse(prompt);
             var respons = new SafetyAnalysisViewModel
             {
-                ContributingFactors = GetStringBetween(data, "### **Contributing Factors**", "### **Mitigation Plan**").Replace("\n", " ").Split('-').ToList(),
-                MitigationPlan = GetStringBetween(data, "### **Mitigation Plan**", "### **Leading Indicators**").Replace("\n", " ").Split('-').ToList(),
-                LeadingIndicators = GetStringBetween(data, "### **Leading Indicators**", "### **Lagging Indicators**").Replace("\n", " ").Split('-').ToList(),
-                LaggingIndicators = GetStringBetween(data, "### **Lagging Indicators**", "---").Replace("\n", " ").Split('-').ToList(),
+                ContributingFactors = GetStringBetween(data, "Contributing Factors", "Mitigation Plan").Replace("\n", " ").Replace("### **", " ").Split('-').ToList(),
+                MitigationPlan = GetStringBetween(data, "Mitigation Plan", "Leading Indicators").Replace("\n", " ").Replace("### **", " ").Split('-').ToList(),
+                LeadingIndicators = GetStringBetween(data, "Leading Indicators", "Lagging Indicators").Replace("\n", " ").Replace("### **", " ").Split('-').ToList(),
+                LaggingIndicators = GetStringBetween(data, "Lagging Indicators", "---").Replace("\n", " ").Replace("### **", " ").Split('-').ToList(),
                 RiskCategory = siteParamData.Risk_Category,
                 ManualCategory = siteParamData.Manual_category,
             };  

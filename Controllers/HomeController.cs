@@ -33,32 +33,7 @@ namespace Hackathon.Controllers
 			var data = _dataService.GetRiskData(numberOfRecords: 50);
 
 			// Fetch data based on the id
-			var viewModel = _dataService.GetDashboardData(data, siteId: 20, siteName: "Site20");
-
-            var analysis = _gptService.GetRiskDataAnalysis(data.Where(x=>x.SiteName == "Site20").ToList());
-
-            var siteScore = _gptService.GetSiteDataAnalysis(23);
-
-            var viewModel = new DashboardViewModel
-            {
-                Sites = data.Select(s => new Site() { Site_PK = s.SiteId_Pk, Site_Name = s?.SiteName }).DistinctBy(d => d.Site_Name).ToList(),
-                RiskRegister = new RsikViewModel()
-                {
-                    Critical = selectedRsik.Where(w => w.ImpactName == "Critical").Select(s => s.Count).FirstOrDefault(),
-                    Low = selectedRsik.Where(w => w.ImpactName == "Low").Select(s => s.Count).FirstOrDefault(),
-                    Negligible = selectedRsik.Where(w => w.ImpactName == "Negligible").Select(s => s.Count).FirstOrDefault(),
-                    Serious = selectedRsik.Where(w => w.ImpactName == "Serious").Select(s => s.Count).FirstOrDefault()
-                },
-                //RsikAnalysis = new RsikAnalysisViewModel()
-                //{
-                //    RiskProbabilityPrediction = analysis?.Result?.FirstOrDefault()?.RiskProbabilityPrediction["Answer"],
-                //    RiskAnalysis = analysis?.Result?.FirstOrDefault()?.RiskAnalysis["Answer"],
-                //    SummaryofRisks = analysis?.Result?.FirstOrDefault()?.SummaryofRisks["Answer"],
-                //    Recommendations = analysis?.Result?.FirstOrDefault()?.Recommendations["Answer"]
-                //},
-                SafetyAnalysis = siteScore.Result
-
-            };
+			var viewModel = _dataService.GetDashboardData(data, siteId: 29, siteName: "Site20");
 
             return View(viewModel);
         }
