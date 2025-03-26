@@ -266,6 +266,10 @@
         justify-content: flex-start;
         flex-shrink: 0;
         position: relative;
+        width: 100%;
+        text-align: center;
+        border: none;
+        margin: 0px 14px 5px 6px;
     }
 
     .content {
@@ -4098,6 +4102,43 @@
     }
 
 </style>
+ <script type="text/javascript" >
+        // Load the Visualization API and the corechart package.
+    google.charts.load('current', { 'packages': ['corechart'] });
+
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.charts.setOnLoadCallback(drawChart);
+
+    // Callback that creates and populates a data table,
+    // instantiates the pie chart, passes in the data and
+    // draws it.
+     function drawChart() {
+
+         // Load the data table.
+         var data = google.visualization.arrayToDataTable([
+             ['2021', 'Year: 2021-2025'],
+             ['2022', 5],
+             ['2023', 15],
+             ['2024', 30],
+             ['2025', 20],
+             ['Sleep', 36]
+         ]);
+         // Set chart options
+         var options = {
+             title: 'Year: 2021-2025',
+             width: 400,
+             bars: 'vertical' // Required for Material Bar Charts.
+         };
+
+         // Instantiate and draw our chart, passing in some options.
+         var chart = new google.visualization.ColumnChart(document.getElementById('barchart'));
+         chart.draw(data, options);
+     }
+
+  
+
+</script>
+
 <div class="desktop-5">
     <div class="global-header">
         <div class="safety-intelligence-assessment-insights">
@@ -4133,13 +4174,19 @@
                 <div class="input-dropdown-outlined">
                     <div class="field">
                         <div class="container">
+                            <select class="input-container">
+                                <option>DLF Cyber</option>
+                                <option>DLF CyberCity Hyderabad</option>
+                            </select>
+                        </div>
+                       @*  <div class="container">
                             <div class="input-container">
                                 <div class="content">DLF Cyber</div>
                             </div>
                         </div>
                         <svg class="icon-right" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M7 9.5L12 14.5L17 9.5H7Z" fill="#666B6D" />
-                        </svg>
+                        </svg> *@
                     </div>
                     <div class="wrapper-label">
                         <div class="wrapper-field-label">
@@ -5059,7 +5106,7 @@
                 Ask Ellis
             </button>
             <div class="chart">
-                <div class="frame-1321315197">
+               @*  <div class="frame-1321315197">
                     <div class="chip">
                         <div class="content">
                             <div class="label">
@@ -5070,9 +5117,10 @@
                             <img class="group-226" src="group-2260.svg" />
                         </div>
                     </div>
-                </div>
+                </div> *@
                 <div class="frame-1321315194">
-                    <div class="data-viz-axis-vertical">
+                    <div id="barchart" style="width: 400px; height: 200px;"></div>
+                    @* <div class="data-viz-axis-vertical">
                         <div class="tick-marks">
                             <div class="ticks">
                                 <div class="tick"></div>
@@ -5232,7 +5280,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> *@
                 </div>
             </div>
         </div>
@@ -5313,6 +5361,10 @@
         }
     });
 </script>
+
+
+
+
 
 
 

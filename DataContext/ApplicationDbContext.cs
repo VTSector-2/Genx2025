@@ -1,7 +1,7 @@
 ﻿using Hackathon.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Hackathon.DB
+namespace Hackathon.DataContext
 {
     public class ApplicationDbContext : DbContext
     {
@@ -13,5 +13,7 @@ namespace Hackathon.DB
         // Define DbSets for your tables
         //public DbSet<ErrorViewModel> YourEntities { get; set; }
         public DbSet<Site> Mast_Site { get; set; }
+
+        public DbSet<Risk> Risk { get; set; }
     }
 }
