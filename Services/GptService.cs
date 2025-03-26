@@ -85,8 +85,8 @@ namespace Hackathon.Services
                 {
                     RiskProbabilityPrediction = new Dictionary<string, string>
                     {
-                        { "Question", "Predict the probability of the following risks occurring in the future for " + siteName + ": " + risks },
-                        { "Answer", await GetOpenAIResponse("Predict the probability of the following risks occurring in the future for " + siteName + ": " + risks) }
+                        { "Question", "Predict the probability of the following risks occurring in the future for" + siteName + ": " + risks + ". Provide only numerical probabilities or categorical likelihoods (e.g., low, medium, high). Analyze all and show only Top 10 risks which have most severe impact." },
+                        { "Answer", await GetOpenAIResponse("Predict the probability of the following risks occurring in the future for" + siteName + ": " + risks + ". Provide only numerical probabilities or categorical likelihoods (e.g., low, medium, high). Analyze all and show only Top 10 risks which have most severe impact.") }
                     },
                     RiskAnalysis = new Dictionary<string, string>
                     {
