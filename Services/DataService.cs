@@ -58,13 +58,7 @@ namespace Hackathon.Services
 					Negligible = selectedRsik.Where(w => w.ImpactName == "Negligible").Select(s => s.Count).FirstOrDefault(),
 					Serious = selectedRsik.Where(w => w.ImpactName == "Serious").Select(s => s.Count).FirstOrDefault()
 				},
-				RsikAnalysis = new RiskAnalysisViewModel()
-				{
-					RiskProbabilityPrediction = analysis?.Result?.FirstOrDefault()?.RiskProbabilityPrediction["Answer"],
-					RiskAnalysis = analysis?.Result?.FirstOrDefault()?.RiskAnalysis["Answer"],
-					SummaryofRisks = analysis?.Result?.FirstOrDefault()?.SummaryofRisks["Answer"],
-					Recommendations = analysis?.Result?.FirstOrDefault()?.Recommendations["Answer"]
-				},
+				RsikAnalysis = analysis.Result,
 				SafetyAnalysis = siteScore.Result
             };
 

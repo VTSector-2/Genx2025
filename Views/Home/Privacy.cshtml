@@ -370,11 +370,8 @@
                                 Risk Probability Prediction:
                                 <br />
                             </span>
-                            <span class="label-span10">
-                                &quot;Predict the probability of the following risks occurring
-                                in the future for [SiteName]: [Insert risk data]. Provide only
-                                numerical probabilities or categorical likelihoods (e.g., low,
-                                medium, high).&quot;
+                            <span id="RiskProbabilityPrediction" class="label-span10">
+                                @Model.RsikAnalysis.RiskProbabilityPrediction
                             </span>
                         </span>
                     </div>
@@ -386,11 +383,8 @@
                                 Risk Analysis:
                                 <br />
                             </span>
-                            <span class="label-span12">
-                                &quot;Analyze the risks for [SiteName] based on the following
-                                data: [Insert risk data]. Identify key risk factors and provide
-                                a list of recommendations for risk mitigation. Do not include
-                                any introductory or concluding remarks.&quot;
+                            <span id="RiskAnalysis" class="label-span12">
+                                @Model.RsikAnalysis.RiskAnalysis
                             </span>
                         </span>
                     </div>
@@ -402,10 +396,8 @@
                                 Summary of Risks:
                                 <br />
                             </span>
-                            <span class="label-span14">
-                                &quot;Summarize the risks for [SiteName] considering the
-                                likelihood and impact of each risk: [Insert risk data]. Provide
-                                a structured summary without additional commentary.&quot;
+                            <span id="SummaryofRisks" class="label-span14">
+                                @Model.RsikAnalysis.SummaryofRisks
                             </span>
                         </span>
                     </div>
@@ -417,11 +409,8 @@
                                 Recommendations:
                                 <br />
                             </span>
-                            <span class="label-span16">
-                                &quot;Provide strategies for risk management and mitigation
-                                based on the identified risks for [SiteName]: [Insert risk
-                                data]. List recommendations clearly and concisely without
-                                conversational phrases.&quot;
+                            <span id="Recommendations" class="label-span16">
+                                @Model.RsikAnalysis.Recommendations
                             </span>
                         </span>
                     </div>
@@ -704,6 +693,11 @@
         refreshRiskRegister("Serious", data.riskRegister.serious);
 
         refreshSafetyScore(data.safetyAnalysis.riskCategory);
+
+        refreshRsikAnalysis("RiskProbabilityPrediction", data.rsikAnalysis.riskProbabilityPrediction);
+        refreshRsikAnalysis("RiskAnalysis", data.rsikAnalysis.riskAnalysis);
+        refreshRsikAnalysis("SummaryofRisks", data.rsikAnalysis.summaryofRisks);
+        refreshRsikAnalysis("Recommendations", data.rsikAnalysis.recommendations);
     }
 
     function refreshSafetyAnalysis(id,values) {
@@ -743,6 +737,11 @@
         chart.draw(dataSpeed, optionsSpeed);
     }
 
+    function refreshRsikAnalysis(id, value) {
+        var $dropdown = $('#' + id);
+        $dropdown.empty(); // Clear existing options
+        $dropdown.text(value);
+    }
 
     function handleSiteChange(sitePk, siteName) {
         // Make an Ajax API call

@@ -75,44 +75,21 @@ namespace Hackathon.Services
             return completion.Content[0].Text.ToString();
         }
 
-        public async Task<List<GptQuestionnaire>> GetRiskDataAnalysis(List<Risk> riskData)
+        public async Task<RiskAnalysisViewModel> GetRiskDataAnalysis(List<Risk> riskData)
         {
-            var jsonData = CreateRiskPromptAsync(riskData);
-            List<GptQuestionnaire> questionnaires = new List<GptQuestionnaire>();
-            foreach (var jsonDataItem in jsonData)
+            var json = JsonConvert.SerializeObject(riskData);
+            var prompt = $"please provide the Risk Probability Prediction,Risk Analysis,Summary of Risks and Recommendationsalong a small paraghra for each point with no sub point for the given site data, do not add any special charactors and line change" + json;
+
+            var data = await GetOpenAIResponse(prompt);
+            var respons = new RiskAnalysisViewModel
             {
-                JObject? jsonObject = JObject.Parse(jsonDataItem);
-                string siteName = jsonObject?["siteName"]?.ToString() ?? string.Empty;
-                string risks = jsonObject?["risks"]?.ToString() ?? string.Empty;
+                RiskProbabilityPrediction = GetStringBetween(data, "Risk Probability Prediction", "Risk Analysis").Replace(':',' ').Replace("###"," "),
+                RiskAnalysis = GetStringBetween(data, "Risk Analysis", "Summary of Risks").Replace(':', ' ').Replace("###", " "),
+                SummaryofRisks = GetStringBetween(data, "Summary of Risks", "Recommendations").Replace(':', ' ').Replace("###", " "),
+                Recommendations = GetStringBetween(data, "Recommendations", null).Replace(':', ' ').Replace("###", " "),
+            };
 
-                var questionnaire = new GptQuestionnaire
-                {
-                    RiskProbabilityPrediction = new Dictionary<string, string>
-                    {
-                        { "Question", "Predict the probability of the following risks occurring in the future for" + siteName + ": " + risks + ". Provide only numerical probabilities or categorical likelihoods (e.g., low, medium, high). Analyze all and show only Top 10 risks which have most severe impact." },
-                        { "Answer", await GetOpenAIResponse("Predict the probability of the following risks occurring in the future for" + siteName + ": " + risks + ". Provide only numerical probabilities or categorical likelihoods (e.g., low, medium, high). Analyze all and show only Top 10 risks which have most severe impact.") }
-                    },
-                    RiskAnalysis = new Dictionary<string, string>
-                    {
-                        { "Question", "Analyze the risks for " + siteName + " based on the following data: " + risks + ". Identify key risk factors and provide a list of recommendations for risk mitigation. Do not include any introductory or concluding remarks." },
-                        { "Answer", await GetOpenAIResponse("Analyze the risks for " + siteName + " based on the following data: " + risks + ". Identify key risk factors and provide a list of recommendations for risk mitigation. Do not include any introductory or concluding remarks.") }
-                    },
-                    SummaryofRisks = new Dictionary<string, string>
-                    {
-                        { "Question", "Summarize the risks for " + siteName + " considering the likelihood and impact of each risk: " + risks + ". Provide a structured summary without additional commentary." },
-                        { "Answer", await GetOpenAIResponse("Summarize the risks for " + siteName + " considering the likelihood and impact of each risk: " + risks + ". Provide a structured summary without additional commentary.") }
-                    },
-                    Recommendations = new Dictionary<string, string>
-                    {
-                        { "Question", "Provide strategies for risk management and mitigation based on the identified risks for " + siteName + ": " + risks + ". List recommendations clearly and concisely without conversational phrases." },
-                        { "Answer", await GetOpenAIResponse("Provide strategies for risk management and mitigation based on the identified risks for " + siteName + ": " + risks + ". List recommendations clearly and concisely without conversational phrases.") }
-                    }
-                };
-
-                questionnaires.Add(questionnaire);
-            }
-
-            return questionnaires;
+            return respons;
         }
 
         public async Task<SafetyAnalysisViewModel> GetSiteDataAnalysis(int sitePK)
@@ -120,15 +97,15 @@ namespace Hackathon.Services
             var siteParamData = _dbContext.SITE_SCORE_PARAM
                                     .Where(site => site.SITE_PK == sitePK).FirstOrDefault();
             var json = JsonConvert.SerializeObject(siteParamData);
-            var prompt = $"please provide some Contributing Factors, Mitigation Plan, Leading Indicators and Lagging Indicators along with only four and sort bulletin points without sub points for the given site data." + json;
+            var prompt = $"please provide some Contributing Factors, Mitigation Plan, Leading Indicators and Lagging Indicators along with only four and sort bulletin points without sub points for the given site data, do not add any special charactors and line change" + json;
 
             var data = await GetOpenAIResponse(prompt);
             var respons = new SafetyAnalysisViewModel
             {
-                ContributingFactors = GetStringBetween(data, "Contributing Factors", "Mitigation Plan").Replace("\n", " ").Replace("### **", " ").Split('-').ToList(),
-                MitigationPlan = GetStringBetween(data, "Mitigation Plan", "Leading Indicators").Replace("\n", " ").Replace("### **", " ").Split('-').ToList(),
-                LeadingIndicators = GetStringBetween(data, "Leading Indicators", "Lagging Indicators").Replace("\n", " ").Replace("### **", " ").Split('-').ToList(),
-                LaggingIndicators = GetStringBetween(data, "Lagging Indicators", "---").Replace("\n", " ").Replace("### **", " ").Split('-').ToList(),
+                ContributingFactors = GetStringBetween(data, "Contributing Factors", "Mitigation Plan").Replace("\n", " ").Replace("### **", " ").Replace("*", " ").Split('-').ToList(),
+                MitigationPlan = GetStringBetween(data, "Mitigation Plan", "Leading Indicators").Replace("\n", " ").Replace("### **", " ").Replace("*", " ").Split('-').ToList(),
+                LeadingIndicators = GetStringBetween(data, "Leading Indicators", "Lagging Indicators").Replace("\n", " ").Replace("### **", " ").Replace("*", " ").Split('-').ToList(),
+                LaggingIndicators = GetStringBetween(data, "Lagging Indicators", "---").Replace("\n", " ").Replace("### **", " ").Replace("*", " ").Split('-').ToList(),
                 RiskCategory = siteParamData.Risk_Category,
                 ManualCategory = siteParamData.Manual_category,
             };  
@@ -167,7 +144,7 @@ namespace Hackathon.Services
         public static string GetStringBetween(string source, string start, string end)
         {
             int startIndex = source.IndexOf(start) + start.Length;
-            int endIndex = source.IndexOf(end, startIndex);
+            int endIndex = end == null ? source.Length - 1 : source.IndexOf(end, startIndex);
 
             if (startIndex < start.Length || endIndex == -1)
             {
