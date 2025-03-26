@@ -52,7 +52,7 @@ namespace Hackathon.Controllers
                 || userMessage.Contains("threat", StringComparison.OrdinalIgnoreCase))
             {
                 // Query the database for risks associated with the site
-                var risks = await _context.Risks
+                var risks = await _context.Risk
                     .Where(r => r.SiteName != null && r.SiteName.Contains(userMessage, StringComparison.OrdinalIgnoreCase))
                     .ToListAsync();
 

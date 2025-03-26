@@ -35,10 +35,12 @@
          // Instantiate and draw our chart, passing in some options.
          // var chart = new google.visualization.ColumnChart(document.getElementById('barchart'));
          // chart.draw(data, options);
+        console.log(viewModel);
 
+        var safetyScore = viewModel.safetyAnalysis.riskCategory == "High Risk Score" ? { key: 'High', value: 85 } : viewModel.safetyAnalysis.riskCategory == "Medium Risk Score" ? { key: 'Medium', value: 63 } : { key: 'Low', value: 20 };
         var dataSpeed = google.visualization.arrayToDataTable([
             ['Label', 'Value'],
-            ['High', 80]
+            [safetyScore.key, safetyScore.value]
         ]);
         var optionsSpeed = {
             width: 400, height: 200,
@@ -127,11 +129,17 @@
                     <div class="label">
                         <span>
                             <span class="label-span">
-                                Contributing Factors::
+                                Contributing Factors:
                                 <br />
                             </span>
                             <ol class="label-span2">
-                                <li></li>
+                                @foreach(var item in Model.SafetyAnalysis.ContributingFactors)
+                                {
+                                    if (@item.Trim().Length > 0)
+                                    {
+                                        <li>@item</li>
+                                    }
+                                }
                             </ol>
                         </span>
                     </div>
@@ -144,7 +152,13 @@
                                 <br />
                             </span>
                             <ol class="label-span4">
-                                <li></li>
+                                @foreach (var item in Model.SafetyAnalysis.MitigationPlan)
+                                {
+                                    if (@item.Trim().Length > 0)
+                                    {
+                                        <li>@item.Trim()</li>
+                                    }
+                                }
                             </ol>
                         </span>
                     </div>
@@ -157,7 +171,13 @@
                                 <br />
                             </span>
                             <ol class="label-span6">
-                                <li></li>
+                                @foreach (var item in Model.SafetyAnalysis.LeadingIndicators)
+                                {
+                                    if (@item.Trim().Length > 0)
+                                    {
+                                        <li>@item.Trim()</li>
+                                    }
+                                }
                             </ol>
                         </span>
                     </div>
@@ -170,7 +190,13 @@
                                 <br />
                             </span>
                             <ol class="label-span8">
-                                <li></li>
+                                @foreach (var item in Model.SafetyAnalysis.LaggingIndicators)
+                                {
+                                    if (@item.Trim().Length > 0)
+                                    {
+                                        <li>@item.Trim()</li>
+                                    }
+                                }
                             </ol>
                         </span>
                     </div>

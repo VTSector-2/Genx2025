@@ -2076,3 +2076,6 @@ site_address:focus {
     outline: none; /* Optional: Remove outline */
 }
 
+#gauge_chart [y="164"] {
+    display: none;
+}

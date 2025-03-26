@@ -36,5 +36,15 @@ namespace Hackathon.Services
 
             return data;
         }
+
+        public List<SITE_SCORE_PARAM> GetSiteScoreData(int siteId, int numberOfRecords)
+        {
+            // Get data from the database
+            //var data = _dbContext.SiteScoreParam
+            //   .Where(site => site.SITEID_PK == siteId)
+            //   .Take(numberOfRecords).ToList();
+
+            return null;
+        }
     }
 }

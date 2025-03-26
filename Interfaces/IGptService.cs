@@ -7,5 +7,6 @@ namespace Hackathon.Interfaces
         Task<string> GetOpenAIResponse(string prompt);
 
         Task<List<GptQuestionnaire>> GetRiskDataAnalysis(List<Risk> riskData);
+        Task<SafetyAnalysisViewModel> GetSiteDataAnalysis(int sitePK);
     }
 }

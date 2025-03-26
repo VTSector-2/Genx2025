@@ -6,5 +6,6 @@ namespace Hackathon.Interfaces
     {
         List<Risk> GetRiskData(int numberOfRecords);
         List<Site> GetSiteData(int numberOfRecords);
+        List<SITE_SCORE_PARAM> GetSiteScoreData(int siteId, int numberOfRecords);
     }
 }

@@ -5,6 +5,8 @@ using Hackathon.Models;
 using Microsoft.Extensions.Options;
 using OpenAI.Chat;
 using Newtonsoft.Json.Linq;
+using Hackathon.DataContext;
+using Newtonsoft.Json;
 
 namespace Hackathon.Services
 {
@@ -13,12 +15,14 @@ namespace Hackathon.Services
         private readonly AzureOpenAIClient _openAIClient;
         private readonly string _deploymentName;
         private readonly ApiSettings _apiSettings;
+        private readonly ApplicationDbContext _dbContext;
 
-        public GptService(IOptions<ApiSettings> apiSettings)
+        public GptService(IOptions<ApiSettings> apiSettings, ApplicationDbContext dbContext)
         {
             _apiSettings = apiSettings.Value;
             _openAIClient = new AzureOpenAIClient(new Uri(_apiSettings.BaseUrl), new AzureKeyCredential(_apiSettings.ApiKey));
             _deploymentName = _apiSettings.DeploymentName;
+            _dbContext = dbContext;
         }
 
         public async Task<string> GetOpenAIResponse(string prompt)
@@ -85,6 +89,27 @@ namespace Hackathon.Services
             return questionnaires;
         }
 
+        public async Task<SafetyAnalysisViewModel> GetSiteDataAnalysis(int sitePK)
+        {
+            var siteParamData = _dbContext.SITE_SCORE_PARAM
+                                    .Where(site => site.SITE_PK == sitePK).FirstOrDefault();
+            var json = JsonConvert.SerializeObject(siteParamData);
+            var prompt = $"please provide some Contributing Factors, Mitigation Plan, Leading Indicators and Lagging Indicators along with only four and sort bulletin points without sub points for the given site data." + json;
+
+            var data = await GetOpenAIResponse(prompt);
+            var respons = new SafetyAnalysisViewModel
+            {
+                ContributingFactors = GetStringBetween(data, "### **Contributing Factors**", "### **Mitigation Plan**").Replace("\n", " ").Split('-').ToList(),
+                MitigationPlan = GetStringBetween(data, "### **Mitigation Plan**", "### **Leading Indicators**").Replace("\n", " ").Split('-').ToList(),
+                LeadingIndicators = GetStringBetween(data, "### **Leading Indicators**", "### **Lagging Indicators**").Replace("\n", " ").Split('-').ToList(),
+                LaggingIndicators = GetStringBetween(data, "### **Lagging Indicators**", "---").Replace("\n", " ").Split('-').ToList(),
+                RiskCategory = siteParamData.Risk_Category,
+                ManualCategory = siteParamData.Manual_category,
+            };  
+
+            return respons;
+        }
+
         #region private methods 
         public List<string> CreateRiskPromptAsync(List<Risk> riskData)
         {
@@ -111,6 +136,19 @@ namespace Hackathon.Services
             }
 
             return prompts;
+        }
+
+        public static string GetStringBetween(string source, string start, string end)
+        {
+            int startIndex = source.IndexOf(start) + start.Length;
+            int endIndex = source.IndexOf(end, startIndex);
+
+            if (startIndex < start.Length || endIndex == -1)
+            {
+                return string.Empty; // Return empty string if start or end not found
+            }
+
+            return source.Substring(startIndex, endIndex - startIndex);
         }
         #endregion
     }
