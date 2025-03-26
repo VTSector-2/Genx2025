@@ -21,6 +21,26 @@ body {
   margin-bottom: 60px;
 }
 
+.blinking-dots {
+    display: inline-block;
+    animation: blink 1s steps(5, end) infinite;
+}
+
+@keyframes blink {
+    0%, 20% {
+        opacity: 0;
+    }
+
+    40%, 60% {
+        opacity: 1;
+    }
+
+    80%, 100% {
+        opacity: 0;
+    }
+}
+}
+
 /*/ start dash board css /*/
 .desktop-5,
 .desktop-5 * {
@@ -2016,6 +2036,33 @@ body {
     justify-content: flex-start;
     flex-shrink: 0;
     position: relative;
+}
+
+#messages {
+    padding: 10px;
+    display: flex;
+    flex-direction: column; /* Stack messages vertically */
+    height: 100%; /* Ensure the messages take full height */
+}
+
+.user-message {
+    align-self: flex-start;
+    background-color: #e1ffc7; /* Light green background for user messages */
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px 0;
+    max-width: 70%; /* Limit width of user messages */
+    display: inline-block; /* Make it inline so it can float */
+}
+
+.bot-message {
+    align-self: flex-end;
+    background-color: #c7e1ff; /* Light blue background for bot messages */
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px 0;
+    max-width: 70%; /* Limit width of bot messages */
+    display: inline-block; /* Make it inline so it can float */
 }
 
 #site_address {

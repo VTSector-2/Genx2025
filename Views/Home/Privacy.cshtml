@@ -548,4 +548,118 @@
             </div>
         </div>
     </div>
+    <div id="chatbot" style="position: fixed; bottom: 20px; right: 20px; width: 600px; border: 1px solid #ccc; border-radius: 10px; background: white; display: none;">
+        <div id="chat-header" style="background: #012a2d; color: white; padding: 10px; border-top-left-radius: 10px; border-top-right-radius: 10px;">
+            Ask Ellis
+            <button onclick="toggleChat()" style="float: right; background: none; border: none; color: white; cursor: pointer;">
+                <img src="/images/close.png" alt="close" style="width: 25px; height: 25px;">
+            </button>
+        </div>
+        <div id="chat-body" style="height: 300px; background: white; overflow-y: auto; padding: 10px;">
+            <div id="messages" style="display: flex; flex-direction: column;"></div>
+            <div id="loading" style="display: none; color: #888; margin-top: 10px;">Ellis is typing<span class="blinking-dots">...</span></div>
+        </div>
+        <div style="display: flex; margin: 10px;">
+            <input type="text" id="user-input" placeholder="Type your message..." style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-right: 5px;">
+            <button onclick="sendMessage()" style="background: #012a2d; color: white; border: none; border-radius: 5px; padding: 10px;">
+                <img src="/images/send-icon.png" alt="send" style="width: 30px; height: 30px;">
+            </button>
+        </div>
+    </div>
+
+    <button id="chat-button" onclick="toggleChat()" style="position: fixed; bottom: 20px; right: 20px; background-color: #012a2d; color: white; border: none; border-radius: 20px; padding: 10px;">
+        <img src="/images/chat-icon.png" alt="Chat" style="width: 20px; height: 20px; margin-right: 5px;">
+        Ask Ellis
+    </button>
 </div>
+<script>
+    const chatButton = document.getElementById('chat-button');
+    const userInput = document.getElementById('user-input');
+
+    function toggleChat() {
+        const chatbot = document.getElementById('chatbot');
+        const isVisible = chatbot.style.display === 'block';
+
+        if (isVisible) {
+            document.getElementById('messages').innerHTML = ''; // Clear messages
+        }
+
+        // Toggle the display of the chatbot
+        chatbot.style.display = isVisible ? 'none' : 'block';
+
+        // Show or hide the chat button based on the chatbot visibility
+        chatButton.style.display = isVisible ? 'block' : 'none';
+    }
+
+    function sendMessage() {
+        const userMessage = userInput.value;
+        if (userMessage.trim() === '') return;
+
+        // Display user message
+        displayMessage('You', userMessage);
+
+        // Clear input
+        userInput.value = '';
+
+        // Create and display the loading message
+        const loadingMessage = document.createElement('div');
+        loadingMessage.className = 'loading-message'; // Optional class for styling
+        loadingMessage.innerHTML = 'Ellis is typing<span class="blinking-dots">...</span>';
+        document.getElementById('messages').appendChild(loadingMessage);
+
+        // Scroll to the bottom to show the loading message
+        const chatBody = document.getElementById('chat-body');
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        // Send message to server
+        fetch('/ChatBot/SendMessage', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message: userMessage })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Remove loading message
+                loadingMessage.remove();
+
+                // Display bot response
+                displayMessage('Bot', data.reply);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Remove loading message in case of an error
+                loadingMessage.remove();
+            });
+    }
+
+
+
+    function displayMessage(sender, message) {
+        const messagesDiv = document.getElementById('messages');
+        const chatBody = document.getElementById('chat-body');
+        const messageDiv = document.createElement('div');
+
+        // Set classes based on sender
+        if (sender === 'You') {
+            messageDiv.className = 'user-message';
+            messageDiv.innerHTML = '<strong>You:</strong> ' + message;
+        } else {
+            messageDiv.className = 'bot-message';
+            messageDiv.innerHTML = '<strong>Bot:</strong> ' + message;
+        }
+
+        messagesDiv.appendChild(messageDiv);
+
+        // Scroll to the bottom of the chat body
+        chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
+    }
+
+    userInput.addEventListener('keypress', function (event) {
+        if (event.key === 'Enter') {
+            sendMessage(); // Call the sendMessage function when Enter is pressed
+            event.preventDefault(); // Prevent the default action (e.g., form submission)
+        }
+    });
+</script>

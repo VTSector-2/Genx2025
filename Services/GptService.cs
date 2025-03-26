@@ -27,7 +27,7 @@ namespace Hackathon.Services
 
             var messages = new List<ChatMessage>
             {
-                new SystemChatMessage("You are a business data analyst assistant. Your task is to provide accurate predictions, insightful analyses, concise summaries, and actionable recommendations based on the provided business data. Ensure your responses are data-driven, clear, and tailored to the user's needs. Maintain a professional and supportive tone throughout the interaction."),
+                new SystemChatMessage("You are a helpful assistant who has access to my application database. I need help with this."),
                 new UserChatMessage(prompt)
             };
 
