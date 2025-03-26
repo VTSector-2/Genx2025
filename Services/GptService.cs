@@ -49,6 +49,32 @@ namespace Hackathon.Services
             return completion.Content[0].Text.ToString();
         }
 
+        public async Task<string> GetOpenAIResponse(string prompt, List<string> history)
+        {
+            var chatClient = _openAIClient.GetChatClient(_deploymentName);
+
+            var allMessages = new List<ChatMessage>();
+            foreach (var message in history)
+            {
+                allMessages.Add(new UserChatMessage(message)); 
+            }
+
+            allMessages.Add(new UserChatMessage(prompt));
+
+            ChatCompletion completion;
+
+            try
+            {
+                completion = await chatClient.CompleteChatAsync(allMessages);
+            }
+            catch (Exception ex)
+            {
+                return $"⚠️ Error generating response: {ex.Message}";
+            }
+
+            return completion.Content[0].Text.ToString();
+        }
+
         public async Task<List<GptQuestionnaire>> GetRiskDataAnalysis(List<Risk> riskData)
         {
             var jsonData = CreateRiskPromptAsync(riskData);
