@@ -52,6 +52,9 @@
 
         var chart = new google.visualization.Gauge(document.getElementById('gauge_chart'));
         chart.draw(dataSpeed, optionsSpeed);
+
+
+
      }
 </script>
 
@@ -526,7 +529,7 @@
                 <div class="input-dropdown-outlined">
                     <div class="field">
                         <div class="container">
-                            <select class="input-container">
+                            <select id="site_address" class="input-container">
                                  @foreach (var item in Model.Sites)
                                 {
                                 <option value="@item.Site_PK" selected="@item.Site_PK == 'Site2'">@item.Site_Name</option>

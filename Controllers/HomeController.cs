@@ -29,7 +29,7 @@ namespace Hackathon.Controllers
         {
             //default number of records are 50
             var data = _dataService.GetRiskData(numberOfRecords: 50);
-            var analysis = _gptService.GetRiskDataAnalysis(data);
+            var analysis = _gptService.GetRiskDataAnalysis(data.Where(x=>x.SiteId_Pk ==1 ).ToList());
             var viewModel = new DashboardViewModel
             {
                 Sites = data.Select(s => new Site() { Site_PK = s.SiteId_Pk, Site_Name = s.SiteName }).DistinctBy(d=>d.Site_Name).ToList(),
@@ -37,6 +37,15 @@ namespace Hackathon.Controllers
 
             return View(viewModel);
         }
+
+        public ActionResult GetDashboardData(int id)
+        {
+            // Fetch data based on the id
+            //var data = YourService.GetDataById(id);
+            //return PartialView("_YourPartialView", data); // Return a partial view with the data
+            return null;
+        }
+
 
         public IActionResult DataLoader()
         {

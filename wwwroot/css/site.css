@@ -2017,3 +2017,15 @@ body {
     flex-shrink: 0;
     position: relative;
 }
+
+#site_address {
+    border: none;
+    outline: none;
+    width:100%;
+}
+
+site_address:focus {
+    border: none;
+    outline: none; /* Optional: Remove outline */
+}
+
