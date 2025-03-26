@@ -4074,10 +4074,15 @@
         position: relative;
     }
 
+    #gauge_chart .google-visualization-gauge-value {
+        display: none; /* Hide the text */
+    }
+
+
 </style>
  <script type="text/javascript" >
         // Load the Visualization API and the corechart package.
-    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.load('current', { 'packages': ['corechart', 'gauge'] });
 
     // Set a callback to run when the Google Visualization API is loaded.
     google.charts.setOnLoadCallback(drawChart);
@@ -4106,6 +4111,23 @@
          // Instantiate and draw our chart, passing in some options.
          var chart = new google.visualization.ColumnChart(document.getElementById('barchart'));
          chart.draw(data, options);
+
+        var dataSpeed = google.visualization.arrayToDataTable([
+            ['Label', 'Value'],
+            ['High', 80]
+        ]);
+        var optionsSpeed = {
+            width: 500, height: 250,
+             greenFrom: 0, greenTo: 40,
+            redFrom: 80, redTo: 120,
+            yellowFrom: 40, yellowTo: 80,
+            minorTicks: 5,
+            animation: { duration: 1000, easing: 'out' }
+        };
+
+
+        var chart = new google.visualization.Gauge(document.getElementById('gauge_chart'));
+        chart.draw(dataSpeed, optionsSpeed);
      }
 
   
@@ -4692,148 +4714,7 @@
                     </div>
                 </div>
                 <div class="table-columns">
-                    <div class="column">
-                        <div class="header2">
-                            <div class="content4">Injury Types</div>
-                        </div>
-                        <div class="table-cells">
-                            <div class="content5">Wound</div>
-                        </div>
-                        <div class="table-cells2">
-                            <div class="content5">Burns</div>
-                        </div>
-                        <div class="table-cells2">
-                            <div class="content5">Chemical Exposure</div>
-                        </div>
-                        <div class="table-cells2">
-                            <div class="content5">Nausea / Dizziness</div>
-                        </div>
-                        <div class="table-cells2">
-                            <div class="content5">Eye Injury</div>
-                        </div>
-                        <div class="table-cells2">
-                            <div class="content5">Bone Damage</div>
-                        </div>
-                        <div class="table-cells2">
-                            <div class="content5">Sprains / Strains</div>
-                        </div>
-                        <div class="table-cells3">
-                            <div class="content5">Loss of Consciouness</div>
-                        </div>
-                    </div>
-                    <div class="column2">
-                        <div class="header3">
-                            <div class="content6">FY 2025</div>
-                        </div>
-                        <div class="table-cells4">
-                            <div class="content7">25</div>
-                        </div>
-                        <div class="table-cells5">
-                            <div class="content7">32</div>
-                        </div>
-                        <div class="table-cells5">
-                            <div class="content7">1</div>
-                        </div>
-                        <div class="table-cells5">
-                            <div class="content7">123</div>
-                        </div>
-                        <div class="table-cells5">
-                            <div class="content7">42</div>
-                        </div>
-                        <div class="table-cells5">
-                            <div class="content7">207</div>
-                        </div>
-                        <div class="table-cells5">
-                            <div class="content7">45</div>
-                        </div>
-                        <div class="table-cells5">
-                            <div class="content7">10</div>
-                        </div>
-                    </div>
-                    <div class="column3">
-                        <div class="frame-1321315184">
-                            <div class="header3">
-                                <div class="content6">FY 2024</div>
-                            </div>
-                            <div class="table-cells4">
-                                <div class="content7">189</div>
-                            </div>
-                            <div class="table-cells5">
-                                <div class="content7">95</div>
-                            </div>
-                            <div class="table-cells5">
-                                <div class="content7">75</div>
-                            </div>
-                            <div class="table-cells5">
-                                <div class="content7">322</div>
-                            </div>
-                            <div class="table-cells5">
-                                <div class="content7">532</div>
-                            </div>
-                            <div class="table-cells5">
-                                <div class="content7">515</div>
-                            </div>
-                            <div class="table-cells5">
-                                <div class="content7">523</div>
-                            </div>
-                            <div class="table-cells5">
-                                <div class="content7">50</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="column4">
-                        <div class="header3">
-                            <div class="content8">Average health score</div>
-                        </div>
-                        <div class="table-cells6">
-                            <svg class="arrow-downward" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3.33329 10L4.50829 11.175L9.16663 6.52502V16.6667H10.8333V6.52502L15.4833 11.1834L16.6666 10L9.99996 3.33335L3.33329 10Z" fill="#1A1A1A" fill-opacity="0.6" />
-                            </svg>
-                            <div class="content9">95%</div>
-                        </div>
-                        <div class="table-cells7">
-                            <svg class="arrow-downward2" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3.33329 10L4.50829 11.175L9.16663 6.52502V16.6667H10.8333V6.52502L15.4833 11.1834L16.6666 10L9.99996 3.33335L3.33329 10Z" fill="#1A1A1A" fill-opacity="0.6" />
-                            </svg>
-                            <div class="content9">61%</div>
-                        </div>
-                        <div class="table-cells6">
-                            <svg class="arrow-downward3" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16.6667 9.99998L15.4917 8.82498L10.8334 13.475V3.33331H9.16671V13.475L4.51671 8.81665L3.33337 9.99998L10 16.6666L16.6667 9.99998Z" fill="#1A1A1A" fill-opacity="0.6" />
-                            </svg>
-                            <div class="content9">95%</div>
-                        </div>
-                        <div class="table-cells7">
-                            <svg class="arrow-downward4" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16.6667 9.99998L15.4917 8.82498L10.8334 13.475V3.33331H9.16671V13.475L4.51671 8.81665L3.33337 9.99998L10 16.6666L16.6667 9.99998Z" fill="#1A1A1A" fill-opacity="0.6" />
-                            </svg>
-                            <div class="content9">82%</div>
-                        </div>
-                        <div class="table-cells6">
-                            <svg class="arrow-downward5" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3.33329 10L4.50829 11.175L9.16663 6.52502V16.6667H10.8333V6.52502L15.4833 11.1834L16.6666 10L9.99996 3.33335L3.33329 10Z" fill="#1A1A1A" fill-opacity="0.6" />
-                            </svg>
-                            <div class="content9">95%</div>
-                        </div>
-                        <div class="table-cells6">
-                            <svg class="arrow-downward6" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M16.6667 9.99998L15.4917 8.82498L10.8334 13.475V3.33331H9.16671V13.475L4.51671 8.81665L3.33337 9.99998L10 16.6666L16.6667 9.99998Z" fill="#1A1A1A" fill-opacity="0.6" />
-                            </svg>
-                            <div class="content9">50%</div>
-                        </div>
-                        <div class="table-cells7">
-                            <svg class="arrow-downward7" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3.33329 9.99996L4.50829 11.175L9.16663 6.52496V16.6666H10.8333V6.52496L15.4833 11.1833L16.6666 9.99996L9.99996 3.33329L3.33329 9.99996Z" fill="#1A1A1A" fill-opacity="0.6" />
-                            </svg>
-                            <div class="content9">22%</div>
-                        </div>
-                        <div class="table-cells8">
-                            <svg class="arrow-downward8" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16.6667 10L15.4917 8.82504L10.8334 13.475V3.33337H9.16671V13.475L4.51671 8.81671L3.33337 10L10 16.6667L16.6667 10Z" fill="#1A1A1A" fill-opacity="0.6" />
-                            </svg>
-                            <div class="content9">95%</div>
-                        </div>
-                    </div>
+                    <div id="gauge_chart" style="width: 500px; height: 250px;"></div>
                 </div>
             </div>
         </div>
@@ -5237,6 +5118,8 @@
         </div>
     </div>
 </div>
+
+
 
 
 
