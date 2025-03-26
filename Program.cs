@@ -16,6 +16,10 @@ builder.Services.AddScoped<IDataService, DataService>();
 
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddScoped<IGptService, GptService>(); // Adjust according to your service interface and implementation
+builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiSettings"));
+builder.Services.AddControllers(); 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -4101,6 +4101,16 @@
         display: inline-block; /* Make it inline so it can float */
     }
 
+    .blinking-dots {
+        display: inline-block;
+        animation: blink 1s steps(5, end) infinite;
+    }
+
+    .loading-message {
+        color: #888; /* Change color as needed */
+        margin: 5px 0;
+    }
+
 </style>
  <script type="text/javascript" >
         // Load the Visualization API and the corechart package.
@@ -5088,16 +5098,17 @@
                     Ask Ellis
                     <button onclick="toggleChat()" style="float: right; background: none; border: none; color: white; cursor: pointer;">
                         <img src="/images/close.png" alt="close" style="width: 25px; height: 25px;">
-                        </button>
+                    </button>
                 </div>
                 <div id="chat-body" style="height: 300px; background: white; overflow-y: auto; padding: 10px;">
                     <div id="messages" style="display: flex; flex-direction: column;"></div>
+                    <div id="loading" style="display: none; color: #888; margin-top: 10px;">Ellis is typing<span class="blinking-dots">...</span></div>
                 </div>
                 <div style="display: flex; margin: 10px;">
                     <input type="text" id="user-input" placeholder="Type your message..." style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-right: 5px;">
                     <button onclick="sendMessage()" style="background: #012a2d; color: white; border: none; border-radius: 5px; padding: 10px;">
-                        <img src="/images/send-icon.png" alt="send" style="width: 30px; height: 30px; align-content: center;">
-                        </button>
+                        <img src="/images/send-icon.png" alt="send" style="width: 30px; height: 30px;">
+                    </button>
                 </div>
             </div>
 
@@ -5306,7 +5317,6 @@
     }
 
     function sendMessage() {
-        const userInput = document.getElementById('user-input');
         const userMessage = userInput.value;
         if (userMessage.trim() === '') return;
 
@@ -5315,6 +5325,16 @@
 
         // Clear input
         userInput.value = '';
+
+        // Create and display the loading message
+        const loadingMessage = document.createElement('div');
+        loadingMessage.className = 'loading-message'; // Optional class for styling
+        loadingMessage.innerHTML = 'Ellis is typing<span class="blinking-dots">...</span>';
+        document.getElementById('messages').appendChild(loadingMessage);
+
+        // Scroll to the bottom to show the loading message
+        const chatBody = document.getElementById('chat-body');
+        chatBody.scrollTop = chatBody.scrollHeight;
 
         // Send message to server
         fetch('/ChatBot/SendMessage', {
@@ -5326,13 +5346,20 @@
         })
             .then(response => response.json())
             .then(data => {
+                // Remove loading message
+                loadingMessage.remove();
+
                 // Display bot response
                 displayMessage('Bot', data.reply);
             })
             .catch(error => {
                 console.error('Error:', error);
+                // Remove loading message in case of an error
+                loadingMessage.remove();
             });
     }
+
+
 
     function displayMessage(sender, message) {
         const messagesDiv = document.getElementById('messages');

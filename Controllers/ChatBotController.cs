@@ -1,13 +1,27 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Hackathon.DataContext;
+using Hackathon.Services;
+using Microsoft.AspNetCore.Mvc;
+using System.Text;
+using Microsoft.EntityFrameworkCore;
+using Hackathon.Interfaces;
 
 namespace Hackathon.Controllers
 {
     [Route("ChatBot")]
     [ApiController]
-    public class ChatBotController : Controller
+    public class ChatBotController : ControllerBase // Ensure you inherit from ControllerBase
     {
+        private readonly ApplicationDbContext _context;
+        private readonly IGptService _aiService; // Use the interface
+
+        public ChatBotController(ApplicationDbContext context, IGptService aiService) // Use the interface here
+        {
+            _context = context;
+            _aiService = aiService;
+        }
+
         [HttpPost("SendMessage")]
-        public IActionResult SendMessage([FromBody] UserMessage userMessage)
+        public async Task<IActionResult> SendMessage([FromBody] UserMessage userMessage)
         {
             // Validate the incoming message
             if (userMessage == null || string.IsNullOrWhiteSpace(userMessage.Message))
@@ -16,49 +30,66 @@ namespace Hackathon.Controllers
             }
 
             // Process the user message and generate a response
-            string reply = GenerateReply(userMessage.Message);
+            string reply = "";
+
+            var dbResponse = await GetResponseFromDatabase(userMessage.Message);
+            if (!string.IsNullOrEmpty(dbResponse))
+            {
+                reply = dbResponse; // Use the database response if found
+            }
+            else
+            {
+                reply = await _aiService.GetOpenAIResponse(userMessage.Message); // Use the AI service
+            }
             return Ok(new { reply });
         }
 
-        private string GenerateReply(string userMessage)
+        private async Task<string> GetResponseFromDatabase(string userMessage)
         {
-            // Example logic for generating a reply based on user input
-            if (userMessage.Contains("incident", StringComparison.OrdinalIgnoreCase))
+            // Check for risk-related keywords in the user's message
+            if (userMessage.Contains("risk", StringComparison.OrdinalIgnoreCase)
+                || userMessage.Contains("hazard", StringComparison.OrdinalIgnoreCase)
+                || userMessage.Contains("threat", StringComparison.OrdinalIgnoreCase))
             {
-                return "You can check the latest incidents in the incidents section.";
-            }
-            else if (userMessage.Equals("hi", StringComparison.OrdinalIgnoreCase))
-            {
-                return "Hi. How may I help you today?";
-            }
-            else if (userMessage.Equals("hello", StringComparison.OrdinalIgnoreCase))
-            {
-                return "Hello. You need any help?";
-            }
-            else if (userMessage.Contains("observation", StringComparison.OrdinalIgnoreCase))
-            {
-                return "Observations can be logged in the observations section.";
-            }
-            else if (userMessage.Contains("action", StringComparison.OrdinalIgnoreCase))
-            {
-                return "You can view actions taken in the actions section.";
-            }
-            else if (userMessage.Contains("investigation", StringComparison.OrdinalIgnoreCase))
-            {
-                return "Investigations are recorded in the investigations section.";
-            }
-            else if (userMessage.Contains("audit", StringComparison.OrdinalIgnoreCase))
-            {
-                return "Audits are available in the audits section.";
+                // Query the database for risks associated with the site
+                var risks = await _context.Risks
+                    .Where(r => r.SiteName != null && r.SiteName.Contains(userMessage, StringComparison.OrdinalIgnoreCase))
+                    .ToListAsync();
+
+                if (risks.Any())
+                {
+                    // Create a string to summarize the risks
+                    var riskSummary = new StringBuilder();
+                    riskSummary.AppendLine($"Found {risks.Count} risk(s) associated with the site:");
+
+                    foreach (var risk in risks)
+                    {
+                        riskSummary.AppendLine($"- **Title**: {risk.RiskTitle}, **Description**: {risk.RiskDescription}, **Category**: {risk.RiskCategory}, **Status**: {risk.RiskStatus}");
+                    }
+
+                    return riskSummary.ToString();
+                }
+                else
+                {
+                    return "No risks found associated with the site.";
+                }
             }
 
-            // Default response if no specific keywords are matched
-            return "I'm sorry, I did not understand that. Can you please rephrase your question? or ask something related to the selected site only as I dont have access to any other data here.";
+            // Additional checks can be added here
+
+            return null; // Return null if no relevant data was found
         }
     }
 
     public class UserMessage
     {
         public string Message { get; set; }
+    }
+
+    public class ApiSettings
+    {
+        public string BaseUrl { get; set; }
+        public string ApiKey { get; set; }
+        public string DeploymentName { get; set; }
     }
 }

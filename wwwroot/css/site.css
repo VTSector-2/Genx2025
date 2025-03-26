@@ -20,3 +20,22 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.blinking-dots {
+    display: inline-block;
+    animation: blink 1s steps(5, end) infinite;
+}
+
+@keyframes blink {
+    0%, 20% {
+        opacity: 0;
+    }
+
+    40%, 60% {
+        opacity: 1;
+    }
+
+    80%, 100% {
+        opacity: 0;
+    }
+}

@@ -26,7 +26,7 @@ namespace Hackathon.Services
 
             var messages = new List<ChatMessage>
             {
-                new SystemChatMessage("You are a helpful assistant."),
+                new SystemChatMessage("You are a helpful assistant who has access to my application database. I need help with this."),
                 new UserChatMessage(prompt)
             };
 
