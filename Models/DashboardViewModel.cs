@@ -8,22 +8,20 @@
         public SafetyAnalysisViewModel SafetyAnalysis { get; set; }
     }
 
-    public class RsikViewModel
+    public class RiskViewModel
     {
         public int Low { get; set; }
         public int Negligible { get; set; }
         public int Serious { get; set; }
         public int Critical { get; set; }
-        
     }
 
-    public class RsikAnalysisViewModel
+    public class RiskAnalysisViewModel
     {
         public string RiskProbabilityPrediction { get; set; }
         public string RiskAnalysis { get; set; }
         public string SummaryofRisks { get; set; }
         public string Recommendations { get; set; }
-
     }
 
     public class SafetyAnalysisViewModel

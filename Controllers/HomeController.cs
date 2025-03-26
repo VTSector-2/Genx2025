@@ -3,40 +3,37 @@ using Hackathon.Models;
 using Hackathon.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Hackathon.Controllers
 {
-    public class HomeController : Controller
-    {
-        private readonly ILogger<HomeController> _logger;
-        private readonly IDataService _dataService;
-        private readonly IGptService _gptService;
+	public class HomeController : Controller
+	{
+		private readonly ILogger<HomeController> _logger;
+		private readonly IDataService _dataService;
+		private readonly IGptService _gptService;
 
-        public HomeController(ILogger<HomeController> logger, IDataService dataService, IGptService gptService)
-        {
-            _logger = logger;
-            _dataService = dataService;
-            _gptService = gptService;
-        }
+		public HomeController(ILogger<HomeController> logger, IDataService dataService, IGptService gptService)
+		{
+			_logger = logger;
+			_dataService = dataService;
+			_gptService = gptService;
+		}
 
-        public IActionResult Index()
-        {
-            //default number of records are 50
-            var data = _dataService.GetSiteData(numberOfRecords: 50);
-            return View(data);
-        }
+		public IActionResult Index()
+		{
+			//default number of records are 50
+			var data = _dataService.GetSiteData(numberOfRecords: 50);
+			return View(data);
+		}
 
-        public IActionResult Privacy()
-        {
-            //default number of records are 50
-            var data = _dataService.GetRiskData(numberOfRecords: 50);
-            var selectedRsik = data.Where(w=>w.SiteName == "Site20").GroupBy(i => i.Impact)
-                                                    .Select(ig => new
-                                                    {
-                                                        ImpactName = ig.Key,
-                                                        Count = ig.Count()
-                                                    });
+		public IActionResult Privacy()
+		{
+			//default number of records are 50
+			var data = _dataService.GetRiskData(numberOfRecords: 50);
 
+			// Fetch data based on the id
+			var viewModel = _dataService.GetDashboardData(data, siteId: 20, siteName: "Site20");
 
             var analysis = _gptService.GetRiskDataAnalysis(data.Where(x=>x.SiteName == "Site20").ToList());
 
@@ -66,24 +63,25 @@ namespace Hackathon.Controllers
             return View(viewModel);
         }
 
-        public ActionResult GetDashboardData(int id)
-        {
-            // Fetch data based on the id
-            //var data = YourService.GetDataById(id);
-            //return PartialView("_YourPartialView", data); // Return a partial view with the data
-            return null;
-        }
+		public DashboardViewModel? GetDashboardData(int id, string siteName)
+		{
+			//default number of records are 50
+			var data = _dataService.GetRiskData(numberOfRecords: 50);
 
+			// Fetch data based on the id
+			var viewModel = _dataService.GetDashboardData(data, siteId: id, siteName: siteName);
+			return viewModel;
+		}
 
-        public IActionResult DataLoader()
-        {
-            return View();
-        }
+		public IActionResult DataLoader()
+		{
+			return View();
+		}
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-    }
+		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+		public IActionResult Error()
+		{
+			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+		}
+	}
 }
