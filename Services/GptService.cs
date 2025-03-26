@@ -84,7 +84,7 @@ namespace Hackathon.Services
         public async Task<RiskAnalysisViewModel> GetRiskDataAnalysis(List<Risk> riskData)
         {
             var json = JsonConvert.SerializeObject(riskData);
-            var prompt = $"please provide the Risk Probability Prediction,Risk Analysis,Summary of Risks and Recommendationsalong a small paraghra for each point with no sub point for the given site data, do not add any special charactors and line change" + json;
+            var prompt = $"please provide the Risk Probability Prediction,Risk Analysis,Summary of Risks and Recommendationsalong a small paraghra for each point with no sub point for the given site data, do not add any special charactors and line change and include site name as well" + json;
 
             var data = await GetOpenAIResponse(prompt);
             var respons = new RiskAnalysisViewModel
