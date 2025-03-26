@@ -4087,28 +4087,6 @@
     // draws it.
      function drawChart() {
 
-         // Create the data table.
-         var dataPiechart = google.visualization.arrayToDataTable([
-             ['Task', 'Hours per Day'],
-             ['Work', 8],
-             ['Eat', 2],
-             ['Commute', 2],
-             ['Watch TV', 2],
-             ['Sleep', 8],
-             ['Other', 2]
-         ]);
-
-         // Set chart options
-         var optionsPiechart = {
-             'title': 'My Daily Activities',
-             'width': 900,
-             'height': 500
-         };
-
-         // Instantiate and draw our chart, passing in some options.
-         var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-         chart.draw(dataPiechart, optionsPiechart);
-
          // Load the data table.
          var data = google.visualization.arrayToDataTable([
              ['2021', 'Year: 2021-2025'],
@@ -4130,58 +4108,7 @@
          chart.draw(data, options);
      }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        Highcharts.chart('semidonutchart', {
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: 0,
-                plotShadow: false
-            },
-            title: {
-                text: 'Day without </br> OSHA Recordable </br>incident',
-                align: 'center',
-                verticalAlign: 'middle',
-                y: 60,
-                style: {
-                    fontSize: '10px'
-                }
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            accessibility: {
-                point: {
-                    valueSuffix: '%'
-                }
-            },
-            plotOptions: {
-                pie: {
-                    dataLabels: {
-                        enabled: true,
-                        distance: -50,
-                        style: {
-                            fontWeight: 'bold',
-                            color: 'white',
-                            fontSize: '10px'
-                        }
-                    },
-                    startAngle: -90,
-                    endAngle: 90,
-                    center: ['50%', '75%'],
-                    size: '110%'
-                }
-            },
-            series: [{
-                type: 'pie',
-                name: 'Days',
-                innerSize: '50%',
-                data: [
-                    ['Days with OSHA', 10],
-                    ['Days without OSHA', 90]
-                ]
-            }]
-        });
-    });
+  
 
 </script>
 
@@ -5059,7 +4986,11 @@
                             </div>
                         </div>
                         <div class="half-donut-chart">
-                            <div id="semidonutchart" style="width: 200px; height: 100px;"></div>
+                            <div class="ellipse-92"></div>
+                            <div class="ellipse-93"></div>
+                            <div class="_0">50 Days</div>
+                            <div class="no">0 Days</div>
+                            <div class="no2">0 Days</div>
                         </div>
                     </div>
                 </div>
@@ -5305,9 +5236,6 @@
             </div>
         </div>
     </div>
-</div>
-<div>
-    <div id="piechart" style="width: 900px; height: 500px;"></div>
 </div>
 
 
