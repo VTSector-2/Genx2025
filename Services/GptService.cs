@@ -4,6 +4,7 @@ using Hackathon.Interfaces;
 using Hackathon.Models;
 using Microsoft.Extensions.Options;
 using OpenAI.Chat;
+using Newtonsoft.Json.Linq;
 
 namespace Hackathon.Services
 {
@@ -44,6 +45,47 @@ namespace Hackathon.Services
             return completion.Content[0].Text.ToString();
         }
 
+        public async Task<List<GptQuestionnaire>> GetRiskDataAnalysis(List<Risk> riskData)
+        {
+            var jsonData = CreateRiskPromptAsync(riskData);
+            List<GptQuestionnaire> questionnaires = new List<GptQuestionnaire>();
+            foreach (var jsonDataItem in jsonData)
+            {
+                JObject? jsonObject = JObject.Parse(jsonDataItem);
+                string siteName = jsonObject?["siteName"]?.ToString() ?? string.Empty;
+                string risks = jsonObject?["risks"]?.ToString() ?? string.Empty;
+
+                var questionnaire = new GptQuestionnaire
+                {
+                    RiskProbabilityPrediction = new Dictionary<string, string>
+                    {
+                        { "Question", "Predict the probability of the following risks occurring in the future for " + siteName + ": " + risks },
+                        { "Answer", await GetOpenAIResponse("Predict the probability of the following risks occurring in the future for " + siteName + ": " + risks) }
+                    },
+                    RiskAnalysis = new Dictionary<string, string>
+                    {
+                        { "Question", "Analyze the risks for " + siteName + " based on the following data: " + risks + ". Identify key risk factors and provide a list of recommendations for risk mitigation. Do not include any introductory or concluding remarks." },
+                        { "Answer", await GetOpenAIResponse("Analyze the risks for " + siteName + " based on the following data: " + risks + ". Identify key risk factors and provide a list of recommendations for risk mitigation. Do not include any introductory or concluding remarks.") }
+                    },
+                    SummaryofRisks = new Dictionary<string, string>
+                    {
+                        { "Question", "Summarize the risks for " + siteName + " considering the likelihood and impact of each risk: " + risks + ". Provide a structured summary without additional commentary." },
+                        { "Answer", await GetOpenAIResponse("Summarize the risks for " + siteName + " considering the likelihood and impact of each risk: " + risks + ". Provide a structured summary without additional commentary.") }
+                    },
+                    Recommendations = new Dictionary<string, string>
+                    {
+                        { "Question", "Provide strategies for risk management and mitigation based on the identified risks for " + siteName + ": " + risks + ". List recommendations clearly and concisely without conversational phrases." },
+                        { "Answer", await GetOpenAIResponse("Provide strategies for risk management and mitigation based on the identified risks for " + siteName + ": " + risks + ". List recommendations clearly and concisely without conversational phrases.") }
+                    }
+                };
+
+                questionnaires.Add(questionnaire);
+            }
+
+            return questionnaires;
+        }
+
+        #region private methods 
         public List<string> CreateRiskPromptAsync(List<Risk> riskData)
         {
             var prompts = new List<string>();
@@ -64,11 +106,12 @@ namespace Hackathon.Services
                     prompt = prompt.TrimEnd(',');
                 }
 
-                prompt += "]}}";
+                prompt += "]}";
                 prompts.Add(prompt);
             }
 
             return prompts;
         }
+        #endregion
     }
 }

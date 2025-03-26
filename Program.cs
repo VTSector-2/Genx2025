@@ -11,7 +11,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiSettings"));
 
-builder.Services.AddSingleton<IGptService, GptService>();
+builder.Services.AddScoped<IGptService, GptService>();
 builder.Services.AddScoped<IDataService, DataService>();
 
 builder.Services.AddControllersWithViews();
