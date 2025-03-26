@@ -4,7 +4,8 @@
     {
         public List<Site> Sites { get; set; }
         public RiskViewModel RiskRegister { get; set; }
-        public RiskAnalysisViewModel RiskAnalysis { get; set; }
+        public RiskAnalysisViewModel RsikAnalysis { get; set; }
+        public SafetyAnalysisViewModel SafetyAnalysis { get; set; }
     }
 
     public class RiskViewModel
@@ -22,4 +23,18 @@
         public string SummaryofRisks { get; set; }
         public string Recommendations { get; set; }
     }
+
+    public class SafetyAnalysisViewModel
+    {
+        public List<string> ContributingFactors { get; set; }
+        public List<string> MitigationPlan { get; set; }
+        public List<string> LeadingIndicators { get; set; }
+        public List<string> LaggingIndicators { get; set; }
+        public string RiskCategory { get; set; }
+        public string ManualCategory { get; set; }
+
+    }
+
+
+
 }

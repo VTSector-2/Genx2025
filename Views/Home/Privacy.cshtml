@@ -1,4 +1,5 @@
-﻿@model Hackathon.Models.DashboardViewModel
+﻿@using Newtonsoft.Json
+@model Hackathon.Models.DashboardViewModel
 @{
     ViewData["Title"] = "GenX-2025";
 }
@@ -35,10 +36,12 @@
          // Instantiate and draw our chart, passing in some options.
          // var chart = new google.visualization.ColumnChart(document.getElementById('barchart'));
          // chart.draw(data, options);
+        console.log(viewModel);
 
+        var safetyScore = viewModel.safetyAnalysis.riskCategory == "High Risk Score" ? { key: 'High', value: 85 } : viewModel.safetyAnalysis.riskCategory == "Medium Risk Score" ? { key: 'Medium', value: 63 } : { key: 'Low', value: 20 };
         var dataSpeed = google.visualization.arrayToDataTable([
             ['Label', 'Value'],
-            ['High', 80]
+            [safetyScore.key, safetyScore.value]
         ]);
         var optionsSpeed = {
             width: 400, height: 200,
@@ -123,11 +126,17 @@
                     <div class="label">
                         <span>
                             <span class="label-span">
-                                Contributing Factors::
+                                Contributing Factors:
                                 <br />
                             </span>
-                            <ol class="label-span2">
-                                <li></li>
+                            <ol id="ContributingFactors" class="label-span2">
+                                @foreach(var item in Model.SafetyAnalysis.ContributingFactors)
+                                {
+                                    if (@item.Trim().Length > 0)
+                                    {
+                                        <li>@item</li>
+                                    }
+                                }
                             </ol>
                         </span>
                     </div>
@@ -139,8 +148,14 @@
                                 Mitigation Plan:
                                 <br />
                             </span>
-                            <ol class="label-span4">
-                                <li></li>
+                            <ol id="MitigationPlan" class="label-span4">
+                                @foreach (var item in Model.SafetyAnalysis.MitigationPlan)
+                                {
+                                    if (@item.Trim().Length > 0)
+                                    {
+                                        <li>@item.Trim()</li>
+                                    }
+                                }
                             </ol>
                         </span>
                     </div>
@@ -152,13 +167,19 @@
                                 Leading Indicators:
                                 <br />
                             </span>
-                            <ol class="label-span6">
-                                <li></li>
+                            <ol id="LeadingIndicators" class="label-span6">
+                                @foreach (var item in Model.SafetyAnalysis.LeadingIndicators)
+                                {
+                                    if (@item.Trim().Length > 0)
+                                    {
+                                        <li>@item.Trim()</li>
+                                    }
+                                }
                             </ol>
                         </span>
                     </div>
                 </div>
-                <div class="action">
+               @*  <div class="action">
                     <div class="label">
                         <span>
                             <span class="label-span7">
@@ -166,11 +187,17 @@
                                 <br />
                             </span>
                             <ol class="label-span8">
-                                <li></li>
+                                @foreach (var item in Model.SafetyAnalysis.LaggingIndicators)
+                                {
+                                    if (@item.Trim().Length > 0)
+                                    {
+                                        <li>@item.Trim()</li>
+                                    }
+                                }
                             </ol>
                         </span>
                     </div>
-                </div>
+                </div> *@
             </div>
             <div class="card-footer">
                 <div class="tags">
@@ -302,7 +329,7 @@
                             <svg class="trending-up" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M3.14996 20.5625C2.91663 20.3292 2.80483 20.0521 2.81455 19.7312C2.82427 19.4104 2.93608 19.143 3.14996 18.9292L9.30413 12.6875C9.75135 12.2403 10.3055 12.0167 10.9666 12.0167C11.6277 12.0167 12.1819 12.2403 12.6291 12.6875L15.6333 15.7208L21.7 9.71248H19.8333C19.5027 9.71248 19.2257 9.60068 19.002 9.37707C18.7784 9.15346 18.6666 8.87637 18.6666 8.54582C18.6666 8.21526 18.7784 7.93818 19.002 7.71457C19.2257 7.49096 19.5027 7.37915 19.8333 7.37915H24.5C24.8305 7.37915 25.1076 7.49096 25.3312 7.71457C25.5548 7.93818 25.6666 8.21526 25.6666 8.54582V13.2125C25.6666 13.543 25.5548 13.8201 25.3312 14.0437C25.1076 14.2673 24.8305 14.3792 24.5 14.3792C24.1694 14.3792 23.8923 14.2673 23.6687 14.0437C23.4451 13.8201 23.3333 13.543 23.3333 13.2125V11.3458L17.2958 17.3833C16.8486 17.8305 16.2944 18.0542 15.6333 18.0542C14.9722 18.0542 14.418 17.8305 13.9708 17.3833L10.9666 14.3792L4.7833 20.5625C4.56941 20.7764 4.29719 20.8833 3.96663 20.8833C3.63608 20.8833 3.36385 20.7764 3.14996 20.5625Z" fill="#A03530" />
                             </svg>
-                            <div class="number">@Model.RiskRegister.Critical</div>
+                            <div id="Critical" class="number">@Model.RiskRegister.Critical</div>
                         </div>
                         <div class="high">Critical</div>
                     </div>
@@ -311,7 +338,7 @@
                             <svg class="trending-flat" width="29" height="28" viewBox="0 0 29 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M21.7042 15.1667H5.16667C4.83611 15.1667 4.55903 15.0549 4.33542 14.8313C4.11181 14.6077 4 14.3306 4 14C4 13.6695 4.11181 13.3924 4.33542 13.1688C4.55903 12.9452 4.83611 12.8334 5.16667 12.8334H21.7042L20.1 11.2C19.8667 10.9667 19.7549 10.6945 19.7646 10.3834C19.7743 10.0723 19.8958 9.80005 20.1292 9.56671C20.3625 9.35282 20.6396 9.24102 20.9604 9.2313C21.2813 9.22157 21.5486 9.33338 21.7625 9.56671L25.35 13.1834C25.5833 13.4167 25.7 13.6889 25.7 14C25.7 14.3112 25.5833 14.5834 25.35 14.8167L21.7333 18.4334C21.5194 18.6473 21.2521 18.7542 20.9313 18.7542C20.6104 18.7542 20.3333 18.6473 20.1 18.4334C19.8667 18.2 19.75 17.923 19.75 17.6021C19.75 17.2813 19.8667 17.0042 20.1 16.7709L21.7042 15.1667Z" fill="#FF9742" />
                             </svg>
-                            <div class="number">@Model.RiskRegister.Serious</div>
+                            <div id="Serious" class="number">@Model.RiskRegister.Serious</div>
                         </div>
                         <div class="medium">Serious</div>
                     </div>
@@ -320,7 +347,7 @@
                             <svg class="trending-down" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M21.7 18.6667L15.6333 12.6583L12.6291 15.6625C12.1819 16.1097 11.6277 16.3334 10.9666 16.3334C10.3055 16.3334 9.75135 16.1097 9.30413 15.6625L3.14996 9.45002C2.93608 9.23613 2.82427 8.96877 2.81455 8.64793C2.80483 8.3271 2.91663 8.05002 3.14996 7.81668C3.36385 7.60279 3.63608 7.49585 3.96663 7.49585C4.29719 7.49585 4.56941 7.60279 4.7833 7.81668L10.9666 14L13.9708 10.9958C14.418 10.5486 14.9722 10.325 15.6333 10.325C16.2944 10.325 16.8486 10.5486 17.2958 10.9958L23.3333 17.0334V15.1667C23.3333 14.8361 23.4451 14.559 23.6687 14.3354C23.8923 14.1118 24.1694 14 24.5 14C24.8305 14 25.1076 14.1118 25.3312 14.3354C25.5548 14.559 25.6666 14.8361 25.6666 15.1667V19.8334C25.6666 20.1639 25.5548 20.441 25.3312 20.6646C25.1076 20.8882 24.8305 21 24.5 21H19.8333C19.5027 21 19.2257 20.8882 19.002 20.6646C18.7784 20.441 18.6666 20.1639 18.6666 19.8334C18.6666 19.5028 18.7784 19.2257 19.002 19.0021C19.2257 18.7785 19.5027 18.6667 19.8333 18.6667H21.7Z" fill="#50AF78" />
                             </svg>
-                            <div class="number">@Model.RiskRegister.Low</div>
+                            <div id="Low" class="number">@Model.RiskRegister.Low</div>
                         </div>
                         <div class="all-requests">Low</div>
                     </div>
@@ -329,7 +356,7 @@
                             <svg class="trending-down" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M21.7 18.6667L15.6333 12.6583L12.6291 15.6625C12.1819 16.1097 11.6277 16.3334 10.9666 16.3334C10.3055 16.3334 9.75135 16.1097 9.30413 15.6625L3.14996 9.45002C2.93608 9.23613 2.82427 8.96877 2.81455 8.64793C2.80483 8.3271 2.91663 8.05002 3.14996 7.81668C3.36385 7.60279 3.63608 7.49585 3.96663 7.49585C4.29719 7.49585 4.56941 7.60279 4.7833 7.81668L10.9666 14L13.9708 10.9958C14.418 10.5486 14.9722 10.325 15.6333 10.325C16.2944 10.325 16.8486 10.5486 17.2958 10.9958L23.3333 17.0334V15.1667C23.3333 14.8361 23.4451 14.559 23.6687 14.3354C23.8923 14.1118 24.1694 14 24.5 14C24.8305 14 25.1076 14.1118 25.3312 14.3354C25.5548 14.559 25.6666 14.8361 25.6666 15.1667V19.8334C25.6666 20.1639 25.5548 20.441 25.3312 20.6646C25.1076 20.8882 24.8305 21 24.5 21H19.8333C19.5027 21 19.2257 20.8882 19.002 20.6646C18.7784 20.441 18.6666 20.1639 18.6666 19.8334C18.6666 19.5028 18.7784 19.2257 19.002 19.0021C19.2257 18.7785 19.5027 18.6667 19.8333 18.6667H21.7Z" fill="#50AF78" />
                             </svg>
-                            <div class="number">@Model.RiskRegister.Negligible</div>
+                            <div id="Negligible" class="number">@Model.RiskRegister.Negligible</div>
                         </div>
                         <div class="all-requests">Negligible</div>
                     </div>
@@ -552,6 +579,11 @@
             </div>
         </div>
     </div>
+    <div id="loader" style="display:none;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/d/de/Ajax-loader.gif" alt="Loading...">
+        <div id="overlay" style="display:none;"></div>
+
+    </div>
     <div id="chatbot" style="position: fixed; bottom: 20px; right: 20px; width: 800px; border: 1px solid #ccc; border-radius: 10px; background: white; display: none;">
         <div id="chat-header" style="background: #012a2d; color: white; padding: 10px; border-top-left-radius: 10px; border-top-right-radius: 10px;">
             Ask Ellis
@@ -671,17 +703,74 @@
         chatBody.scrollTop = chatBody.scrollHeight;
     }
 
+    function refreshDashboard(data) {
+        refreshSafetyAnalysis("ContributingFactors", data.safetyAnalysis.contributingFactors);
+        refreshSafetyAnalysis("MitigationPlan", data.safetyAnalysis.mitigationPlan);
+        refreshSafetyAnalysis("LeadingIndicators", data.safetyAnalysis.leadingIndicators);
+
+        refreshRiskRegister("Critical", data.riskRegister.critical);
+        refreshRiskRegister("Low", data.riskRegister.low);
+        refreshRiskRegister("Negligible", data.riskRegister.negligible);
+        refreshRiskRegister("Serious", data.riskRegister.serious);
+
+        refreshSafetyScore(data.safetyAnalysis.riskCategory);
+    }
+
+    function refreshSafetyAnalysis(id,values) {
+        var $dropdown = $('#' + id);
+        $dropdown.empty(); // Clear existing options
+        $.each(values, function (index, v) {
+            if(v.trim().length > 0)
+            {
+                $dropdown.append($('<li></li>').text(v.trim()));
+            }
+           
+        });
+    }
+
+    function refreshRiskRegister(id, value) {
+        var $dropdown = $('#' + id);
+        $dropdown.empty(); // Clear existing options
+        $dropdown.text(value);
+    }
+
+    function refreshSafetyScore(value) {
+        var safetyScore = value == "High Risk Score" ? { key: 'High', value: 85 } : value == "Medium Risk Score" ? { key: 'Medium', value: 63 } : { key: 'Low', value: 20 };
+        var dataSpeed = google.visualization.arrayToDataTable([
+            ['Label', 'Value'],
+            [safetyScore.key, safetyScore.value]
+        ]);
+        var optionsSpeed = {
+            width: 400, height: 200,
+            greenFrom: 0, greenTo: 40,
+            redFrom: 80, redTo: 120,
+            yellowFrom: 40, yellowTo: 80,
+            minorTicks: 5,
+            animation: { duration: 1000, easing: 'out' }
+        };
+
+        var chart = new google.visualization.Gauge(document.getElementById('gauge_chart'));
+        chart.draw(dataSpeed, optionsSpeed);
+    }
+
+
     function handleSiteChange(sitePk, siteName) {
         // Make an Ajax API call
+
+        $("#loader, #overlay").fadeIn();
+
         $.ajax({
             url: '/Home/GetDashboardData',
             method: 'GET',
             data: { id: sitePk, siteName: siteName },
             success: function (data) {
                 console.log(data);
+                refreshDashboard(data)
+                $("#loader, #overlay").fadeOut();
             },
             error: function (error) {
                 console.log(error);
+                $("#loader, #overlay").fadeOut();
             }
         });
     }

@@ -1,5 +1,6 @@
 using Hackathon.Interfaces;
 using Hackathon.Models;
+using Hackathon.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -32,10 +33,10 @@ namespace Hackathon.Controllers
 			var data = _dataService.GetRiskData(numberOfRecords: 50);
 
 			// Fetch data based on the id
-			var viewModel = _dataService.GetDashboardData(data, siteId: 20, siteName: "Site20");
+			var viewModel = _dataService.GetDashboardData(data, siteId: 29, siteName: "Site20");
 
-			return View(viewModel);
-		}
+            return View(viewModel);
+        }
 
 		public DashboardViewModel? GetDashboardData(int id, string siteName)
 		{

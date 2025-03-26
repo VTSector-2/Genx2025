@@ -14,8 +14,7 @@ namespace Hackathon.DataContext
         //public DbSet<ErrorViewModel> YourEntities { get; set; }
         public DbSet<Site> Mast_Site { get; set; }
 
-        public DbSet<Risk> Risks { get; set; }
-
         public DbSet<Risk> Risk { get; set; }
+        public DbSet<SITE_SCORE_PARAM> SITE_SCORE_PARAM { get; set; }
     }
 }

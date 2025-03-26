@@ -39,15 +39,16 @@ namespace Hackathon.Services
 
 		public DashboardViewModel? GetDashboardData(List<Risk> data, int siteId, string siteName)
 		{
-			var selectedRsik = data.Where(w => w.SiteName == "Site20").GroupBy(i => i.Impact)
+			var selectedRsik = data.Where(w => w.SiteName == siteName).GroupBy(i => i.Impact)
 				.Select(ig => new
 				{
 					ImpactName = ig.Key,
 					Count = ig.Count()
 				});
 
-			var analysis = _gptService.GetRiskDataAnalysis(data.Where(x => x.SiteName == "Site20").ToList());
-			var viewModel = new DashboardViewModel
+			var analysis = _gptService.GetRiskDataAnalysis(data.Where(x => x.SiteName == siteName).ToList());
+            var siteScore = _gptService.GetSiteDataAnalysis(siteId);
+            var viewModel = new DashboardViewModel
 			{
 				Sites = data.Select(s => new Site() { Site_PK = s.SiteId_Pk, Site_Name = s.SiteName }).DistinctBy(d => d.Site_Name).ToList(),
 				RiskRegister = new RiskViewModel()
@@ -57,16 +58,17 @@ namespace Hackathon.Services
 					Negligible = selectedRsik.Where(w => w.ImpactName == "Negligible").Select(s => s.Count).FirstOrDefault(),
 					Serious = selectedRsik.Where(w => w.ImpactName == "Serious").Select(s => s.Count).FirstOrDefault()
 				},
-				RiskAnalysis = new RiskAnalysisViewModel()
+				RsikAnalysis = new RiskAnalysisViewModel()
 				{
 					RiskProbabilityPrediction = analysis?.Result?.FirstOrDefault()?.RiskProbabilityPrediction["Answer"],
 					RiskAnalysis = analysis?.Result?.FirstOrDefault()?.RiskAnalysis["Answer"],
 					SummaryofRisks = analysis?.Result?.FirstOrDefault()?.SummaryofRisks["Answer"],
 					Recommendations = analysis?.Result?.FirstOrDefault()?.Recommendations["Answer"]
-				}
-			};
+				},
+				SafetyAnalysis = siteScore.Result
+            };
 
 			return viewModel;
 		}
-	}
+    }
 }
