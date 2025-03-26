@@ -29,61 +29,63 @@ namespace Hackathon.Controllers
                 return BadRequest(new { reply = "Please send a valid message." });
             }
 
+            string siteName = "Site20";
             // Process the user message and generate a response
             string reply = "";
 
-            var dbResponse = await GetResponseFromDatabase(userMessage.Message);
+            var dbResponse = await GetResponseFromDatabase(userMessage.Message, siteName, userMessage.History);
             if (!string.IsNullOrEmpty(dbResponse))
             {
                 reply = dbResponse; // Use the database response if found
             }
             else
             {
-                reply = await _aiService.GetOpenAIResponse(userMessage.Message); // Use the AI service
+                reply = await _aiService.GetOpenAIResponse(userMessage.Message, userMessage.History);
             }
             return Ok(new { reply });
         }
 
-        private async Task<string> GetResponseFromDatabase(string userMessage)
+        private async Task<string> GetResponseFromDatabase(string userMessage, string siteName, List<string> userHistory)
         {
-            // Check for risk-related keywords in the user's message
-            if (userMessage.Contains("risk", StringComparison.OrdinalIgnoreCase)
-                || userMessage.Contains("hazard", StringComparison.OrdinalIgnoreCase)
-                || userMessage.Contains("threat", StringComparison.OrdinalIgnoreCase))
+            // Fetch risks associated with the specified site
+            var risks = await _context.Risks
+                .Where(r => r.SiteName == siteName) // Filter by SiteName
+                .ToListAsync();
+
+            if (risks.Any())
             {
-                // Query the database for risks associated with the site
-                var risks = await _context.Risks
-                    .Where(r => r.SiteName != null && r.SiteName.Contains(userMessage, StringComparison.OrdinalIgnoreCase))
-                    .ToListAsync();
+                // Create a structured prompt for the AI
+                var riskData = new StringBuilder();
+                riskData.AppendLine("{\"risks\": [");
 
-                if (risks.Any())
+                foreach (var risk in risks)
                 {
-                    // Create a string to summarize the risks
-                    var riskSummary = new StringBuilder();
-                    riskSummary.AppendLine($"Found {risks.Count} risk(s) associated with the site:");
-
-                    foreach (var risk in risks)
-                    {
-                        riskSummary.AppendLine($"- **Title**: {risk.RiskTitle}, **Description**: {risk.RiskDescription}, **Category**: {risk.RiskCategory}, **Status**: {risk.RiskStatus}");
-                    }
-
-                    return riskSummary.ToString();
+                    riskData.AppendLine($"{{\"siteId\": {risk.SiteId_Pk}, \"title\": \"{risk.RiskTitle}\", \"description\": \"{risk.RiskDescription}\", \"category\": \"{risk.RiskCategory}\",  \"likelihood\": \"{risk.Likelihood}\", \"impact\": \"{risk.Impact}\",\"status\": \"{risk.RiskStatus}\"}},");
                 }
-                else
+
+                // Remove the last comma and close the JSON array
+                if (risks.Count > 0)
                 {
-                    return "No risks found associated with the site.";
+                    riskData.Length--; // Remove the last comma
                 }
+                riskData.AppendLine("]}");
+
+                // Send risk data to AI for processing
+                string aiResponse = await _aiService.GetOpenAIResponse($"Consider the data for the site with name {siteName}: {riskData}.This is everything we have in data base for the site. All records here are associated with the given site only.\n Answer the following User Query if it relates to this data or provide a generic response or in context to the previous reponses by you: {userMessage}", userHistory);
+                return aiResponse;
             }
-
-            // Additional checks can be added here
-
-            return null; // Return null if no relevant data was found
+            else
+            {
+                return $"No risks found associated with site name {siteName}.";
+            }
         }
+
     }
 
     public class UserMessage
     {
         public string Message { get; set; }
+        public List<string> History { get; set; }
     }
 
     public class ApiSettings
