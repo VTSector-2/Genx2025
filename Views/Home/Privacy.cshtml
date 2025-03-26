@@ -538,12 +538,11 @@
                 <div class="input-dropdown-outlined">
                     <div class="field">
                         <div class="container">
-                            <select id="site_address" class="input-container">
-                                 @foreach (var item in Model.Sites)
+                            <select id="site_address" class="input-container" onchange="handleSiteChange(this.value, this.options[this.selectedIndex].text)">
+                                @foreach (var item in Model.Sites)
                                 {
-                                <option value="@item.Site_PK" selected="@item.Site_PK == 'Site2'">@item.Site_Name</option>
+                                    <option value="@item.Site_PK" selected="@item.Site_PK == 'Site2'">@item.Site_Name</option>
                                 }
-
                             </select>
                         </div>
                         <div class="wrapper-label">
@@ -663,6 +662,22 @@
 
         // Scroll to the bottom of the chat body
         chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
+    }
+
+    function handleSiteChange(sitePk, siteName) {
+        debugger;
+        // Make an Ajax API call
+        $.ajax({
+            url: '/Home/GetDashboardData',
+            method: 'GET',
+            data: { id: sitePk, siteName: siteName },
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
     }
 
     userInput.addEventListener('keypress', function (event) {

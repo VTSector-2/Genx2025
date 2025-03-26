@@ -3,20 +3,19 @@
     public class DashboardViewModel
     {
         public List<Site> Sites { get; set; }
-        public RsikViewModel RiskRegister { get; set; }
-        public RsikAnalysisViewModel RsikAnalysis { get; set; }
+        public RiskViewModel RiskRegister { get; set; }
+        public RiskAnalysisViewModel RsikAnalysis { get; set; }
     }
 
-    public class RsikViewModel
+    public class RiskViewModel
     {
         public int Low { get; set; }
         public int Negligible { get; set; }
         public int Serious { get; set; }
         public int Critical { get; set; }
-        
     }
 
-    public class RsikAnalysisViewModel
+    public class RiskAnalysisViewModel
     {
         public string RiskProbabilityPrediction { get; set; }
         public string RiskAnalysis { get; set; }

@@ -41,14 +41,14 @@ namespace Hackathon.Controllers
             var viewModel = new DashboardViewModel
             {
                 Sites = data.Select(s => new Site() { Site_PK = s.SiteId_Pk, Site_Name = s.SiteName }).DistinctBy(d=>d.Site_Name).ToList(),
-                RiskRegister = new RsikViewModel()
+                RiskRegister = new RiskViewModel()
                 {
                     Critical = selectedRsik.Where(w=>w.ImpactName == "Critical").Select(s=>s.Count).FirstOrDefault(),
                     Low = selectedRsik.Where(w=>w.ImpactName == "Low").Select(s=>s.Count).FirstOrDefault(),
                     Negligible = selectedRsik.Where(w=>w.ImpactName == "Negligible").Select(s=>s.Count).FirstOrDefault(),   
                     Serious = selectedRsik.Where(w=>w.ImpactName == "Serious").Select(s=>s.Count).FirstOrDefault()
                 },
-                RsikAnalysis = new RsikAnalysisViewModel()
+                RsikAnalysis = new RiskAnalysisViewModel()
                 {
                     RiskProbabilityPrediction = analysis?.Result?.FirstOrDefault()?.RiskProbabilityPrediction["Answer"],
                     RiskAnalysis = analysis?.Result?.FirstOrDefault()?.RiskAnalysis["Answer"],
@@ -61,16 +61,15 @@ namespace Hackathon.Controllers
             return View(viewModel);
         }
 
-        public ActionResult GetDashboardData(int id)
-        {
-            // Fetch data based on the id
-            //var data = YourService.GetDataById(id);
-            //return PartialView("_YourPartialView", data); // Return a partial view with the data
-            return null;
-        }
+		public ActionResult GetDashboardData(int id, string siteName)
+		{
+			// Fetch data based on the id
+			//var data = YourService.GetDataById(id);
+			//return PartialView("_YourPartialView", data); // Return a partial view with the data
+			return null;
+		}
 
-
-        public IActionResult DataLoader()
+		public IActionResult DataLoader()
         {
             return View();
         }
