@@ -4,7 +4,7 @@
     {
         public List<Site> Sites { get; set; }
         public RiskViewModel RiskRegister { get; set; }
-        public RiskAnalysisViewModel RsikAnalysis { get; set; }
+        public RiskAnalysisViewModel RiskAnalysis { get; set; }
     }
 
     public class RiskViewModel
@@ -21,7 +21,5 @@
         public string RiskAnalysis { get; set; }
         public string SummaryofRisks { get; set; }
         public string Recommendations { get; set; }
-
     }
-
 }
