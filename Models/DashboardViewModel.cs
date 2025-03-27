@@ -6,6 +6,8 @@
         public RiskViewModel RiskRegister { get; set; }
         public RiskAnalysisViewModel RiskAnalysis { get; set; }
         public SafetyAnalysisViewModel SafetyAnalysis { get; set; }
+
+        
     }
 
     public class RiskViewModel
@@ -32,8 +34,9 @@
         public List<string> LaggingIndicators { get; set; }
         public string RiskCategory { get; set; }
         public string ManualCategory { get; set; }
+		public int? IncidentRate { get; set; }
 
-    }
+	}
 
 
 
