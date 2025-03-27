@@ -1288,7 +1288,7 @@ body {
 .frame-1321315209 {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 5px;
     align-items: center;
     justify-content: flex-start;
     flex-shrink: 0;
@@ -1378,7 +1378,7 @@ body {
     justify-content: flex-start;
     flex-shrink: 0;
     width: 272px;
-    height: 274px;
+    height: 220px;
     position: relative;
 }
 
@@ -1391,7 +1391,7 @@ body {
     justify-content: flex-start;
     flex-shrink: 0;
     width: 368px;
-    height: 274px;
+    height: 220px;
     position: relative;
 }
 
@@ -1412,7 +1412,7 @@ body {
     align-content: center;
     align-self: stretch;
     flex-shrink: 0;
-    height: 266px;
+    height: 212px;
     position: relative;
     overflow: hidden
 }
