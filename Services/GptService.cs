@@ -114,7 +114,10 @@ namespace Hackathon.Services
                 LaggingIndicators = GetStringBetween(data, "Lagging Indicators", "---").Replace("\n", " ").Replace("### **", " ").Replace("*", " ").Split('-').ToList(),
                 RiskCategory = siteParamData.Manual_category == null ? siteParamData.Risk_Category : siteParamData.Manual_category,
                 ManualCategory = siteParamData.Manual_category,
-            };  
+                IncidentRate = siteParamData.TOTAL_INCIDENT_PER_SITE,
+
+
+			};  
 
             return respons;
         }
