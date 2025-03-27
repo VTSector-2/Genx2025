@@ -367,56 +367,64 @@
 				</div>
 			</div>
 			<div class="card-content2">
-				<div class="action">
-					<div class="label">
-						<span>
-							<span class="label-span9">
-								Risk Probability Prediction:
-								<br />
+				<button class="accordion">
+					<img src="~/images/O. warning.png" />
+					<span class="icon-label">Risk Probability Prediction</span>
+				</button>
+				<div class="panel">
+					<div class="action">
+						<div class="label">
+							<span>
+								<span id="RiskProbabilityPrediction" class="label-span10">
+									@Model.RiskAnalysis.RiskProbabilityPrediction
+								</span>
 							</span>
-							<span id="RiskProbabilityPrediction" class="label-span10">
-								@Model.RiskAnalysis.RiskProbabilityPrediction
-							</span>
-						</span>
+						</div>
 					</div>
 				</div>
-				<div class="action">
-					<div class="label">
-						<span>
-							<span class="label-span11">
-								Risk Analysis:
-								<br />
+				<button class="accordion">
+					<img src="~/images/troubleshoot.png" />
+					<span class="icon-label">Risk Analysis</span>
+				</button>
+				<div class="panel">
+					<div class="action">
+						<div class="label">
+							<span>
+								<span id="RiskAnalysis" class="label-span12">
+									@Model.RiskAnalysis.RiskAnalysis
+								</span>
 							</span>
-							<span id="RiskAnalysis" class="label-span12">
-								@Model.RiskAnalysis.RiskAnalysis
-							</span>
-						</span>
+						</div>
 					</div>
 				</div>
-				<div class="action">
-					<div class="label">
-						<span>
-							<span class="label-span13">
-								Summary of Risks:
-								<br />
+				<button class="accordion">
+					<img src="~/images/user attributes.png" />
+					<span class="icon-label">Summary of Risks</span>
+				</button>
+				<div class="panel">
+					<div class="action">
+						<div class="label">
+							<span>
+								<span id="SummaryofRisks" class="label-span14">
+									@Model.RiskAnalysis.SummaryofRisks
+								</span>
 							</span>
-							<span id="SummaryofRisks" class="label-span14">
-								@Model.RiskAnalysis.SummaryofRisks
-							</span>
-						</span>
+						</div>
 					</div>
 				</div>
-				<div class="action">
-					<div class="label">
-						<span>
-							<span class="label-span15">
-								Recommendations:
-								<br />
+				<button class="accordion">
+					<img src="~/images/O. thumb_up_alt.png" />
+					<span class="icon-label">Recommendations</span>
+				</button>
+				<div class="panel">
+					<div class="action">
+						<div class="label">
+							<span>
+								<span id="Recommendations" class="label-span16">
+									@Model.RiskAnalysis.Recommendations
+								</span>
 							</span>
-							<span id="Recommendations" class="label-span16">
-								@Model.RiskAnalysis.Recommendations
-							</span>
-						</span>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -838,4 +846,19 @@
             }
         });
     }
+
+	var acc = document.getElementsByClassName("accordion");
+	var i;
+
+	for (i = 0; i < acc.length; i++) {
+		acc[i].addEventListener("click", function () {
+			this.classList.toggle("active");
+			var panel = this.nextElementSibling;
+			if (panel.style.display === "block") {
+				panel.style.display = "none";
+			} else {
+				panel.style.display = "block";
+			}
+		});
+	}
 </script>
