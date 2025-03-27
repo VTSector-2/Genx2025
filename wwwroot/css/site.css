@@ -2065,13 +2065,13 @@ body {
     display: inline-block; /* Make it inline so it can float */
 }
 
-#site_address {
+#site_address,#ManualScoreChange {
     border: none;
     outline: none;
-    width:100%;
+    width: 100%;
 }
 
-site_address:focus {
+site_address:focus, ManualScoreChange:focus {
     border: none;
     outline: none; /* Optional: Remove outline */
 }

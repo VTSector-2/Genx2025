@@ -1,6 +1,7 @@
 ﻿using Hackathon.DataContext;
 using Hackathon.Interfaces;
 using Hackathon.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hackathon.Services
 {
@@ -67,5 +68,17 @@ namespace Hackathon.Services
 
 			return viewModel;
 		}
+
+        public async Task<bool> saveManualScore(int siteId, string score)
+        {
+            var data = await _dbContext.SITE_SCORE_PARAM.SingleAsync(x=>x.SITE_PK == siteId);	
+			if(data != null)
+            {
+                data.Manual_category = score;
+				await _dbContext.SaveChangesAsync();
+                return true;
+            }
+			return false;
+        }
     }
 }

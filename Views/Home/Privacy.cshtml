@@ -578,14 +578,14 @@
                 <div class="input-dropdown-outlined">
                     <div class="field">
                         <div class="container">
-                            <select id="ManualScoreChange" class="input-container" onchange="handleManualScoreChange()">
+                            <select id="ManualScoreChange" class="input-container">
                                 <option value="High Risk Score">High Risk Score</option>
-                                <option value="Midium Risk Score">Midium Risk Score</option>
+                                <option value="Medium Risk Score">Medium Risk Score</option>
                                 <option value="Low Risk Score">Low Risk Score</option>
                             </select>
                         </div>
                         <div>
-                            <Button>Save</Button>
+                            <Button class="btn btn-group-sm btn-success" onclick="handleManualScoreChange()">Save</Button>
                         </div>
                     </div>
 
@@ -820,15 +820,13 @@
 
     function handleManualScoreChange (){
         var value = document.getElementById("ManualScoreChange").value;
-        console.log(value);
-        // Make an Ajax API call
-
+        var sitePk = document.getElementById("site_address").value;
         $("#loader, #overlay").fadeIn();
 
         $.ajax({
-            url: '/Home/GetDashboardData',
-            method: 'GET',
-            data: { id: sitePk, siteName: siteName },
+            url: '/Home/saveManualScore',
+            method: 'POST',
+            data: { id: sitePk, score: value },
             success: function (data) {
                 console.log(data);
                 refreshDashboard(data)

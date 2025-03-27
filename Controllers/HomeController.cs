@@ -41,7 +41,6 @@ namespace Hackathon.Controllers
 
 		public DashboardViewModel? GetDashboardData(int id, string siteName)
 		{
-			//default number of records are 50
 			var data = _dataService.GetRiskData(0);
 
 			// Fetch data based on the id
@@ -49,14 +48,19 @@ namespace Hackathon.Controllers
 			return viewModel;
 		}
 
-        public DashboardViewModel? saveManualScore(int id, string siteName)
+		[HttpPost]
+        public DashboardViewModel? saveManualScore(int id, string score)
         {
-            //default number of records are 50
-            var data = _dataService.GetRiskData(0);
-
-            // Fetch data based on the id
-            var viewModel = _dataService.GetDashboardData(data, siteId: id, siteName: siteName);
-            return viewModel;
+			var response = _dataService.saveManualScore(id, score);
+			if(response.Result)
+			{
+                var data = _dataService.GetRiskData(0);
+                var siteName = data.Where(x => x.Site_Pk == id).FirstOrDefault().SiteName;
+                var viewModel = _dataService.GetDashboardData(data, siteId: id, siteName);
+				viewModel.SafetyAnalysis.ManualCategory = score;
+				return viewModel;
+            }
+			return null;
         }
 
         public IActionResult DataLoader()

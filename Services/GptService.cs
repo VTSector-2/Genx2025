@@ -112,7 +112,7 @@ namespace Hackathon.Services
                 MitigationPlan = GetStringBetween(data, "Mitigation Plan", "Leading Indicators").Replace("\n", " ").Replace("### **", " ").Replace("*", " ").Split('-').ToList(),
                 LeadingIndicators = GetStringBetween(data, "Leading Indicators", "Lagging Indicators").Replace("\n", " ").Replace("### **", " ").Replace("*", " ").Split('-').ToList(),
                 LaggingIndicators = GetStringBetween(data, "Lagging Indicators", "---").Replace("\n", " ").Replace("### **", " ").Replace("*", " ").Split('-').ToList(),
-                RiskCategory = siteParamData.Risk_Category,
+                RiskCategory = siteParamData.Manual_category == null ? siteParamData.Risk_Category : siteParamData.Manual_category,
                 ManualCategory = siteParamData.Manual_category,
             };  
 
