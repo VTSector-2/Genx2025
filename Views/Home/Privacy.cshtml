@@ -557,7 +557,7 @@
 							<select id="site_address" class="input-container" onchange="handleSiteChange(this.value, this.options[this.selectedIndex].text)">
 								@foreach (var item in Model.Sites)
 								{
-									<option value="@item.Site_PK" selected="@item.Site_PK == 'Site2'">@item.Site_Name</option>
+									<option value="@item.Site_PK">@item.Site_Name</option>
 								}
 							</select>
 						</div>
@@ -578,13 +578,14 @@
 					<div class="field">
 						<div class="container">
 							<select id="ManualScoreChange" class="input-container">
+								<option value="High Risk Score">Select</option>
 								<option value="High Risk Score">High Risk Score</option>
 								<option value="Medium Risk Score">Medium Risk Score</option>
 								<option value="Low Risk Score">Low Risk Score</option>
 							</select>
 						</div>
 						<div>
-							<Button class="btn btn-group-sm btn-success" onclick="handleManualScoreChange()">Save</Button>
+							<Button class="btn btn-sm btn-success" onclick="handleManualScoreChange()">Save</Button>
 						</div>
 					</div>
 
@@ -828,6 +829,7 @@
             success: function (data) {
                 console.log(data);
                 refreshDashboard(data)
+				$("#ManualScoreChange").prop('selectedIndex', 0);
                 $("#loader, #overlay").fadeOut();
             },
             error: function (error) {

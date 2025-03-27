@@ -57,7 +57,7 @@ namespace Hackathon.Controllers
                 var data = _dataService.GetRiskData(0);
                 var siteName = data.Where(x => x.Site_Pk == id).FirstOrDefault().SiteName;
                 var viewModel = _dataService.GetDashboardData(data, siteId: id, siteName);
-				viewModel.SafetyAnalysis.ManualCategory = score;
+				viewModel.SafetyAnalysis.RiskCategory = score;
 				return viewModel;
             }
 			return null;
