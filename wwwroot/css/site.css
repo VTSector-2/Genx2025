@@ -2029,7 +2029,7 @@ body {
     border-radius: 10px;
     padding: 10px;
     margin: 5px 0;
-    max-width: 90%; /* Limit width of bot messages */
+    max-width: 98%; /* Limit width of bot messages */
     display: inline-block; /* Make it inline so it can float */
 }
 
