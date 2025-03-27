@@ -1,799 +1,798 @@
 ﻿@using Newtonsoft.Json
 @model Hackathon.Models.DashboardViewModel
 @{
-    ViewData["Title"] = "GenX-2025";
+	ViewData["Title"] = "GenX-2025";
 }
 
- <script type="text/javascript" >
-    var viewModel = @Html.Raw(Json.Serialize(Model));
-        // Load the Visualization API and the corechart package.
-    google.charts.load('current', { 'packages': ['corechart', 'gauge'] });
+<script type="text/javascript">
+	var viewModel = @Html.Raw(Json.Serialize(Model));
+	// Load the Visualization API and the corechart package.
+	google.charts.load('current', { 'packages': ['corechart', 'gauge'] });
 
-    // Set a callback to run when the Google Visualization API is loaded.
-    google.charts.setOnLoadCallback(drawChart);
+	// Set a callback to run when the Google Visualization API is loaded.
+	google.charts.setOnLoadCallback(drawChart);
 
-    // Callback that creates and populates a data table,
-    // instantiates the pie chart, passes in the data and
-    // draws it.
-     function drawChart() {
+	// Callback that creates and populates a data table,
+	// instantiates the pie chart, passes in the data and
+	// draws it.
+	function drawChart() {
 
-         // Load the data table.
-         var data = google.visualization.arrayToDataTable([
-             ['2021', 'Year: 2021-2025'],
-             ['2022', 5],
-             ['2023', 15],
-             ['2024', 30],
-             ['2025', 20],
-             ['Sleep', 36]
-         ]);
-         // Set chart options
-         var options = {
-             title: 'Year: 2021-2025',
-             width: 400,
-             bars: 'vertical' // Required for Material Bar Charts.
-         };
+		// Load the data table.
+		var data = google.visualization.arrayToDataTable([
+			['2021', 'Year: 2021-2025'],
+			['2022', 5],
+			['2023', 15],
+			['2024', 30],
+			['2025', 20],
+			['Sleep', 36]
+		]);
+		// Set chart options
+		var options = {
+			title: 'Year: 2021-2025',
+			width: 400,
+			bars: 'vertical' // Required for Material Bar Charts.
+		};
 
-         // Instantiate and draw our chart, passing in some options.
-         // var chart = new google.visualization.ColumnChart(document.getElementById('barchart'));
-         // chart.draw(data, options);
-        console.log(viewModel);
+		// Instantiate and draw our chart, passing in some options.
+		// var chart = new google.visualization.ColumnChart(document.getElementById('barchart'));
+		// chart.draw(data, options);
+		console.log(viewModel);
 
-        var safetyScore = viewModel.safetyAnalysis.riskCategory == "High Risk Score" ? { key: 'High', value: 85 } : viewModel.safetyAnalysis.riskCategory == "Medium Risk Score" ? { key: 'Medium', value: 63 } : { key: 'Low', value: 20 };
-        var dataSpeed = google.visualization.arrayToDataTable([
-            ['Label', 'Value'],
-            [safetyScore.key, safetyScore.value]
-        ]);
-        var optionsSpeed = {
-            width: 400, height: 200,
-             greenFrom: 0, greenTo: 40,
-            redFrom: 80, redTo: 120,
-            yellowFrom: 40, yellowTo: 80,
-            minorTicks: 5,
-            animation: {
-                duration: 1000,
-                easing: 'out'
-            }
+		var safetyScore = viewModel.safetyAnalysis.riskCategory == "High Risk Score" ? { key: 'High', value: 85 } : viewModel.safetyAnalysis.riskCategory == "Medium Risk Score" ? { key: 'Medium', value: 63 } : { key: 'Low', value: 20 };
+		var dataSpeed = google.visualization.arrayToDataTable([
+			['Label', 'Value'],
+			[safetyScore.key, safetyScore.value]
+		]);
+		var optionsSpeed = {
+			width: 400, height: 200,
+			greenFrom: 0, greenTo: 40,
+			redFrom: 80, redTo: 120,
+			yellowFrom: 40, yellowTo: 80,
+			minorTicks: 5,
+			animation: {
+				duration: 1000,
+				easing: 'out'
+			}
 
-        };
+		};
 
-        var chart = new google.visualization.Gauge(document.getElementById('gauge_chart'));
-        chart.draw(dataSpeed, optionsSpeed);
-     }
+		var chart = new google.visualization.Gauge(document.getElementById('gauge_chart'));
+		chart.draw(dataSpeed, optionsSpeed);
+	}
 </script>
 
 <div class="desktop-5">
-    <div class="global-header">
-        <div class="safety-intelligence-assessment-insights">
-            Safety Intelligence: Assessment &amp; Insights
-        </div>
-        <div class="header-utilities">
-            <div class="frame-21957">
-                <div class="utility-item">
-                    <svg class="notifications" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4.99988 18.9999C4.71654 18.9999 4.47904 18.9041 4.28738 18.7124C4.09571 18.5207 3.99988 18.2832 3.99988 17.9999C3.99988 17.7166 4.09571 17.4791 4.28738 17.2874C4.47904 17.0957 4.71654 16.9999 4.99988 16.9999H5.99988V9.99991C5.99988 8.61658 6.41654 7.38741 7.24988 6.31241C8.08321 5.23741 9.16654 4.53324 10.4999 4.19991V3.49991C10.4999 3.08324 10.6457 2.72908 10.9374 2.43741C11.229 2.14574 11.5832 1.99991 11.9999 1.99991C12.4165 1.99991 12.7707 2.14574 13.0624 2.43741C13.354 2.72908 13.4999 3.08324 13.4999 3.49991V4.19991C14.8332 4.53324 15.9165 5.23741 16.7499 6.31241C17.5832 7.38741 17.9999 8.61658 17.9999 9.99991V16.9999H18.9999C19.2832 16.9999 19.5207 17.0957 19.7124 17.2874C19.904 17.4791 19.9999 17.7166 19.9999 17.9999C19.9999 18.2832 19.904 18.5207 19.7124 18.7124C19.5207 18.9041 19.2832 18.9999 18.9999 18.9999H4.99988ZM11.9999 21.9999C11.4499 21.9999 10.979 21.8041 10.5874 21.4124C10.1957 21.0207 9.99988 20.5499 9.99988 19.9999H13.9999C13.9999 20.5499 13.804 21.0207 13.4124 21.4124C13.0207 21.8041 12.5499 21.9999 11.9999 21.9999Z" fill="white" fill-opacity="0.6" />
-                    </svg>
-                    <div class="badge">
-                        <div class="dot-circle"></div>
-                    </div>
-                </div>
-                <div class="header-avatar">
-                    <div class="avatar">
-                        <div class="initials">BS</div>
-                    </div>
-                </div>
-                <div class="app-switcher">
-                    <svg class="apps" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5.99988 19.9999C5.44988 19.9999 4.97904 19.8041 4.58738 19.4124C4.19571 19.0207 3.99988 18.5499 3.99988 17.9999C3.99988 17.4499 4.19571 16.9791 4.58738 16.5874C4.97904 16.1957 5.44988 15.9999 5.99988 15.9999C6.54988 15.9999 7.02071 16.1957 7.41238 16.5874C7.80404 16.9791 7.99988 17.4499 7.99988 17.9999C7.99988 18.5499 7.80404 19.0207 7.41238 19.4124C7.02071 19.8041 6.54988 19.9999 5.99988 19.9999ZM11.9999 19.9999C11.4499 19.9999 10.979 19.8041 10.5874 19.4124C10.1957 19.0207 9.99988 18.5499 9.99988 17.9999C9.99988 17.4499 10.1957 16.9791 10.5874 16.5874C10.979 16.1957 11.4499 15.9999 11.9999 15.9999C12.5499 15.9999 13.0207 16.1957 13.4124 16.5874C13.804 16.9791 13.9999 17.4499 13.9999 17.9999C13.9999 18.5499 13.804 19.0207 13.4124 19.4124C13.0207 19.8041 12.5499 19.9999 11.9999 19.9999ZM17.9999 19.9999C17.4499 19.9999 16.979 19.8041 16.5874 19.4124C16.1957 19.0207 15.9999 18.5499 15.9999 17.9999C15.9999 17.4499 16.1957 16.9791 16.5874 16.5874C16.979 16.1957 17.4499 15.9999 17.9999 15.9999C18.5499 15.9999 19.0207 16.1957 19.4124 16.5874C19.804 16.9791 19.9999 17.4499 19.9999 17.9999C19.9999 18.5499 19.804 19.0207 19.4124 19.4124C19.0207 19.8041 18.5499 19.9999 17.9999 19.9999ZM5.99988 13.9999C5.44988 13.9999 4.97904 13.8041 4.58738 13.4124C4.19571 13.0207 3.99988 12.5499 3.99988 11.9999C3.99988 11.4499 4.19571 10.9791 4.58738 10.5874C4.97904 10.1957 5.44988 9.99991 5.99988 9.99991C6.54988 9.99991 7.02071 10.1957 7.41238 10.5874C7.80404 10.9791 7.99988 11.4499 7.99988 11.9999C7.99988 12.5499 7.80404 13.0207 7.41238 13.4124C7.02071 13.8041 6.54988 13.9999 5.99988 13.9999ZM11.9999 13.9999C11.4499 13.9999 10.979 13.8041 10.5874 13.4124C10.1957 13.0207 9.99988 12.5499 9.99988 11.9999C9.99988 11.4499 10.1957 10.9791 10.5874 10.5874C10.979 10.1957 11.4499 9.99991 11.9999 9.99991C12.5499 9.99991 13.0207 10.1957 13.4124 10.5874C13.804 10.9791 13.9999 11.4499 13.9999 11.9999C13.9999 12.5499 13.804 13.0207 13.4124 13.4124C13.0207 13.8041 12.5499 13.9999 11.9999 13.9999ZM17.9999 13.9999C17.4499 13.9999 16.979 13.8041 16.5874 13.4124C16.1957 13.0207 15.9999 12.5499 15.9999 11.9999C15.9999 11.4499 16.1957 10.9791 16.5874 10.5874C16.979 10.1957 17.4499 9.99991 17.9999 9.99991C18.5499 9.99991 19.0207 10.1957 19.4124 10.5874C19.804 10.9791 19.9999 11.4499 19.9999 11.9999C19.9999 12.5499 19.804 13.0207 19.4124 13.4124C19.0207 13.8041 18.5499 13.9999 17.9999 13.9999ZM5.99988 7.99991C5.44988 7.99991 4.97904 7.80408 4.58738 7.41241C4.19571 7.02074 3.99988 6.54991 3.99988 5.99991C3.99988 5.44991 4.19571 4.97908 4.58738 4.58741C4.97904 4.19574 5.44988 3.99991 5.99988 3.99991C6.54988 3.99991 7.02071 4.19574 7.41238 4.58741C7.80404 4.97908 7.99988 5.44991 7.99988 5.99991C7.99988 6.54991 7.80404 7.02074 7.41238 7.41241C7.02071 7.80408 6.54988 7.99991 5.99988 7.99991ZM11.9999 7.99991C11.4499 7.99991 10.979 7.80408 10.5874 7.41241C10.1957 7.02074 9.99988 6.54991 9.99988 5.99991C9.99988 5.44991 10.1957 4.97908 10.5874 4.58741C10.979 4.19574 11.4499 3.99991 11.9999 3.99991C12.5499 3.99991 13.0207 4.19574 13.4124 4.58741C13.804 4.97908 13.9999 5.44991 13.9999 5.99991C13.9999 6.54991 13.804 7.02074 13.4124 7.41241C13.0207 7.80408 12.5499 7.99991 11.9999 7.99991ZM17.9999 7.99991C17.4499 7.99991 16.979 7.80408 16.5874 7.41241C16.1957 7.02074 15.9999 6.54991 15.9999 5.99991C15.9999 5.44991 16.1957 4.97908 16.5874 4.58741C16.979 4.19574 17.4499 3.99991 17.9999 3.99991C18.5499 3.99991 19.0207 4.19574 19.4124 4.58741C19.804 4.97908 19.9999 5.44991 19.9999 5.99991C19.9999 6.54991 19.804 7.02074 19.4124 7.41241C19.0207 7.80408 18.5499 7.99991 17.9999 7.99991Z" fill="white" fill-opacity="0.6" />
-                    </svg>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="frame-1321315172">
-        <div class="insight-card">
-            <div class="header-container">
-                <div class="card-header">
-                    <img class="hd-wallpaper-circuit-abstract-circuits-tech-technology-1"
-                         src="https://i.pinimg.com/736x/2f/46/1f/2f461f1bb51813cbfc43e8df69333b8a.jpg" />
-                    <div class="rectangle-9325"></div>
-                    <div class="content">
-                        <div class="frame-25355">
-                            <div class="insight">Insight</div>
-                            <div class="date-time-stamp">
-                                <div class="_23-jan">23 Jan</div>
-                            </div>
-                        </div>
-                        <div class="rectangle-9323"></div>
-                        <div class="frame-25353">
-                            <div class="frame-25286">
-                                <div class="safety-analysis">Safety Analysis</div>
-                            </div>
-                            <svg class="robot-2" width="31" height="30" viewBox="0 0 31 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6.45841 26.25C6.09244 26.25 5.78567 26.1302 5.5381 25.8906C5.29053 25.651 5.16675 25.3542 5.16675 25V20C5.16675 19.3125 5.4197 18.724 5.9256 18.2344C6.43151 17.7448 7.03966 17.5 7.75008 17.5H23.2501C23.9605 17.5 24.5687 17.7448 25.0746 18.2344C25.5805 18.724 25.8334 19.3125 25.8334 20V25C25.8334 25.3542 25.7096 25.651 25.4621 25.8906C25.2145 26.1302 24.9077 26.25 24.5417 26.25H6.45841ZM11.6251 16.25C9.83828 16.25 8.31519 15.6406 7.05581 14.4219C5.79644 13.2031 5.16675 11.7292 5.16675 10C5.16675 8.27083 5.79644 6.79688 7.05581 5.57812C8.31519 4.35938 9.83828 3.75 11.6251 3.75H19.3751C21.1619 3.75 22.685 4.35938 23.9444 5.57812C25.2037 6.79688 25.8334 8.27083 25.8334 10C25.8334 11.7292 25.2037 13.2031 23.9444 14.4219C22.685 15.6406 21.1619 16.25 19.3751 16.25H11.6251ZM11.6251 11.25C11.9911 11.25 12.2978 11.1302 12.5454 10.8906C12.793 10.651 12.9167 10.3542 12.9167 10C12.9167 9.64583 12.793 9.34896 12.5454 9.10938C12.2978 8.86979 11.9911 8.75 11.6251 8.75C11.2591 8.75 10.9523 8.86979 10.7048 9.10938C10.4572 9.34896 10.3334 9.64583 10.3334 10C10.3334 10.3542 10.4572 10.651 10.7048 10.8906C10.9523 11.1302 11.2591 11.25 11.6251 11.25ZM19.3751 11.25C19.7411 11.25 20.0478 11.1302 20.2954 10.8906C20.543 10.651 20.6667 10.3542 20.6667 10C20.6667 9.64583 20.543 9.34896 20.2954 9.10938C20.0478 8.86979 19.7411 8.75 19.3751 8.75C19.0091 8.75 18.7023 8.86979 18.4548 9.10938C18.2072 9.34896 18.0834 9.64583 18.0834 10C18.0834 10.3542 18.2072 10.651 18.4548 10.8906C18.7023 11.1302 19.0091 11.25 19.3751 11.25Z" fill="#17E88F" />
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card-content">
-                <svg class="magic-button" width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10 19.5L7.5 14L2 11.5L7.5 9L10 3.5L12.5 9L18 11.5L12.5 14L10 19.5ZM18 21.5L16.75 18.75L14 17.5L16.75 16.25L18 13.5L19.25 16.25L22 17.5L19.25 18.75L18 21.5Z" fill="#885073" />
-                </svg>
-                <div class="based-on-the-data-available-provide-an-al-generated-summary-of-incidents-risks-observations-good-catches-precautionary-measures-taken-open-action-items-inspections-audits-etc">
-                    Based on the data available provide an Al generated summary of
-                    Incidents, Risks, Observations, Good catches, Precautionary measures
-                    taken, Open action items, inspections,
-                    <br />
-                    Audits etc.
-                </div>
-                <div class="action">
-                    <div class="label">
-                        <span>
-                            <span class="label-span">
-                                Contributing Factors:
-                                <br />
-                            </span>
-                            <ol id="ContributingFactors" class="label-span2">
-                                @foreach(var item in Model.SafetyAnalysis.ContributingFactors)
-                                {
-                                    if (@item.Trim().Length > 0)
-                                    {
-                                        <li>@item</li>
-                                    }
-                                }
-                            </ol>
-                        </span>
-                    </div>
-                </div>
-                <div class="action">
-                    <div class="label">
-                        <span>
-                            <span class="label-span3">
-                                Mitigation Plan:
-                                <br />
-                            </span>
-                            <ol id="MitigationPlan" class="label-span4">
-                                @foreach (var item in Model.SafetyAnalysis.MitigationPlan)
-                                {
-                                    if (@item.Trim().Length > 0)
-                                    {
-                                        <li>@item.Trim()</li>
-                                    }
-                                }
-                            </ol>
-                        </span>
-                    </div>
-                </div>
-                <div class="action">
-                    <div class="label">
-                        <span>
-                            <span class="label-span5">
-                                Leading Indicators:
-                                <br />
-                            </span>
-                            <ol id="LeadingIndicators" class="label-span6">
-                                @foreach (var item in Model.SafetyAnalysis.LeadingIndicators)
-                                {
-                                    if (@item.Trim().Length > 0)
-                                    {
-                                        <li>@item.Trim()</li>
-                                    }
-                                }
-                            </ol>
-                        </span>
-                    </div>
-                </div>
-               @*  <div class="action">
-                    <div class="label">
-                        <span>
-                            <span class="label-span7">
-                                Lagging Indicators:
-                                <br />
-                            </span>
-                            <ol class="label-span8">
-                                @foreach (var item in Model.SafetyAnalysis.LaggingIndicators)
-                                {
-                                    if (@item.Trim().Length > 0)
-                                    {
-                                        <li>@item.Trim()</li>
-                                    }
-                                }
-                            </ol>
-                        </span>
-                    </div>
-                </div> *@
-            </div>
-            <div class="card-footer">
-                <div class="tags">
-                    <div class="chip">
-                        <div class="content2">
-                            <div class="label2">Tags</div>
-                        </div>
-                    </div>
-                    <div class="chip2">
-                        <div class="content2">
-                            <div class="label3">Insight</div>
-                        </div>
-                    </div>
-                    <div class="chip2">
-                        <div class="content2">
-                            <div class="label4">Advisory &amp; Transactions</div>
-                        </div>
-                    </div>
-                    <div class="chip3">
-                        <div class="content2">
-                            <div class="label5">+1</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="action-bar">
-                    <div class="status">
-                        <div class="criticality">
-                            <div class="assignment">
-                                <div class="menu-button">
-                                    <div class="button">
-                                        <div class="button-bg">
-                                            <div class="bg-box"></div>
-                                        </div>
-                                        <svg class="icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M10.0001 1.66663C5.40008 1.66663 1.66675 5.39996 1.66675 9.99996C1.66675 14.6 5.40008 18.3333 10.0001 18.3333C14.6001 18.3333 18.3334 14.6 18.3334 9.99996C18.3334 5.39996 14.6001 1.66663 10.0001 1.66663ZM10.8334 14.1666H9.16675V12.5H10.8334V14.1666ZM10.8334 10.8333H9.16675V5.83329H10.8334V10.8333Z" fill="#778F9C" />
-                                        </svg>
-                                        <div class="label6">
-                                            <div class="label7">Low</div>
-                                            <svg class="menu-arrow" width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M0 3L5 8L10 3H0Z" fill="#1A1A1A" fill-opacity="0.65" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="assignment">
-                            <div class="menu-button">
-                                <div class="button">
-                                    <div class="button-bg">
-                                        <div class="bg-box"></div>
-                                    </div>
-                                    <div class="label6">
-                                        <div class="label7">Monthly: 02/2025</div>
-                                        <svg class="menu-arrow2" width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M0 3L5 8L10 3H0Z" fill="#1A1A1A" fill-opacity="0.65" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="action-bar2">
-                        <div class="frame-25186">
-                            <div class="icon-tooltip">
-                                <div class="person-check">
-                                    <svg class="group-91" width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M11.9643 3.9822L14.4821 1.44648C14.625 1.30362 14.7946 1.2322 14.991 1.2322C15.1875 1.2322 15.3571 1.30362 15.5 1.44648C15.6428 1.58934 15.7143 1.75898 15.7143 1.95541C15.7143 2.15184 15.6428 2.32148 15.5 2.46434L12.4643 5.50005C12.3214 5.64291 12.1547 5.71434 11.9643 5.71434C11.7738 5.71434 11.6071 5.64291 11.4643 5.50005L9.94639 3.9822C9.80354 3.83934 9.73211 3.6697 9.73211 3.47327C9.73211 3.27684 9.80354 3.1072 9.94639 2.96434C10.0893 2.82148 10.2559 2.75005 10.4464 2.75005C10.6369 2.75005 10.8035 2.82148 10.9464 2.96434L11.9643 3.9822ZM5.85711 6.00005C5.07139 6.00005 4.39877 5.72029 3.83925 5.16077C3.27973 4.60124 2.99997 3.92862 2.99997 3.14291C2.99997 2.3572 3.27973 1.68458 3.83925 1.12505C4.39877 0.565529 5.07139 0.285767 5.85711 0.285767C6.64282 0.285767 7.31544 0.565529 7.87497 1.12505C8.43449 1.68458 8.71425 2.3572 8.71425 3.14291C8.71425 3.92862 8.43449 4.60124 7.87497 5.16077C7.31544 5.72029 6.64282 6.00005 5.85711 6.00005ZM0.142822 10.2858V9.71434C0.142822 9.30958 0.246989 8.93755 0.455322 8.59827C0.663656 8.25898 0.940441 8.00005 1.28568 7.82148C2.02377 7.45243 2.77377 7.17565 3.53568 6.99112C4.29758 6.8066 5.07139 6.71434 5.85711 6.71434C6.64282 6.71434 7.41663 6.8066 8.17854 6.99112C8.94044 7.17565 9.69044 7.45243 10.4285 7.82148C10.7738 8.00005 11.0506 8.25898 11.2589 8.59827C11.4672 8.93755 11.5714 9.30958 11.5714 9.71434V10.2858C11.5714 10.6786 11.4315 11.0149 11.1518 11.2947C10.872 11.5745 10.5357 11.7143 10.1428 11.7143H1.57139C1.17854 11.7143 0.842227 11.5745 0.562465 11.2947C0.282703 11.0149 0.142822 10.6786 0.142822 10.2858Z" fill="#778F9C" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="icon-tooltip">
-                                <svg class="history" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M8.99986 15.4286C7.49986 15.4286 6.17248 14.9732 5.01772 14.0625C3.86296 13.1518 3.11296 11.9881 2.76772 10.5714C2.7201 10.3928 2.75581 10.2291 2.87486 10.0803C2.99391 9.93153 3.15462 9.84522 3.357 9.82141C3.54748 9.7976 3.7201 9.83332 3.87486 9.92855C4.02962 10.0238 4.13677 10.1666 4.19629 10.3571C4.482 11.4286 5.07129 12.3036 5.96415 12.9821C6.857 13.6607 7.86891 14 8.99986 14C10.3927 14 11.5743 13.5149 12.5445 12.5446C13.5147 11.5744 13.9999 10.3928 13.9999 8.99998C13.9999 7.60713 13.5147 6.42558 12.5445 5.45534C11.5743 4.4851 10.3927 3.99998 8.99986 3.99998C8.17843 3.99998 7.41057 4.19046 6.69629 4.57141C5.982 4.95236 5.38081 5.47617 4.89272 6.14284H6.14272C6.3451 6.14284 6.51474 6.21129 6.65165 6.3482C6.78855 6.4851 6.857 6.65474 6.857 6.85713C6.857 7.05951 6.78855 7.22915 6.65165 7.36605C6.51474 7.50296 6.3451 7.57141 6.14272 7.57141H3.28557C3.08319 7.57141 2.91355 7.50296 2.77665 7.36605C2.63974 7.22915 2.57129 7.05951 2.57129 6.85713V3.99998C2.57129 3.7976 2.63974 3.62796 2.77665 3.49105C2.91355 3.35415 3.08319 3.2857 3.28557 3.2857C3.48796 3.2857 3.6576 3.35415 3.7945 3.49105C3.93141 3.62796 3.99986 3.7976 3.99986 3.99998V4.96427C4.607 4.20236 5.34807 3.61308 6.22307 3.19641C7.09807 2.77974 8.02367 2.57141 8.99986 2.57141C9.89272 2.57141 10.729 2.74105 11.5088 3.08034C12.2886 3.41963 12.9671 3.87796 13.5445 4.45534C14.1219 5.03272 14.5802 5.71129 14.9195 6.49105C15.2588 7.27082 15.4284 8.10713 15.4284 8.99998C15.4284 9.89284 15.2588 10.7291 14.9195 11.5089C14.5802 12.2887 14.1219 12.9672 13.5445 13.5446C12.9671 14.122 12.2886 14.5803 11.5088 14.9196C10.729 15.2589 9.89272 15.4286 8.99986 15.4286ZM9.71415 8.71427L11.4999 10.5C11.6308 10.6309 11.6963 10.7976 11.6963 11C11.6963 11.2024 11.6308 11.369 11.4999 11.5C11.3689 11.6309 11.2022 11.6964 10.9999 11.6964C10.7975 11.6964 10.6308 11.6309 10.4999 11.5L8.49986 9.49998C8.42843 9.42855 8.37486 9.3482 8.33915 9.25891C8.30343 9.16963 8.28557 9.07736 8.28557 8.98213V6.14284C8.28557 5.94046 8.35403 5.77082 8.49093 5.63391C8.62784 5.49701 8.79748 5.42855 8.99986 5.42855C9.20224 5.42855 9.37188 5.49701 9.50879 5.63391C9.64569 5.77082 9.71415 5.94046 9.71415 6.14284V8.71427Z" fill="#778F9C" />
-                                </svg>
-                            </div>
-                            <div class="icon-tooltip">
-                                <svg class="o-share" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M13.2856 11.9429C12.7427 11.9429 12.257 12.1572 11.8856 12.4929L6.79272 9.5286C6.82843 9.36431 6.857 9.20003 6.857 9.0286C6.857 8.85717 6.82843 8.69288 6.79272 8.5286L11.8284 5.59288C12.2141 5.95003 12.7213 6.17146 13.2856 6.17146C14.4713 6.17146 15.4284 5.21431 15.4284 4.0286C15.4284 2.84289 14.4713 1.88574 13.2856 1.88574C12.0999 1.88574 11.1427 2.84289 11.1427 4.0286C11.1427 4.20003 11.1713 4.36431 11.207 4.5286L6.17129 7.46431C5.78557 7.10717 5.27843 6.88574 4.71415 6.88574C3.52843 6.88574 2.57129 7.84288 2.57129 9.0286C2.57129 10.2143 3.52843 11.1715 4.71415 11.1715C5.27843 11.1715 5.78557 10.95 6.17129 10.5929L11.257 13.5643C11.2213 13.7143 11.1999 13.8715 11.1999 14.0286C11.1999 15.1786 12.1356 16.1143 13.2856 16.1143C14.4356 16.1143 15.3713 15.1786 15.3713 14.0286C15.3713 12.8786 14.4356 11.9429 13.2856 11.9429Z" fill="#778F9C" />
-                                </svg>
-                            </div>
-                            <div class="icon-tooltip">
-                                <svg class="o-comment" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M16.1355 3.28575C16.1355 2.50003 15.4998 1.85718 14.7141 1.85718H3.2855C2.49979 1.85718 1.85693 2.50003 1.85693 3.28575V11.8572C1.85693 12.6429 2.49979 13.2857 3.2855 13.2857H13.2855L16.1426 16.1429L16.1355 3.28575ZM12.5712 10.4286H5.42836C5.0355 10.4286 4.71408 10.1072 4.71408 9.71432C4.71408 9.32146 5.0355 9.00003 5.42836 9.00003H12.5712C12.9641 9.00003 13.2855 9.32146 13.2855 9.71432C13.2855 10.1072 12.9641 10.4286 12.5712 10.4286ZM12.5712 8.28575H5.42836C5.0355 8.28575 4.71408 7.96432 4.71408 7.57146C4.71408 7.17861 5.0355 6.85718 5.42836 6.85718H12.5712C12.9641 6.85718 13.2855 7.17861 13.2855 7.57146C13.2855 7.96432 12.9641 8.28575 12.5712 8.28575ZM12.5712 6.14289H5.42836C5.0355 6.14289 4.71408 5.82146 4.71408 5.42861C4.71408 5.03575 5.0355 4.71432 5.42836 4.71432H12.5712C12.9641 4.71432 13.2855 5.03575 13.2855 5.42861C13.2855 5.82146 12.9641 6.14289 12.5712 6.14289Z" fill="#778F9C" />
-                                </svg>
-                            </div>
-                            <div class="icon-tooltip">
-                                <svg class="o-open-in-new" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M13.9999 14H3.99986V3.99998H8.99986V2.57141H3.99986C3.207 2.57141 2.57129 3.21427 2.57129 3.99998V14C2.57129 14.7857 3.207 15.4286 3.99986 15.4286H13.9999C14.7856 15.4286 15.4284 14.7857 15.4284 14V8.99998H13.9999V14ZM10.4284 2.57141V3.99998H12.9927L5.97129 11.0214L6.97843 12.0286L13.9999 5.00713V7.57141H15.4284V2.57141H10.4284Z" fill="#778F9C" />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="frame-1321315173">
-        <div class="insight-card2">
-            <div class="header-container2">
-                <div class="card-header2">
-                    <img class="hd-wallpaper-circuit-abstract-circuits-tech-technology-12"
-                         src="https://i.pinimg.com/736x/2f/46/1f/2f461f1bb51813cbfc43e8df69333b8a.jpg" />
-                    <div class="rectangle-93252"></div>
-                    <div class="content3">
-                        <div class="frame-25355">
-                            <div class="insight">Insight</div>
-                            <div class="date-time-stamp">
-                                <div class="_23-jan">23 Jan</div>
-                            </div>
-                        </div>
-                        <div class="rectangle-9323"></div>
-                        <div class="frame-25353">
-                            <div class="frame-25286">
-                                <div class="risk-analysis">Risk Analysis</div>
-                            </div>
-                            <svg class="robot-2" width="31" height="30" viewBox="0 0 31 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6.45841 26.25C6.09244 26.25 5.78567 26.1302 5.5381 25.8906C5.29053 25.651 5.16675 25.3542 5.16675 25V20C5.16675 19.3125 5.4197 18.724 5.9256 18.2344C6.43151 17.7448 7.03966 17.5 7.75008 17.5H23.2501C23.9605 17.5 24.5687 17.7448 25.0746 18.2344C25.5805 18.724 25.8334 19.3125 25.8334 20V25C25.8334 25.3542 25.7096 25.651 25.4621 25.8906C25.2145 26.1302 24.9077 26.25 24.5417 26.25H6.45841ZM11.6251 16.25C9.83828 16.25 8.31519 15.6406 7.05581 14.4219C5.79644 13.2031 5.16675 11.7292 5.16675 10C5.16675 8.27083 5.79644 6.79688 7.05581 5.57812C8.31519 4.35938 9.83828 3.75 11.6251 3.75H19.3751C21.1619 3.75 22.685 4.35938 23.9444 5.57812C25.2037 6.79688 25.8334 8.27083 25.8334 10C25.8334 11.7292 25.2037 13.2031 23.9444 14.4219C22.685 15.6406 21.1619 16.25 19.3751 16.25H11.6251ZM11.6251 11.25C11.9911 11.25 12.2978 11.1302 12.5454 10.8906C12.793 10.651 12.9167 10.3542 12.9167 10C12.9167 9.64583 12.793 9.34896 12.5454 9.10938C12.2978 8.86979 11.9911 8.75 11.6251 8.75C11.2591 8.75 10.9523 8.86979 10.7048 9.10938C10.4572 9.34896 10.3334 9.64583 10.3334 10C10.3334 10.3542 10.4572 10.651 10.7048 10.8906C10.9523 11.1302 11.2591 11.25 11.6251 11.25ZM19.3751 11.25C19.7411 11.25 20.0478 11.1302 20.2954 10.8906C20.543 10.651 20.6667 10.3542 20.6667 10C20.6667 9.64583 20.543 9.34896 20.2954 9.10938C20.0478 8.86979 19.7411 8.75 19.3751 8.75C19.0091 8.75 18.7023 8.86979 18.4548 9.10938C18.2072 9.34896 18.0834 9.64583 18.0834 10C18.0834 10.3542 18.2072 10.651 18.4548 10.8906C18.7023 11.1302 19.0091 11.25 19.3751 11.25Z" fill="#17E88F" />
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="frame-1321315170">
-                <div class="risk-register">Risk Register</div>
-                <div class="data-summary-group">
-                    <div class="data-summary">
-                        <div class="value-wrap">
-                            <svg class="trending-up" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3.14996 20.5625C2.91663 20.3292 2.80483 20.0521 2.81455 19.7312C2.82427 19.4104 2.93608 19.143 3.14996 18.9292L9.30413 12.6875C9.75135 12.2403 10.3055 12.0167 10.9666 12.0167C11.6277 12.0167 12.1819 12.2403 12.6291 12.6875L15.6333 15.7208L21.7 9.71248H19.8333C19.5027 9.71248 19.2257 9.60068 19.002 9.37707C18.7784 9.15346 18.6666 8.87637 18.6666 8.54582C18.6666 8.21526 18.7784 7.93818 19.002 7.71457C19.2257 7.49096 19.5027 7.37915 19.8333 7.37915H24.5C24.8305 7.37915 25.1076 7.49096 25.3312 7.71457C25.5548 7.93818 25.6666 8.21526 25.6666 8.54582V13.2125C25.6666 13.543 25.5548 13.8201 25.3312 14.0437C25.1076 14.2673 24.8305 14.3792 24.5 14.3792C24.1694 14.3792 23.8923 14.2673 23.6687 14.0437C23.4451 13.8201 23.3333 13.543 23.3333 13.2125V11.3458L17.2958 17.3833C16.8486 17.8305 16.2944 18.0542 15.6333 18.0542C14.9722 18.0542 14.418 17.8305 13.9708 17.3833L10.9666 14.3792L4.7833 20.5625C4.56941 20.7764 4.29719 20.8833 3.96663 20.8833C3.63608 20.8833 3.36385 20.7764 3.14996 20.5625Z" fill="#A03530" />
-                            </svg>
-                            <div id="Critical" class="number">@Model.RiskRegister.Critical</div>
-                        </div>
-                        <div class="high">Critical</div>
-                    </div>
-                    <div class="data-summary2">
-                        <div class="value-wrap">
-                            <svg class="trending-flat" width="29" height="28" viewBox="0 0 29 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M21.7042 15.1667H5.16667C4.83611 15.1667 4.55903 15.0549 4.33542 14.8313C4.11181 14.6077 4 14.3306 4 14C4 13.6695 4.11181 13.3924 4.33542 13.1688C4.55903 12.9452 4.83611 12.8334 5.16667 12.8334H21.7042L20.1 11.2C19.8667 10.9667 19.7549 10.6945 19.7646 10.3834C19.7743 10.0723 19.8958 9.80005 20.1292 9.56671C20.3625 9.35282 20.6396 9.24102 20.9604 9.2313C21.2813 9.22157 21.5486 9.33338 21.7625 9.56671L25.35 13.1834C25.5833 13.4167 25.7 13.6889 25.7 14C25.7 14.3112 25.5833 14.5834 25.35 14.8167L21.7333 18.4334C21.5194 18.6473 21.2521 18.7542 20.9313 18.7542C20.6104 18.7542 20.3333 18.6473 20.1 18.4334C19.8667 18.2 19.75 17.923 19.75 17.6021C19.75 17.2813 19.8667 17.0042 20.1 16.7709L21.7042 15.1667Z" fill="#FF9742" />
-                            </svg>
-                            <div id="Serious" class="number">@Model.RiskRegister.Serious</div>
-                        </div>
-                        <div class="medium">Serious</div>
-                    </div>
-                    <div class="data-summary3">
-                        <div class="value-wrap">
-                            <svg class="trending-down" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M21.7 18.6667L15.6333 12.6583L12.6291 15.6625C12.1819 16.1097 11.6277 16.3334 10.9666 16.3334C10.3055 16.3334 9.75135 16.1097 9.30413 15.6625L3.14996 9.45002C2.93608 9.23613 2.82427 8.96877 2.81455 8.64793C2.80483 8.3271 2.91663 8.05002 3.14996 7.81668C3.36385 7.60279 3.63608 7.49585 3.96663 7.49585C4.29719 7.49585 4.56941 7.60279 4.7833 7.81668L10.9666 14L13.9708 10.9958C14.418 10.5486 14.9722 10.325 15.6333 10.325C16.2944 10.325 16.8486 10.5486 17.2958 10.9958L23.3333 17.0334V15.1667C23.3333 14.8361 23.4451 14.559 23.6687 14.3354C23.8923 14.1118 24.1694 14 24.5 14C24.8305 14 25.1076 14.1118 25.3312 14.3354C25.5548 14.559 25.6666 14.8361 25.6666 15.1667V19.8334C25.6666 20.1639 25.5548 20.441 25.3312 20.6646C25.1076 20.8882 24.8305 21 24.5 21H19.8333C19.5027 21 19.2257 20.8882 19.002 20.6646C18.7784 20.441 18.6666 20.1639 18.6666 19.8334C18.6666 19.5028 18.7784 19.2257 19.002 19.0021C19.2257 18.7785 19.5027 18.6667 19.8333 18.6667H21.7Z" fill="#50AF78" />
-                            </svg>
-                            <div id="Low" class="number">@Model.RiskRegister.Low</div>
-                        </div>
-                        <div class="all-requests">Low</div>
-                    </div>
-                    <div class="data-summary3">
-                        <div class="value-wrap">
-                            <svg class="trending-down" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M21.7 18.6667L15.6333 12.6583L12.6291 15.6625C12.1819 16.1097 11.6277 16.3334 10.9666 16.3334C10.3055 16.3334 9.75135 16.1097 9.30413 15.6625L3.14996 9.45002C2.93608 9.23613 2.82427 8.96877 2.81455 8.64793C2.80483 8.3271 2.91663 8.05002 3.14996 7.81668C3.36385 7.60279 3.63608 7.49585 3.96663 7.49585C4.29719 7.49585 4.56941 7.60279 4.7833 7.81668L10.9666 14L13.9708 10.9958C14.418 10.5486 14.9722 10.325 15.6333 10.325C16.2944 10.325 16.8486 10.5486 17.2958 10.9958L23.3333 17.0334V15.1667C23.3333 14.8361 23.4451 14.559 23.6687 14.3354C23.8923 14.1118 24.1694 14 24.5 14C24.8305 14 25.1076 14.1118 25.3312 14.3354C25.5548 14.559 25.6666 14.8361 25.6666 15.1667V19.8334C25.6666 20.1639 25.5548 20.441 25.3312 20.6646C25.1076 20.8882 24.8305 21 24.5 21H19.8333C19.5027 21 19.2257 20.8882 19.002 20.6646C18.7784 20.441 18.6666 20.1639 18.6666 19.8334C18.6666 19.5028 18.7784 19.2257 19.002 19.0021C19.2257 18.7785 19.5027 18.6667 19.8333 18.6667H21.7Z" fill="#50AF78" />
-                            </svg>
-                            <div id="Negligible" class="number">@Model.RiskRegister.Negligible</div>
-                        </div>
-                        <div class="all-requests">Negligible</div>
-                    </div>
-                </div>
-            </div>
-            <div class="card-content2">
-                <div class="action">
-                    <div class="label">
-                        <span>
-                            <span class="label-span9">
-                                Risk Probability Prediction:
-                                <br />
-                            </span>
-                            <span id="RiskProbabilityPrediction" class="label-span10">
-                                @Model.RsikAnalysis.RiskProbabilityPrediction
-                            </span>
-                        </span>
-                    </div>
-                </div>
-                <div class="action">
-                    <div class="label">
-                        <span>
-                            <span class="label-span11">
-                                Risk Analysis:
-                                <br />
-                            </span>
-                            <span id="RiskAnalysis" class="label-span12">
-                                @Model.RsikAnalysis.RiskAnalysis
-                            </span>
-                        </span>
-                    </div>
-                </div>
-                <div class="action">
-                    <div class="label">
-                        <span>
-                            <span class="label-span13">
-                                Summary of Risks:
-                                <br />
-                            </span>
-                            <span id="SummaryofRisks" class="label-span14">
-                                @Model.RsikAnalysis.SummaryofRisks
-                            </span>
-                        </span>
-                    </div>
-                </div>
-                <div class="action">
-                    <div class="label">
-                        <span>
-                            <span class="label-span15">
-                                Recommendations:
-                                <br />
-                            </span>
-                            <span id="Recommendations" class="label-span16">
-                                @Model.RsikAnalysis.Recommendations
-                            </span>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="frame-1321315174">
-        <div class="frame-1321315209">
-            <div class="page-header-list-page">
-                <div class="list-page-header-base-default">
-                    <div class="frame-2608592">
-                        <div class="header">
-                            <div class="title-group">
-                                <div class="title-and-scope-switcher">
-                                    <div class="title">Safety Score</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="frame-1321315204">
-                <div class="frame-1321315201">
-                    <div class="card-content3">
-                        <div class="frame-1321315196">
-                            <div class="frame-1321315195">
-                                <div class="frame-25196">
-                                    <div class="frame-87">
-                                        <div class="frame-24102">
-                                            <div class="reading">Reading</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="gauge_chart" style="width: 400px; height: 200px;margin-left:64px;"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="frame-1321315186">
-                <div class="frame-1321315185">
-                    <div class="_8-am-visitor">
-                        <div class="details-container">
-                            <div class="details">
-                                <div class="duration">
-                                    <svg class="hotel" width="32" height="33" viewBox="0 0 32 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M9.33325 17.1667C11.5466 17.1667 13.3333 15.38 13.3333 13.1667C13.3333 10.9533 11.5466 9.16667 9.33325 9.16667C7.11992 9.16667 5.33325 10.9533 5.33325 13.1667C5.33325 15.38 7.11992 17.1667 9.33325 17.1667ZM25.3333 9.16667H17.3333C15.8666 9.16667 14.6666 10.3667 14.6666 11.8333V18.5H3.99992V7.83333C3.99992 7.1 3.39992 6.5 2.66659 6.5C1.93325 6.5 1.33325 7.1 1.33325 7.83333V25.1667C1.33325 25.9 1.93325 26.5 2.66659 26.5C3.39992 26.5 3.99992 25.9 3.99992 25.1667V22.5H27.9999V25.1667C27.9999 25.9 28.5999 26.5 29.3333 26.5C30.0666 26.5 30.6666 25.9 30.6666 25.1667V14.5C30.6666 11.5533 28.2799 9.16667 25.3333 9.16667Z" fill="#FF9742" />
-                                    </svg>
-                                    <div class="incident-rate">Incident Rate</div>
-                                </div>
-                            </div>
-                            <div class="frame-13213151732">
-                                <div class="_124">124</div>
-                                <svg class="arrow-upward" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M10.8334 15.6594V6.35107L14.9001 10.4177C15.2251 10.7427 15.7584 10.7427 16.0834 10.4177C16.4084 10.0927 16.4084 9.56774 16.0834 9.24274L10.5917 3.75107C10.2667 3.42607 9.74172 3.42607 9.41672 3.75107L3.91672 9.23441C3.59172 9.55941 3.59172 10.0844 3.91672 10.4094C4.24172 10.7344 4.76672 10.7344 5.09172 10.4094L9.16672 6.35107V15.6594C9.16672 16.1177 9.54172 16.4927 10.0001 16.4927C10.4584 16.4927 10.8334 16.1177 10.8334 15.6594Z" fill="#FF543E" />
-                                </svg>
-                                <div class="_4-7">4.7%</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="_8-am-visitor">
-                        <div class="details-container2">
-                            <div class="details2">
-                                <div class="duration2">
-                                    <svg class="text-snippet" width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M20.41 8.91L15.58 4.08C15.21 3.71 14.7 3.5 14.17 3.5H5C3.9 3.5 3 4.4 3 5.5V19.5C3 20.6 3.9 21.5 5 21.5H19C20.1 21.5 21 20.6 21 19.5V10.33C21 9.8 20.79 9.29 20.41 8.91ZM7 7.5H14V9.5H7V7.5ZM17 17.5H7V15.5H17V17.5ZM17 13.5H7V11.5H17V13.5Z" fill="#666B6D" />
-                                    </svg>
-                                    <div class="lost-time-injury-frequency-rate">
-                                        Lost Time Injury Frequency Rate
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="description-sender-notes">
-                                <div class="frame-13213151733">
-                                    <div class="_124">124</div>
-                                    <svg class="arrow-upward" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M10.8334 15.6594V6.35107L14.9001 10.4177C15.2251 10.7427 15.7584 10.7427 16.0834 10.4177C16.4084 10.0927 16.4084 9.56774 16.0834 9.24274L10.5917 3.75107C10.2667 3.42607 9.74172 3.42607 9.41672 3.75107L3.91672 9.23441C3.59172 9.55941 3.59172 10.0844 3.91672 10.4094C4.24172 10.7344 4.76672 10.7344 5.09172 10.4094L9.16672 6.35107V15.6594C9.16672 16.1177 9.54172 16.4927 10.0001 16.4927C10.4584 16.4927 10.8334 16.1177 10.8334 15.6594Z" fill="#FF543E" />
-                                    </svg>
-                                    <div class="_4-7">4.7%</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="_8-am-reservation">
-                        <div class="details-container">
-                            <div class="details2">
-                                <div class="duration2">
-                                    <img class="calendar-month" src="calendar-month0.svg" />
-                                    <div class="days-away-from-work-dafw">
-                                        Days Away from Work (DAFW
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="description-sender-notes">
-                                <div class="frame-13213151733">
-                                    <div class="_124">124</div>
-                                    <svg class="arrow-upward" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M10.8334 15.6594V6.35107L14.9001 10.4177C15.2251 10.7427 15.7584 10.7427 16.0834 10.4177C16.4084 10.0927 16.4084 9.56774 16.0834 9.24274L10.5917 3.75107C10.2667 3.42607 9.74172 3.42607 9.41672 3.75107L3.91672 9.23441C3.59172 9.55941 3.59172 10.0844 3.91672 10.4094C4.24172 10.7344 4.76672 10.7344 5.09172 10.4094L9.16672 6.35107V15.6594C9.16672 16.1177 9.54172 16.4927 10.0001 16.4927C10.4584 16.4927 10.8334 16.1177 10.8334 15.6594Z" fill="#FF543E" />
-                                    </svg>
-                                    <div class="_4-7">4.7%</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="_9-am-catering">
-                        <div class="details-container3">
-                            <div class="details2">
-                                <div class="duration2">
-                                    <svg class="o-healing" width="32" height="33" viewBox="0 0 32 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M23.6599 16.5001L28.9665 11.1934C29.4865 10.6734 29.4865 9.83339 28.9665 9.31339L23.1799 3.52672C22.6599 3.00672 21.8199 3.00672 21.2999 3.52672L15.9932 8.83339L10.6865 3.52672C10.4199 3.27339 10.0865 3.14005 9.73988 3.14005C9.40655 3.14005 9.05988 3.27339 8.80655 3.52672L3.01988 9.31339C2.49988 9.83339 2.49988 10.6734 3.01988 11.1934L8.32655 16.5001L3.01988 21.8067C2.49988 22.3267 2.49988 23.1667 3.01988 23.6867L8.80655 29.4734C9.32655 29.9934 10.1665 29.9934 10.6865 29.4734L15.9932 24.1667L21.2999 29.4734C21.5665 29.7401 21.8999 29.8601 22.2465 29.8601C22.5932 29.8601 22.9265 29.7267 23.1932 29.4734L28.9799 23.6867C29.4999 23.1667 29.4999 22.3267 28.9799 21.8067L23.6599 16.5001ZM16.0199 12.4734C16.7532 12.4734 17.3532 13.0734 17.3532 13.8067C17.3532 14.5401 16.7532 15.1401 16.0199 15.1401C15.2865 15.1401 14.6865 14.5401 14.6865 13.8067C14.6865 13.0734 15.2865 12.4734 16.0199 12.4734ZM9.73988 15.0867L4.89988 10.2601L9.73988 5.42005L14.5665 10.2467L9.73988 15.0867ZM13.3532 17.8067C12.6199 17.8067 12.0199 17.2067 12.0199 16.4734C12.0199 15.7401 12.6199 15.1401 13.3532 15.1401C14.0865 15.1401 14.6865 15.7401 14.6865 16.4734C14.6865 17.2067 14.0865 17.8067 13.3532 17.8067ZM16.0199 20.4734C15.2865 20.4734 14.6865 19.8734 14.6865 19.1401C14.6865 18.4067 15.2865 17.8067 16.0199 17.8067C16.7532 17.8067 17.3532 18.4067 17.3532 19.1401C17.3532 19.8734 16.7532 20.4734 16.0199 20.4734ZM18.6865 15.1401C19.4199 15.1401 20.0199 15.7401 20.0199 16.4734C20.0199 17.2067 19.4199 17.8067 18.6865 17.8067C17.9532 17.8067 17.3532 17.2067 17.3532 16.4734C17.3532 15.7401 17.9532 15.1401 18.6865 15.1401ZM22.2332 27.5934L17.3932 22.7667L22.2332 17.9267L27.0599 22.7534L22.2332 27.5934Z" fill="#A03530" />
-                                    </svg>
-                                    <div class="total-recordable-incident-rate-trir">
-                                        Total Recordable Incident Rate (TRIR):
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="description-sender-notes">
-                                <div class="frame-13213151733">
-                                    <div class="_124">124</div>
-                                    <svg class="arrow-upward" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M10.8334 15.6594V6.35107L14.9001 10.4177C15.2251 10.7427 15.7584 10.7427 16.0834 10.4177C16.4084 10.0927 16.4084 9.56774 16.0834 9.24274L10.5917 3.75107C10.2667 3.42607 9.74172 3.42607 9.41672 3.75107L3.91672 9.23441C3.59172 9.55941 3.59172 10.0844 3.91672 10.4094C4.24172 10.7344 4.76672 10.7344 5.09172 10.4094L9.16672 6.35107V15.6594C9.16672 16.1177 9.54172 16.4927 10.0001 16.4927C10.4584 16.4927 10.8334 16.1177 10.8334 15.6594Z" fill="#FF543E" />
-                                    </svg>
-                                    <div class="_4-7">4.7%</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="frame-24882">
-        <div class="frame-1321315205">
-            <div class="site-address">Site Address</div>
-            <div class="frame-24883">
-                <div class="input-dropdown-outlined">
-                    <div class="field">
-                        <div class="container">
-                            <select id="site_address" class="input-container" onchange="handleSiteChange(this.value, this.options[this.selectedIndex].text)">
-                                @foreach (var item in Model.Sites)
-                                {
-                                    <option value="@item.Site_PK" selected="@item.Site_PK == 'Site2'">@item.Site_Name</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="wrapper-label">
-                            <div class="wrapper-field-label">
-                                <div class="label8">Site</div>
-                                <div class="required"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="loader" style="display:none;">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/d/de/Ajax-loader.gif" alt="Loading...">
-        <div id="overlay" style="display:none;"></div>
+	<div class="global-header">
+		<div class="safety-intelligence-assessment-insights">
+			Safety Intelligence: Assessment &amp; Insights
+		</div>
+		<div class="header-utilities">
+			<div class="frame-21957">
+				<div class="utility-item">
+					<svg class="notifications" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M4.99988 18.9999C4.71654 18.9999 4.47904 18.9041 4.28738 18.7124C4.09571 18.5207 3.99988 18.2832 3.99988 17.9999C3.99988 17.7166 4.09571 17.4791 4.28738 17.2874C4.47904 17.0957 4.71654 16.9999 4.99988 16.9999H5.99988V9.99991C5.99988 8.61658 6.41654 7.38741 7.24988 6.31241C8.08321 5.23741 9.16654 4.53324 10.4999 4.19991V3.49991C10.4999 3.08324 10.6457 2.72908 10.9374 2.43741C11.229 2.14574 11.5832 1.99991 11.9999 1.99991C12.4165 1.99991 12.7707 2.14574 13.0624 2.43741C13.354 2.72908 13.4999 3.08324 13.4999 3.49991V4.19991C14.8332 4.53324 15.9165 5.23741 16.7499 6.31241C17.5832 7.38741 17.9999 8.61658 17.9999 9.99991V16.9999H18.9999C19.2832 16.9999 19.5207 17.0957 19.7124 17.2874C19.904 17.4791 19.9999 17.7166 19.9999 17.9999C19.9999 18.2832 19.904 18.5207 19.7124 18.7124C19.5207 18.9041 19.2832 18.9999 18.9999 18.9999H4.99988ZM11.9999 21.9999C11.4499 21.9999 10.979 21.8041 10.5874 21.4124C10.1957 21.0207 9.99988 20.5499 9.99988 19.9999H13.9999C13.9999 20.5499 13.804 21.0207 13.4124 21.4124C13.0207 21.8041 12.5499 21.9999 11.9999 21.9999Z" fill="white" fill-opacity="0.6" />
+					</svg>
+					<div class="badge">
+						<div class="dot-circle"></div>
+					</div>
+				</div>
+				<div class="header-avatar">
+					<div class="avatar">
+						<div class="initials">BS</div>
+					</div>
+				</div>
+				<div class="app-switcher">
+					<svg class="apps" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M5.99988 19.9999C5.44988 19.9999 4.97904 19.8041 4.58738 19.4124C4.19571 19.0207 3.99988 18.5499 3.99988 17.9999C3.99988 17.4499 4.19571 16.9791 4.58738 16.5874C4.97904 16.1957 5.44988 15.9999 5.99988 15.9999C6.54988 15.9999 7.02071 16.1957 7.41238 16.5874C7.80404 16.9791 7.99988 17.4499 7.99988 17.9999C7.99988 18.5499 7.80404 19.0207 7.41238 19.4124C7.02071 19.8041 6.54988 19.9999 5.99988 19.9999ZM11.9999 19.9999C11.4499 19.9999 10.979 19.8041 10.5874 19.4124C10.1957 19.0207 9.99988 18.5499 9.99988 17.9999C9.99988 17.4499 10.1957 16.9791 10.5874 16.5874C10.979 16.1957 11.4499 15.9999 11.9999 15.9999C12.5499 15.9999 13.0207 16.1957 13.4124 16.5874C13.804 16.9791 13.9999 17.4499 13.9999 17.9999C13.9999 18.5499 13.804 19.0207 13.4124 19.4124C13.0207 19.8041 12.5499 19.9999 11.9999 19.9999ZM17.9999 19.9999C17.4499 19.9999 16.979 19.8041 16.5874 19.4124C16.1957 19.0207 15.9999 18.5499 15.9999 17.9999C15.9999 17.4499 16.1957 16.9791 16.5874 16.5874C16.979 16.1957 17.4499 15.9999 17.9999 15.9999C18.5499 15.9999 19.0207 16.1957 19.4124 16.5874C19.804 16.9791 19.9999 17.4499 19.9999 17.9999C19.9999 18.5499 19.804 19.0207 19.4124 19.4124C19.0207 19.8041 18.5499 19.9999 17.9999 19.9999ZM5.99988 13.9999C5.44988 13.9999 4.97904 13.8041 4.58738 13.4124C4.19571 13.0207 3.99988 12.5499 3.99988 11.9999C3.99988 11.4499 4.19571 10.9791 4.58738 10.5874C4.97904 10.1957 5.44988 9.99991 5.99988 9.99991C6.54988 9.99991 7.02071 10.1957 7.41238 10.5874C7.80404 10.9791 7.99988 11.4499 7.99988 11.9999C7.99988 12.5499 7.80404 13.0207 7.41238 13.4124C7.02071 13.8041 6.54988 13.9999 5.99988 13.9999ZM11.9999 13.9999C11.4499 13.9999 10.979 13.8041 10.5874 13.4124C10.1957 13.0207 9.99988 12.5499 9.99988 11.9999C9.99988 11.4499 10.1957 10.9791 10.5874 10.5874C10.979 10.1957 11.4499 9.99991 11.9999 9.99991C12.5499 9.99991 13.0207 10.1957 13.4124 10.5874C13.804 10.9791 13.9999 11.4499 13.9999 11.9999C13.9999 12.5499 13.804 13.0207 13.4124 13.4124C13.0207 13.8041 12.5499 13.9999 11.9999 13.9999ZM17.9999 13.9999C17.4499 13.9999 16.979 13.8041 16.5874 13.4124C16.1957 13.0207 15.9999 12.5499 15.9999 11.9999C15.9999 11.4499 16.1957 10.9791 16.5874 10.5874C16.979 10.1957 17.4499 9.99991 17.9999 9.99991C18.5499 9.99991 19.0207 10.1957 19.4124 10.5874C19.804 10.9791 19.9999 11.4499 19.9999 11.9999C19.9999 12.5499 19.804 13.0207 19.4124 13.4124C19.0207 13.8041 18.5499 13.9999 17.9999 13.9999ZM5.99988 7.99991C5.44988 7.99991 4.97904 7.80408 4.58738 7.41241C4.19571 7.02074 3.99988 6.54991 3.99988 5.99991C3.99988 5.44991 4.19571 4.97908 4.58738 4.58741C4.97904 4.19574 5.44988 3.99991 5.99988 3.99991C6.54988 3.99991 7.02071 4.19574 7.41238 4.58741C7.80404 4.97908 7.99988 5.44991 7.99988 5.99991C7.99988 6.54991 7.80404 7.02074 7.41238 7.41241C7.02071 7.80408 6.54988 7.99991 5.99988 7.99991ZM11.9999 7.99991C11.4499 7.99991 10.979 7.80408 10.5874 7.41241C10.1957 7.02074 9.99988 6.54991 9.99988 5.99991C9.99988 5.44991 10.1957 4.97908 10.5874 4.58741C10.979 4.19574 11.4499 3.99991 11.9999 3.99991C12.5499 3.99991 13.0207 4.19574 13.4124 4.58741C13.804 4.97908 13.9999 5.44991 13.9999 5.99991C13.9999 6.54991 13.804 7.02074 13.4124 7.41241C13.0207 7.80408 12.5499 7.99991 11.9999 7.99991ZM17.9999 7.99991C17.4499 7.99991 16.979 7.80408 16.5874 7.41241C16.1957 7.02074 15.9999 6.54991 15.9999 5.99991C15.9999 5.44991 16.1957 4.97908 16.5874 4.58741C16.979 4.19574 17.4499 3.99991 17.9999 3.99991C18.5499 3.99991 19.0207 4.19574 19.4124 4.58741C19.804 4.97908 19.9999 5.44991 19.9999 5.99991C19.9999 6.54991 19.804 7.02074 19.4124 7.41241C19.0207 7.80408 18.5499 7.99991 17.9999 7.99991Z" fill="white" fill-opacity="0.6" />
+					</svg>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="frame-1321315172">
+		<div class="insight-card">
+			<div class="header-container">
+				<div class="card-header">
+					<img class="hd-wallpaper-circuit-abstract-circuits-tech-technology-1"
+						 src="https://i.pinimg.com/736x/2f/46/1f/2f461f1bb51813cbfc43e8df69333b8a.jpg" />
+					<div class="rectangle-9325"></div>
+					<div class="content">
+						<div class="frame-25355">
+							<div class="insight">Insight</div>
+							<div class="date-time-stamp">
+								<div class="_23-jan">23 Jan</div>
+							</div>
+						</div>
+						<div class="rectangle-9323"></div>
+						<div class="frame-25353">
+							<div class="frame-25286">
+								<div class="safety-analysis">Safety Analysis</div>
+							</div>
+							<svg class="robot-2" width="31" height="30" viewBox="0 0 31 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M6.45841 26.25C6.09244 26.25 5.78567 26.1302 5.5381 25.8906C5.29053 25.651 5.16675 25.3542 5.16675 25V20C5.16675 19.3125 5.4197 18.724 5.9256 18.2344C6.43151 17.7448 7.03966 17.5 7.75008 17.5H23.2501C23.9605 17.5 24.5687 17.7448 25.0746 18.2344C25.5805 18.724 25.8334 19.3125 25.8334 20V25C25.8334 25.3542 25.7096 25.651 25.4621 25.8906C25.2145 26.1302 24.9077 26.25 24.5417 26.25H6.45841ZM11.6251 16.25C9.83828 16.25 8.31519 15.6406 7.05581 14.4219C5.79644 13.2031 5.16675 11.7292 5.16675 10C5.16675 8.27083 5.79644 6.79688 7.05581 5.57812C8.31519 4.35938 9.83828 3.75 11.6251 3.75H19.3751C21.1619 3.75 22.685 4.35938 23.9444 5.57812C25.2037 6.79688 25.8334 8.27083 25.8334 10C25.8334 11.7292 25.2037 13.2031 23.9444 14.4219C22.685 15.6406 21.1619 16.25 19.3751 16.25H11.6251ZM11.6251 11.25C11.9911 11.25 12.2978 11.1302 12.5454 10.8906C12.793 10.651 12.9167 10.3542 12.9167 10C12.9167 9.64583 12.793 9.34896 12.5454 9.10938C12.2978 8.86979 11.9911 8.75 11.6251 8.75C11.2591 8.75 10.9523 8.86979 10.7048 9.10938C10.4572 9.34896 10.3334 9.64583 10.3334 10C10.3334 10.3542 10.4572 10.651 10.7048 10.8906C10.9523 11.1302 11.2591 11.25 11.6251 11.25ZM19.3751 11.25C19.7411 11.25 20.0478 11.1302 20.2954 10.8906C20.543 10.651 20.6667 10.3542 20.6667 10C20.6667 9.64583 20.543 9.34896 20.2954 9.10938C20.0478 8.86979 19.7411 8.75 19.3751 8.75C19.0091 8.75 18.7023 8.86979 18.4548 9.10938C18.2072 9.34896 18.0834 9.64583 18.0834 10C18.0834 10.3542 18.2072 10.651 18.4548 10.8906C18.7023 11.1302 19.0091 11.25 19.3751 11.25Z" fill="#17E88F" />
+							</svg>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="card-content">
+				<svg class="magic-button" width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M10 19.5L7.5 14L2 11.5L7.5 9L10 3.5L12.5 9L18 11.5L12.5 14L10 19.5ZM18 21.5L16.75 18.75L14 17.5L16.75 16.25L18 13.5L19.25 16.25L22 17.5L19.25 18.75L18 21.5Z" fill="#885073" />
+				</svg>
+				<div class="based-on-the-data-available-provide-an-al-generated-summary-of-incidents-risks-observations-good-catches-precautionary-measures-taken-open-action-items-inspections-audits-etc">
+					Based on the data available provide an Al generated summary of
+					Incidents, Risks, Observations, Good catches, Precautionary measures
+					taken, Open action items, inspections,
+					<br />
+					Audits etc.
+				</div>
+				<div class="action">
+					<div class="label">
+						<span>
+							<span class="label-span">
+								Contributing Factors:
+								<br />
+							</span>
+							<ol id="ContributingFactors" class="label-span2">
+								@foreach (var item in Model.SafetyAnalysis.ContributingFactors)
+								{
+									if (@item.Trim().Length > 0)
+									{
+										<li>@item</li>
+									}
+								}
+							</ol>
+						</span>
+					</div>
+				</div>
+				<div class="action">
+					<div class="label">
+						<span>
+							<span class="label-span3">
+								Mitigation Plan:
+								<br />
+							</span>
+							<ol id="MitigationPlan" class="label-span4">
+								@foreach (var item in Model.SafetyAnalysis.MitigationPlan)
+								{
+									if (@item.Trim().Length > 0)
+									{
+										<li>@item.Trim()</li>
+									}
+								}
+							</ol>
+						</span>
+					</div>
+				</div>
+				<div class="action">
+					<div class="label">
+						<span>
+							<span class="label-span5">
+								Leading Indicators:
+								<br />
+							</span>
+							<ol id="LeadingIndicators" class="label-span6">
+								@foreach (var item in Model.SafetyAnalysis.LeadingIndicators)
+								{
+									if (@item.Trim().Length > 0)
+									{
+										<li>@item.Trim()</li>
+									}
+								}
+							</ol>
+						</span>
+					</div>
+				</div>
+				@*  <div class="action">
+				<div class="label">
+				<span>
+				<span class="label-span7">
+				Lagging Indicators:
+				<br />
+				</span>
+				<ol class="label-span8">
+				@foreach (var item in Model.SafetyAnalysis.LaggingIndicators)
+				{
+				if (@item.Trim().Length > 0)
+				{
+				<li>@item.Trim()</li>
+				}
+				}
+				</ol>
+				</span>
+				</div>
+				</div> *@
+			</div>
+			<div class="card-footer">
+				<div class="tags">
+					<div class="chip">
+						<div class="content2">
+							<div class="label2">Tags</div>
+						</div>
+					</div>
+					<div class="chip2">
+						<div class="content2">
+							<div class="label3">Insight</div>
+						</div>
+					</div>
+					<div class="chip2">
+						<div class="content2">
+							<div class="label4">Advisory &amp; Transactions</div>
+						</div>
+					</div>
+					<div class="chip3">
+						<div class="content2">
+							<div class="label5">+1</div>
+						</div>
+					</div>
+				</div>
+				<div class="action-bar">
+					<div class="status">
+						<div class="criticality">
+							<div class="assignment">
+								<div class="menu-button">
+									<div class="button">
+										<div class="button-bg">
+											<div class="bg-box"></div>
+										</div>
+										<svg class="icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M10.0001 1.66663C5.40008 1.66663 1.66675 5.39996 1.66675 9.99996C1.66675 14.6 5.40008 18.3333 10.0001 18.3333C14.6001 18.3333 18.3334 14.6 18.3334 9.99996C18.3334 5.39996 14.6001 1.66663 10.0001 1.66663ZM10.8334 14.1666H9.16675V12.5H10.8334V14.1666ZM10.8334 10.8333H9.16675V5.83329H10.8334V10.8333Z" fill="#778F9C" />
+										</svg>
+										<div class="label6">
+											<div class="label7">Low</div>
+											<svg class="menu-arrow" width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path d="M0 3L5 8L10 3H0Z" fill="#1A1A1A" fill-opacity="0.65" />
+											</svg>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="assignment">
+							<div class="menu-button">
+								<div class="button">
+									<div class="button-bg">
+										<div class="bg-box"></div>
+									</div>
+									<div class="label6">
+										<div class="label7">Monthly: 02/2025</div>
+										<svg class="menu-arrow2" width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M0 3L5 8L10 3H0Z" fill="#1A1A1A" fill-opacity="0.65" />
+										</svg>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="action-bar2">
+						<div class="frame-25186">
+							<div class="icon-tooltip">
+								<div class="person-check">
+									<svg class="group-91" width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M11.9643 3.9822L14.4821 1.44648C14.625 1.30362 14.7946 1.2322 14.991 1.2322C15.1875 1.2322 15.3571 1.30362 15.5 1.44648C15.6428 1.58934 15.7143 1.75898 15.7143 1.95541C15.7143 2.15184 15.6428 2.32148 15.5 2.46434L12.4643 5.50005C12.3214 5.64291 12.1547 5.71434 11.9643 5.71434C11.7738 5.71434 11.6071 5.64291 11.4643 5.50005L9.94639 3.9822C9.80354 3.83934 9.73211 3.6697 9.73211 3.47327C9.73211 3.27684 9.80354 3.1072 9.94639 2.96434C10.0893 2.82148 10.2559 2.75005 10.4464 2.75005C10.6369 2.75005 10.8035 2.82148 10.9464 2.96434L11.9643 3.9822ZM5.85711 6.00005C5.07139 6.00005 4.39877 5.72029 3.83925 5.16077C3.27973 4.60124 2.99997 3.92862 2.99997 3.14291C2.99997 2.3572 3.27973 1.68458 3.83925 1.12505C4.39877 0.565529 5.07139 0.285767 5.85711 0.285767C6.64282 0.285767 7.31544 0.565529 7.87497 1.12505C8.43449 1.68458 8.71425 2.3572 8.71425 3.14291C8.71425 3.92862 8.43449 4.60124 7.87497 5.16077C7.31544 5.72029 6.64282 6.00005 5.85711 6.00005ZM0.142822 10.2858V9.71434C0.142822 9.30958 0.246989 8.93755 0.455322 8.59827C0.663656 8.25898 0.940441 8.00005 1.28568 7.82148C2.02377 7.45243 2.77377 7.17565 3.53568 6.99112C4.29758 6.8066 5.07139 6.71434 5.85711 6.71434C6.64282 6.71434 7.41663 6.8066 8.17854 6.99112C8.94044 7.17565 9.69044 7.45243 10.4285 7.82148C10.7738 8.00005 11.0506 8.25898 11.2589 8.59827C11.4672 8.93755 11.5714 9.30958 11.5714 9.71434V10.2858C11.5714 10.6786 11.4315 11.0149 11.1518 11.2947C10.872 11.5745 10.5357 11.7143 10.1428 11.7143H1.57139C1.17854 11.7143 0.842227 11.5745 0.562465 11.2947C0.282703 11.0149 0.142822 10.6786 0.142822 10.2858Z" fill="#778F9C" />
+									</svg>
+								</div>
+							</div>
+							<div class="icon-tooltip">
+								<svg class="history" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M8.99986 15.4286C7.49986 15.4286 6.17248 14.9732 5.01772 14.0625C3.86296 13.1518 3.11296 11.9881 2.76772 10.5714C2.7201 10.3928 2.75581 10.2291 2.87486 10.0803C2.99391 9.93153 3.15462 9.84522 3.357 9.82141C3.54748 9.7976 3.7201 9.83332 3.87486 9.92855C4.02962 10.0238 4.13677 10.1666 4.19629 10.3571C4.482 11.4286 5.07129 12.3036 5.96415 12.9821C6.857 13.6607 7.86891 14 8.99986 14C10.3927 14 11.5743 13.5149 12.5445 12.5446C13.5147 11.5744 13.9999 10.3928 13.9999 8.99998C13.9999 7.60713 13.5147 6.42558 12.5445 5.45534C11.5743 4.4851 10.3927 3.99998 8.99986 3.99998C8.17843 3.99998 7.41057 4.19046 6.69629 4.57141C5.982 4.95236 5.38081 5.47617 4.89272 6.14284H6.14272C6.3451 6.14284 6.51474 6.21129 6.65165 6.3482C6.78855 6.4851 6.857 6.65474 6.857 6.85713C6.857 7.05951 6.78855 7.22915 6.65165 7.36605C6.51474 7.50296 6.3451 7.57141 6.14272 7.57141H3.28557C3.08319 7.57141 2.91355 7.50296 2.77665 7.36605C2.63974 7.22915 2.57129 7.05951 2.57129 6.85713V3.99998C2.57129 3.7976 2.63974 3.62796 2.77665 3.49105C2.91355 3.35415 3.08319 3.2857 3.28557 3.2857C3.48796 3.2857 3.6576 3.35415 3.7945 3.49105C3.93141 3.62796 3.99986 3.7976 3.99986 3.99998V4.96427C4.607 4.20236 5.34807 3.61308 6.22307 3.19641C7.09807 2.77974 8.02367 2.57141 8.99986 2.57141C9.89272 2.57141 10.729 2.74105 11.5088 3.08034C12.2886 3.41963 12.9671 3.87796 13.5445 4.45534C14.1219 5.03272 14.5802 5.71129 14.9195 6.49105C15.2588 7.27082 15.4284 8.10713 15.4284 8.99998C15.4284 9.89284 15.2588 10.7291 14.9195 11.5089C14.5802 12.2887 14.1219 12.9672 13.5445 13.5446C12.9671 14.122 12.2886 14.5803 11.5088 14.9196C10.729 15.2589 9.89272 15.4286 8.99986 15.4286ZM9.71415 8.71427L11.4999 10.5C11.6308 10.6309 11.6963 10.7976 11.6963 11C11.6963 11.2024 11.6308 11.369 11.4999 11.5C11.3689 11.6309 11.2022 11.6964 10.9999 11.6964C10.7975 11.6964 10.6308 11.6309 10.4999 11.5L8.49986 9.49998C8.42843 9.42855 8.37486 9.3482 8.33915 9.25891C8.30343 9.16963 8.28557 9.07736 8.28557 8.98213V6.14284C8.28557 5.94046 8.35403 5.77082 8.49093 5.63391C8.62784 5.49701 8.79748 5.42855 8.99986 5.42855C9.20224 5.42855 9.37188 5.49701 9.50879 5.63391C9.64569 5.77082 9.71415 5.94046 9.71415 6.14284V8.71427Z" fill="#778F9C" />
+								</svg>
+							</div>
+							<div class="icon-tooltip">
+								<svg class="o-share" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M13.2856 11.9429C12.7427 11.9429 12.257 12.1572 11.8856 12.4929L6.79272 9.5286C6.82843 9.36431 6.857 9.20003 6.857 9.0286C6.857 8.85717 6.82843 8.69288 6.79272 8.5286L11.8284 5.59288C12.2141 5.95003 12.7213 6.17146 13.2856 6.17146C14.4713 6.17146 15.4284 5.21431 15.4284 4.0286C15.4284 2.84289 14.4713 1.88574 13.2856 1.88574C12.0999 1.88574 11.1427 2.84289 11.1427 4.0286C11.1427 4.20003 11.1713 4.36431 11.207 4.5286L6.17129 7.46431C5.78557 7.10717 5.27843 6.88574 4.71415 6.88574C3.52843 6.88574 2.57129 7.84288 2.57129 9.0286C2.57129 10.2143 3.52843 11.1715 4.71415 11.1715C5.27843 11.1715 5.78557 10.95 6.17129 10.5929L11.257 13.5643C11.2213 13.7143 11.1999 13.8715 11.1999 14.0286C11.1999 15.1786 12.1356 16.1143 13.2856 16.1143C14.4356 16.1143 15.3713 15.1786 15.3713 14.0286C15.3713 12.8786 14.4356 11.9429 13.2856 11.9429Z" fill="#778F9C" />
+								</svg>
+							</div>
+							<div class="icon-tooltip">
+								<svg class="o-comment" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M16.1355 3.28575C16.1355 2.50003 15.4998 1.85718 14.7141 1.85718H3.2855C2.49979 1.85718 1.85693 2.50003 1.85693 3.28575V11.8572C1.85693 12.6429 2.49979 13.2857 3.2855 13.2857H13.2855L16.1426 16.1429L16.1355 3.28575ZM12.5712 10.4286H5.42836C5.0355 10.4286 4.71408 10.1072 4.71408 9.71432C4.71408 9.32146 5.0355 9.00003 5.42836 9.00003H12.5712C12.9641 9.00003 13.2855 9.32146 13.2855 9.71432C13.2855 10.1072 12.9641 10.4286 12.5712 10.4286ZM12.5712 8.28575H5.42836C5.0355 8.28575 4.71408 7.96432 4.71408 7.57146C4.71408 7.17861 5.0355 6.85718 5.42836 6.85718H12.5712C12.9641 6.85718 13.2855 7.17861 13.2855 7.57146C13.2855 7.96432 12.9641 8.28575 12.5712 8.28575ZM12.5712 6.14289H5.42836C5.0355 6.14289 4.71408 5.82146 4.71408 5.42861C4.71408 5.03575 5.0355 4.71432 5.42836 4.71432H12.5712C12.9641 4.71432 13.2855 5.03575 13.2855 5.42861C13.2855 5.82146 12.9641 6.14289 12.5712 6.14289Z" fill="#778F9C" />
+								</svg>
+							</div>
+							<div class="icon-tooltip">
+								<svg class="o-open-in-new" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M13.9999 14H3.99986V3.99998H8.99986V2.57141H3.99986C3.207 2.57141 2.57129 3.21427 2.57129 3.99998V14C2.57129 14.7857 3.207 15.4286 3.99986 15.4286H13.9999C14.7856 15.4286 15.4284 14.7857 15.4284 14V8.99998H13.9999V14ZM10.4284 2.57141V3.99998H12.9927L5.97129 11.0214L6.97843 12.0286L13.9999 5.00713V7.57141H15.4284V2.57141H10.4284Z" fill="#778F9C" />
+								</svg>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="frame-1321315173">
+		<div class="insight-card2">
+			<div class="header-container2">
+				<div class="card-header2">
+					<img class="hd-wallpaper-circuit-abstract-circuits-tech-technology-12"
+						 src="https://i.pinimg.com/736x/2f/46/1f/2f461f1bb51813cbfc43e8df69333b8a.jpg" />
+					<div class="rectangle-93252"></div>
+					<div class="content3">
+						<div class="frame-25355">
+							<div class="insight">Insight</div>
+							<div class="date-time-stamp">
+								<div class="_23-jan">23 Jan</div>
+							</div>
+						</div>
+						<div class="rectangle-9323"></div>
+						<div class="frame-25353">
+							<div class="frame-25286">
+								<div class="risk-analysis">Risk Analysis</div>
+							</div>
+							<svg class="robot-2" width="31" height="30" viewBox="0 0 31 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M6.45841 26.25C6.09244 26.25 5.78567 26.1302 5.5381 25.8906C5.29053 25.651 5.16675 25.3542 5.16675 25V20C5.16675 19.3125 5.4197 18.724 5.9256 18.2344C6.43151 17.7448 7.03966 17.5 7.75008 17.5H23.2501C23.9605 17.5 24.5687 17.7448 25.0746 18.2344C25.5805 18.724 25.8334 19.3125 25.8334 20V25C25.8334 25.3542 25.7096 25.651 25.4621 25.8906C25.2145 26.1302 24.9077 26.25 24.5417 26.25H6.45841ZM11.6251 16.25C9.83828 16.25 8.31519 15.6406 7.05581 14.4219C5.79644 13.2031 5.16675 11.7292 5.16675 10C5.16675 8.27083 5.79644 6.79688 7.05581 5.57812C8.31519 4.35938 9.83828 3.75 11.6251 3.75H19.3751C21.1619 3.75 22.685 4.35938 23.9444 5.57812C25.2037 6.79688 25.8334 8.27083 25.8334 10C25.8334 11.7292 25.2037 13.2031 23.9444 14.4219C22.685 15.6406 21.1619 16.25 19.3751 16.25H11.6251ZM11.6251 11.25C11.9911 11.25 12.2978 11.1302 12.5454 10.8906C12.793 10.651 12.9167 10.3542 12.9167 10C12.9167 9.64583 12.793 9.34896 12.5454 9.10938C12.2978 8.86979 11.9911 8.75 11.6251 8.75C11.2591 8.75 10.9523 8.86979 10.7048 9.10938C10.4572 9.34896 10.3334 9.64583 10.3334 10C10.3334 10.3542 10.4572 10.651 10.7048 10.8906C10.9523 11.1302 11.2591 11.25 11.6251 11.25ZM19.3751 11.25C19.7411 11.25 20.0478 11.1302 20.2954 10.8906C20.543 10.651 20.6667 10.3542 20.6667 10C20.6667 9.64583 20.543 9.34896 20.2954 9.10938C20.0478 8.86979 19.7411 8.75 19.3751 8.75C19.0091 8.75 18.7023 8.86979 18.4548 9.10938C18.2072 9.34896 18.0834 9.64583 18.0834 10C18.0834 10.3542 18.2072 10.651 18.4548 10.8906C18.7023 11.1302 19.0091 11.25 19.3751 11.25Z" fill="#17E88F" />
+							</svg>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="frame-1321315170">
+				<div class="risk-register">Risk Register</div>
+				<div class="data-summary-group">
+					<div class="data-summary">
+						<div class="value-wrap">
+							<svg class="trending-up" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M3.14996 20.5625C2.91663 20.3292 2.80483 20.0521 2.81455 19.7312C2.82427 19.4104 2.93608 19.143 3.14996 18.9292L9.30413 12.6875C9.75135 12.2403 10.3055 12.0167 10.9666 12.0167C11.6277 12.0167 12.1819 12.2403 12.6291 12.6875L15.6333 15.7208L21.7 9.71248H19.8333C19.5027 9.71248 19.2257 9.60068 19.002 9.37707C18.7784 9.15346 18.6666 8.87637 18.6666 8.54582C18.6666 8.21526 18.7784 7.93818 19.002 7.71457C19.2257 7.49096 19.5027 7.37915 19.8333 7.37915H24.5C24.8305 7.37915 25.1076 7.49096 25.3312 7.71457C25.5548 7.93818 25.6666 8.21526 25.6666 8.54582V13.2125C25.6666 13.543 25.5548 13.8201 25.3312 14.0437C25.1076 14.2673 24.8305 14.3792 24.5 14.3792C24.1694 14.3792 23.8923 14.2673 23.6687 14.0437C23.4451 13.8201 23.3333 13.543 23.3333 13.2125V11.3458L17.2958 17.3833C16.8486 17.8305 16.2944 18.0542 15.6333 18.0542C14.9722 18.0542 14.418 17.8305 13.9708 17.3833L10.9666 14.3792L4.7833 20.5625C4.56941 20.7764 4.29719 20.8833 3.96663 20.8833C3.63608 20.8833 3.36385 20.7764 3.14996 20.5625Z" fill="#A03530" />
+							</svg>
+							<div id="Critical" class="number">@Model.RiskRegister.Critical</div>
+						</div>
+						<div class="high">Critical</div>
+					</div>
+					<div class="data-summary2">
+						<div class="value-wrap">
+							<svg class="trending-flat" width="29" height="28" viewBox="0 0 29 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M21.7042 15.1667H5.16667C4.83611 15.1667 4.55903 15.0549 4.33542 14.8313C4.11181 14.6077 4 14.3306 4 14C4 13.6695 4.11181 13.3924 4.33542 13.1688C4.55903 12.9452 4.83611 12.8334 5.16667 12.8334H21.7042L20.1 11.2C19.8667 10.9667 19.7549 10.6945 19.7646 10.3834C19.7743 10.0723 19.8958 9.80005 20.1292 9.56671C20.3625 9.35282 20.6396 9.24102 20.9604 9.2313C21.2813 9.22157 21.5486 9.33338 21.7625 9.56671L25.35 13.1834C25.5833 13.4167 25.7 13.6889 25.7 14C25.7 14.3112 25.5833 14.5834 25.35 14.8167L21.7333 18.4334C21.5194 18.6473 21.2521 18.7542 20.9313 18.7542C20.6104 18.7542 20.3333 18.6473 20.1 18.4334C19.8667 18.2 19.75 17.923 19.75 17.6021C19.75 17.2813 19.8667 17.0042 20.1 16.7709L21.7042 15.1667Z" fill="#FF9742" />
+							</svg>
+							<div id="Serious" class="number">@Model.RiskRegister.Serious</div>
+						</div>
+						<div class="medium">Serious</div>
+					</div>
+					<div class="data-summary3">
+						<div class="value-wrap">
+							<svg class="trending-down" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M21.7 18.6667L15.6333 12.6583L12.6291 15.6625C12.1819 16.1097 11.6277 16.3334 10.9666 16.3334C10.3055 16.3334 9.75135 16.1097 9.30413 15.6625L3.14996 9.45002C2.93608 9.23613 2.82427 8.96877 2.81455 8.64793C2.80483 8.3271 2.91663 8.05002 3.14996 7.81668C3.36385 7.60279 3.63608 7.49585 3.96663 7.49585C4.29719 7.49585 4.56941 7.60279 4.7833 7.81668L10.9666 14L13.9708 10.9958C14.418 10.5486 14.9722 10.325 15.6333 10.325C16.2944 10.325 16.8486 10.5486 17.2958 10.9958L23.3333 17.0334V15.1667C23.3333 14.8361 23.4451 14.559 23.6687 14.3354C23.8923 14.1118 24.1694 14 24.5 14C24.8305 14 25.1076 14.1118 25.3312 14.3354C25.5548 14.559 25.6666 14.8361 25.6666 15.1667V19.8334C25.6666 20.1639 25.5548 20.441 25.3312 20.6646C25.1076 20.8882 24.8305 21 24.5 21H19.8333C19.5027 21 19.2257 20.8882 19.002 20.6646C18.7784 20.441 18.6666 20.1639 18.6666 19.8334C18.6666 19.5028 18.7784 19.2257 19.002 19.0021C19.2257 18.7785 19.5027 18.6667 19.8333 18.6667H21.7Z" fill="#50AF78" />
+							</svg>
+							<div id="Low" class="number">@Model.RiskRegister.Low</div>
+						</div>
+						<div class="all-requests">Low</div>
+					</div>
+					<div class="data-summary3">
+						<div class="value-wrap">
+							<svg class="trending-down" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M21.7 18.6667L15.6333 12.6583L12.6291 15.6625C12.1819 16.1097 11.6277 16.3334 10.9666 16.3334C10.3055 16.3334 9.75135 16.1097 9.30413 15.6625L3.14996 9.45002C2.93608 9.23613 2.82427 8.96877 2.81455 8.64793C2.80483 8.3271 2.91663 8.05002 3.14996 7.81668C3.36385 7.60279 3.63608 7.49585 3.96663 7.49585C4.29719 7.49585 4.56941 7.60279 4.7833 7.81668L10.9666 14L13.9708 10.9958C14.418 10.5486 14.9722 10.325 15.6333 10.325C16.2944 10.325 16.8486 10.5486 17.2958 10.9958L23.3333 17.0334V15.1667C23.3333 14.8361 23.4451 14.559 23.6687 14.3354C23.8923 14.1118 24.1694 14 24.5 14C24.8305 14 25.1076 14.1118 25.3312 14.3354C25.5548 14.559 25.6666 14.8361 25.6666 15.1667V19.8334C25.6666 20.1639 25.5548 20.441 25.3312 20.6646C25.1076 20.8882 24.8305 21 24.5 21H19.8333C19.5027 21 19.2257 20.8882 19.002 20.6646C18.7784 20.441 18.6666 20.1639 18.6666 19.8334C18.6666 19.5028 18.7784 19.2257 19.002 19.0021C19.2257 18.7785 19.5027 18.6667 19.8333 18.6667H21.7Z" fill="#50AF78" />
+							</svg>
+							<div id="Negligible" class="number">@Model.RiskRegister.Negligible</div>
+						</div>
+						<div class="all-requests">Negligible</div>
+					</div>
+				</div>
+			</div>
+			<div class="card-content2">
+				<div class="action">
+					<div class="label">
+						<span>
+							<span class="label-span9">
+								Risk Probability Prediction:
+								<br />
+							</span>
+							<span id="RiskProbabilityPrediction" class="label-span10">
+								@Model.RiskAnalysis.RiskProbabilityPrediction
+							</span>
+						</span>
+					</div>
+				</div>
+				<div class="action">
+					<div class="label">
+						<span>
+							<span class="label-span11">
+								Risk Analysis:
+								<br />
+							</span>
+							<span id="RiskAnalysis" class="label-span12">
+								@Model.RiskAnalysis.RiskAnalysis
+							</span>
+						</span>
+					</div>
+				</div>
+				<div class="action">
+					<div class="label">
+						<span>
+							<span class="label-span13">
+								Summary of Risks:
+								<br />
+							</span>
+							<span id="SummaryofRisks" class="label-span14">
+								@Model.RiskAnalysis.SummaryofRisks
+							</span>
+						</span>
+					</div>
+				</div>
+				<div class="action">
+					<div class="label">
+						<span>
+							<span class="label-span15">
+								Recommendations:
+								<br />
+							</span>
+							<span id="Recommendations" class="label-span16">
+								@Model.RiskAnalysis.Recommendations
+							</span>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="frame-1321315174">
+		<div class="frame-1321315209">
+			<div class="page-header-list-page">
+				<div class="list-page-header-base-default">
+					<div class="frame-2608592">
+						<div class="header">
+							<div class="title-group">
+								<div class="title-and-scope-switcher">
+									<div class="title">Safety Score</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="frame-1321315204">
+				<div class="frame-1321315201">
+					<div class="card-content3">
+						<div class="frame-1321315196">
+							<div class="frame-1321315195">
+								<div class="frame-25196">
+									<div class="frame-87">
+										<div class="frame-24102">
+											<div class="reading">Reading</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div id="gauge_chart" style="width: 400px; height: 200px;margin-left:64px;"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="frame-1321315186">
+				<div class="frame-1321315185">
+					<div class="_8-am-visitor">
+						<div class="details-container">
+							<div class="details">
+								<div class="duration">
+									<svg class="hotel" width="32" height="33" viewBox="0 0 32 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M9.33325 17.1667C11.5466 17.1667 13.3333 15.38 13.3333 13.1667C13.3333 10.9533 11.5466 9.16667 9.33325 9.16667C7.11992 9.16667 5.33325 10.9533 5.33325 13.1667C5.33325 15.38 7.11992 17.1667 9.33325 17.1667ZM25.3333 9.16667H17.3333C15.8666 9.16667 14.6666 10.3667 14.6666 11.8333V18.5H3.99992V7.83333C3.99992 7.1 3.39992 6.5 2.66659 6.5C1.93325 6.5 1.33325 7.1 1.33325 7.83333V25.1667C1.33325 25.9 1.93325 26.5 2.66659 26.5C3.39992 26.5 3.99992 25.9 3.99992 25.1667V22.5H27.9999V25.1667C27.9999 25.9 28.5999 26.5 29.3333 26.5C30.0666 26.5 30.6666 25.9 30.6666 25.1667V14.5C30.6666 11.5533 28.2799 9.16667 25.3333 9.16667Z" fill="#FF9742" />
+									</svg>
+									<div class="incident-rate">Incident Rate</div>
+								</div>
+							</div>
+							<div class="frame-13213151732">
+								<div class="_124">124</div>
+								<svg class="arrow-upward" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M10.8334 15.6594V6.35107L14.9001 10.4177C15.2251 10.7427 15.7584 10.7427 16.0834 10.4177C16.4084 10.0927 16.4084 9.56774 16.0834 9.24274L10.5917 3.75107C10.2667 3.42607 9.74172 3.42607 9.41672 3.75107L3.91672 9.23441C3.59172 9.55941 3.59172 10.0844 3.91672 10.4094C4.24172 10.7344 4.76672 10.7344 5.09172 10.4094L9.16672 6.35107V15.6594C9.16672 16.1177 9.54172 16.4927 10.0001 16.4927C10.4584 16.4927 10.8334 16.1177 10.8334 15.6594Z" fill="#FF543E" />
+								</svg>
+								<div class="_4-7">4.7%</div>
+							</div>
+						</div>
+					</div>
+					<div class="_8-am-visitor">
+						<div class="details-container2">
+							<div class="details2">
+								<div class="duration2">
+									<svg class="text-snippet" width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M20.41 8.91L15.58 4.08C15.21 3.71 14.7 3.5 14.17 3.5H5C3.9 3.5 3 4.4 3 5.5V19.5C3 20.6 3.9 21.5 5 21.5H19C20.1 21.5 21 20.6 21 19.5V10.33C21 9.8 20.79 9.29 20.41 8.91ZM7 7.5H14V9.5H7V7.5ZM17 17.5H7V15.5H17V17.5ZM17 13.5H7V11.5H17V13.5Z" fill="#666B6D" />
+									</svg>
+									<div class="lost-time-injury-frequency-rate">
+										Lost Time Injury Frequency Rate
+									</div>
+								</div>
+							</div>
+							<div class="description-sender-notes">
+								<div class="frame-13213151733">
+									<div class="_124">124</div>
+									<svg class="arrow-upward" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M10.8334 15.6594V6.35107L14.9001 10.4177C15.2251 10.7427 15.7584 10.7427 16.0834 10.4177C16.4084 10.0927 16.4084 9.56774 16.0834 9.24274L10.5917 3.75107C10.2667 3.42607 9.74172 3.42607 9.41672 3.75107L3.91672 9.23441C3.59172 9.55941 3.59172 10.0844 3.91672 10.4094C4.24172 10.7344 4.76672 10.7344 5.09172 10.4094L9.16672 6.35107V15.6594C9.16672 16.1177 9.54172 16.4927 10.0001 16.4927C10.4584 16.4927 10.8334 16.1177 10.8334 15.6594Z" fill="#FF543E" />
+									</svg>
+									<div class="_4-7">4.7%</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="_8-am-reservation">
+						<div class="details-container">
+							<div class="details2">
+								<div class="duration2">
+									<img class="calendar-month" src="calendar-month0.svg" />
+									<div class="days-away-from-work-dafw">
+										Days Away from Work (DAFW
+									</div>
+								</div>
+							</div>
+							<div class="description-sender-notes">
+								<div class="frame-13213151733">
+									<div class="_124">124</div>
+									<svg class="arrow-upward" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M10.8334 15.6594V6.35107L14.9001 10.4177C15.2251 10.7427 15.7584 10.7427 16.0834 10.4177C16.4084 10.0927 16.4084 9.56774 16.0834 9.24274L10.5917 3.75107C10.2667 3.42607 9.74172 3.42607 9.41672 3.75107L3.91672 9.23441C3.59172 9.55941 3.59172 10.0844 3.91672 10.4094C4.24172 10.7344 4.76672 10.7344 5.09172 10.4094L9.16672 6.35107V15.6594C9.16672 16.1177 9.54172 16.4927 10.0001 16.4927C10.4584 16.4927 10.8334 16.1177 10.8334 15.6594Z" fill="#FF543E" />
+									</svg>
+									<div class="_4-7">4.7%</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="_9-am-catering">
+						<div class="details-container3">
+							<div class="details2">
+								<div class="duration2">
+									<svg class="o-healing" width="32" height="33" viewBox="0 0 32 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M23.6599 16.5001L28.9665 11.1934C29.4865 10.6734 29.4865 9.83339 28.9665 9.31339L23.1799 3.52672C22.6599 3.00672 21.8199 3.00672 21.2999 3.52672L15.9932 8.83339L10.6865 3.52672C10.4199 3.27339 10.0865 3.14005 9.73988 3.14005C9.40655 3.14005 9.05988 3.27339 8.80655 3.52672L3.01988 9.31339C2.49988 9.83339 2.49988 10.6734 3.01988 11.1934L8.32655 16.5001L3.01988 21.8067C2.49988 22.3267 2.49988 23.1667 3.01988 23.6867L8.80655 29.4734C9.32655 29.9934 10.1665 29.9934 10.6865 29.4734L15.9932 24.1667L21.2999 29.4734C21.5665 29.7401 21.8999 29.8601 22.2465 29.8601C22.5932 29.8601 22.9265 29.7267 23.1932 29.4734L28.9799 23.6867C29.4999 23.1667 29.4999 22.3267 28.9799 21.8067L23.6599 16.5001ZM16.0199 12.4734C16.7532 12.4734 17.3532 13.0734 17.3532 13.8067C17.3532 14.5401 16.7532 15.1401 16.0199 15.1401C15.2865 15.1401 14.6865 14.5401 14.6865 13.8067C14.6865 13.0734 15.2865 12.4734 16.0199 12.4734ZM9.73988 15.0867L4.89988 10.2601L9.73988 5.42005L14.5665 10.2467L9.73988 15.0867ZM13.3532 17.8067C12.6199 17.8067 12.0199 17.2067 12.0199 16.4734C12.0199 15.7401 12.6199 15.1401 13.3532 15.1401C14.0865 15.1401 14.6865 15.7401 14.6865 16.4734C14.6865 17.2067 14.0865 17.8067 13.3532 17.8067ZM16.0199 20.4734C15.2865 20.4734 14.6865 19.8734 14.6865 19.1401C14.6865 18.4067 15.2865 17.8067 16.0199 17.8067C16.7532 17.8067 17.3532 18.4067 17.3532 19.1401C17.3532 19.8734 16.7532 20.4734 16.0199 20.4734ZM18.6865 15.1401C19.4199 15.1401 20.0199 15.7401 20.0199 16.4734C20.0199 17.2067 19.4199 17.8067 18.6865 17.8067C17.9532 17.8067 17.3532 17.2067 17.3532 16.4734C17.3532 15.7401 17.9532 15.1401 18.6865 15.1401ZM22.2332 27.5934L17.3932 22.7667L22.2332 17.9267L27.0599 22.7534L22.2332 27.5934Z" fill="#A03530" />
+									</svg>
+									<div class="total-recordable-incident-rate-trir">
+										Total Recordable Incident Rate (TRIR):
+									</div>
+								</div>
+							</div>
+							<div class="description-sender-notes">
+								<div class="frame-13213151733">
+									<div class="_124">124</div>
+									<svg class="arrow-upward" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M10.8334 15.6594V6.35107L14.9001 10.4177C15.2251 10.7427 15.7584 10.7427 16.0834 10.4177C16.4084 10.0927 16.4084 9.56774 16.0834 9.24274L10.5917 3.75107C10.2667 3.42607 9.74172 3.42607 9.41672 3.75107L3.91672 9.23441C3.59172 9.55941 3.59172 10.0844 3.91672 10.4094C4.24172 10.7344 4.76672 10.7344 5.09172 10.4094L9.16672 6.35107V15.6594C9.16672 16.1177 9.54172 16.4927 10.0001 16.4927C10.4584 16.4927 10.8334 16.1177 10.8334 15.6594Z" fill="#FF543E" />
+									</svg>
+									<div class="_4-7">4.7%</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="frame-24882">
+		<div class="frame-1321315205">
+			<div class="site-address">Site Address</div>
+			<div class="frame-24883">
+				<div class="input-dropdown-outlined">
+					<div class="field">
+						<div class="container">
+							<select id="site_address" class="input-container" onchange="handleSiteChange(this.value, this.options[this.selectedIndex].text)">
+								@foreach (var item in Model.Sites)
+								{
+									<option value="@item.Site_PK" selected="@item.Site_PK == 'Site2'">@item.Site_Name</option>
+								}
+							</select>
+						</div>
+						<div class="wrapper-label">
+							<div class="wrapper-field-label">
+								<div class="label8">Site</div>
+								<div class="required"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="loader" style="display:none;">
+		<img src="https://upload.wikimedia.org/wikipedia/commons/d/de/Ajax-loader.gif" alt="Loading...">
+		<div id="overlay" style="display:none;"></div>
 
-    </div>
-    <div id="chatbot" style="position: fixed; bottom: 20px; right: 20px; width: 800px; border: 1px solid #ccc; border-radius: 10px; background: white; display: none;">
-        <div id="chat-header" style="background: #012a2d; color: white; padding: 10px; border-top-left-radius: 10px; border-top-right-radius: 10px;">
-            Ask Ellis
-            <button onclick="toggleChat()" style="float: right; background: none; border: none; color: white; cursor: pointer;">
-                <img src="/images/close.png" alt="close" style="width: 25px; height: 25px;">
-            </button>
-        </div>
-        <div id="chat-body" style="height: 350px; background: white; overflow-y: auto; padding: 10px;">
-            <div id="messages" style="display: flex; flex-direction: column;"></div>
-            <div id="loading" style="display: none; color: #888; margin-top: 10px;">Ellis is typing<span class="blinking-dots">...</span></div>
-        </div>
-        <div style="display: flex; margin: 10px;">
-            <input type="text" id="user-input" placeholder="Type your message..." style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-right: 5px;">
-            <button onclick="sendMessage()" style="background: #012a2d; color: white; border: none; border-radius: 5px; padding: 10px;">
-                <img src="/images/send-icon.png" alt="send" style="width: 30px; height: 30px;">
-            </button>
-        </div>
-    </div>
+	</div>
+	<div id="chatbot" style="position: fixed; bottom: 20px; right: 20px; width: 800px; border: 1px solid #ccc; border-radius: 10px; background: white; display: none;">
+		<div id="chat-header" style="background: #012a2d; color: white; padding: 10px; border-top-left-radius: 10px; border-top-right-radius: 10px;">
+			Ask Ellis
+			<button onclick="toggleChat()" style="float: right; background: none; border: none; color: white; cursor: pointer;">
+				<img src="/images/close.png" alt="close" style="width: 25px; height: 25px;">
+			</button>
+		</div>
+		<div id="chat-body" style="height: 350px; background: white; overflow-y: auto; padding: 10px;">
+			<div id="messages" style="display: flex; flex-direction: column;"></div>
+			<div id="loading" style="display: none; color: #888; margin-top: 10px;">Ellis is typing<span class="blinking-dots">...</span></div>
+		</div>
+		<div style="display: flex; margin: 10px;">
+			<input type="text" id="user-input" placeholder="Type your message..." style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-right: 5px;">
+			<button onclick="sendMessage()" style="background: #012a2d; color: white; border: none; border-radius: 5px; padding: 10px;">
+				<img src="/images/send-icon.png" alt="send" style="width: 30px; height: 30px;">
+			</button>
+		</div>
+	</div>
 
-    <button id="chat-button" onclick="toggleChat()" style="position: fixed; bottom: 20px; right: 20px; background-color: #012a2d; color: white; border: none; border-radius: 20px; padding: 10px;">
-        <img src="/images/chat-icon.png" alt="Chat" style="width: 20px; height: 20px; margin-right: 5px;">
-        Ask Ellis
-    </button>
+	<button id="chat-button" onclick="toggleChat()" style="position: fixed; bottom: 20px; right: 20px; background-color: #012a2d; color: white; border: none; border-radius: 20px; padding: 10px;">
+		<img src="/images/chat-icon.png" alt="Chat" style="width: 20px; height: 20px; margin-right: 5px;">
+		Ask Ellis
+	</button>
 </div>
 <script>
-    const chatButton = document.getElementById('chat-button');
-    const userInput = document.getElementById('user-input');
-    let conversationHistory = [];
-    let selectedSiteId = null;
+	const chatButton = document.getElementById('chat-button');
+	const userInput = document.getElementById('user-input');
+	let conversationHistory = [];
+	let selectedSiteId = null;
 
-    function toggleChat() {
-        const chatbot = document.getElementById('chatbot');
-        const isVisible = chatbot.style.display === 'block';
+	function toggleChat() {
+		const chatbot = document.getElementById('chatbot');
+		const isVisible = chatbot.style.display === 'block';
 
-        if (isVisible) {
-            document.getElementById('messages').innerHTML = ''; // Clear messages
-        }
+		if (isVisible) {
+			document.getElementById('messages').innerHTML = ''; // Clear messages
+		}
 
-        // Toggle the display of the chatbot
-        chatbot.style.display = isVisible ? 'none' : 'block';
+		// Toggle the display of the chatbot
+		chatbot.style.display = isVisible ? 'none' : 'block';
 
-        // Show or hide the chat button based on the chatbot visibility
-        chatButton.style.display = isVisible ? 'block' : 'none';
-    }
+		// Show or hide the chat button based on the chatbot visibility
+		chatButton.style.display = isVisible ? 'block' : 'none';
+	}
 
-    function sendMessage() {
-        const userMessage = userInput.value;
-        if (userMessage.trim() === '') return;
+	function sendMessage() {
+		const userMessage = userInput.value;
+		if (userMessage.trim() === '') return;
 
-        // Display user message
-        displayMessage('You', userMessage);
-        conversationHistory.push(`You: ${userMessage}`);
+		// Display user message
+		displayMessage('You', userMessage);
+		conversationHistory.push(`You: ${userMessage}`);
 
-        // Clear input
-        userInput.value = '';
+		// Clear input
+		userInput.value = '';
 
-        // Show loading message
-        const loadingMessage = document.createElement('div');
-        loadingMessage.className = 'bot-message loading-message';
-        loadingMessage.innerHTML = 'Ellis is typing<span class="blinking-dots">...</span>';
-        document.getElementById('messages').appendChild(loadingMessage);
+		// Show loading message
+		const loadingMessage = document.createElement('div');
+		loadingMessage.className = 'bot-message loading-message';
+		loadingMessage.innerHTML = 'Ellis is typing<span class="blinking-dots">...</span>';
+		document.getElementById('messages').appendChild(loadingMessage);
 
-        // Scroll to the bottom to show the loading message
-        const chatBody = document.getElementById('chat-body');
-        chatBody.scrollTop = chatBody.scrollHeight;
+		// Scroll to the bottom to show the loading message
+		const chatBody = document.getElementById('chat-body');
+		chatBody.scrollTop = chatBody.scrollHeight;
 
-        // Get the selected site ID from the dropdown
-        const siteSelect = document.getElementById('site_address');
-        const selectedSiteId = siteSelect.options[siteSelect.selectedIndex].text;
+		// Get the selected site ID from the dropdown
+		const siteSelect = document.getElementById('site_address');
+		const selectedSiteId = siteSelect.options[siteSelect.selectedIndex].text;
 
-        // Send message to server along with selected site information
-        fetch('/ChatBot/SendMessage', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                message: userMessage,
-                history: conversationHistory,
-                siteId: selectedSiteId // Include the selected site ID
-            })
-        })
-            .then(response => response.json())
-            .then(data => {
-                // Remove loading message
-                loadingMessage.remove();
+		// Send message to server along with selected site information
+		fetch('/ChatBot/SendMessage', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				message: userMessage,
+				history: conversationHistory,
+				siteId: selectedSiteId // Include the selected site ID
+			})
+		})
+			.then(response => response.json())
+			.then(data => {
+				// Remove loading message
+				loadingMessage.remove();
 
-                // Display bot response
-                displayMessage('Ellis', data.reply);
-                conversationHistory.push(`Ellis: ${data.reply}`);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                // Remove loading message in case of an error
-                loadingMessage.remove();
-            });
-    }
+				// Display bot response
+				displayMessage('Ellis', data.reply);
+				conversationHistory.push(`Ellis: ${data.reply}`);
+			})
+			.catch(error => {
+				console.error('Error:', error);
+				// Remove loading message in case of an error
+				loadingMessage.remove();
+			});
+	}
 
 
-    function displayMessage(sender, message) {
-        const messagesDiv = document.getElementById('messages');
-        const chatBody = document.getElementById('chat-body');
-        const messageDiv = document.createElement('div');
+	function displayMessage(sender, message) {
+		const messagesDiv = document.getElementById('messages');
+		const chatBody = document.getElementById('chat-body');
+		const messageDiv = document.createElement('div');
 
-        // Set classes based on sender
-        if (sender === 'You') {
-            messageDiv.className = 'user-message';
-            messageDiv.innerHTML = '<strong>You:</strong> ' + message;
-        } else {
-            messageDiv.className = 'bot-message';
-            messageDiv.innerHTML = '<strong>Ellis:</strong> ' + formatBotMessage(message);
-        }
+		// Set classes based on sender
+		if (sender === 'You') {
+			messageDiv.className = 'user-message';
+			messageDiv.innerHTML = '<strong>You:</strong> ' + message;
+		} else {
+			messageDiv.className = 'bot-message';
+			messageDiv.innerHTML = '<strong>Ellis:</strong> ' + formatBotMessage(message);
+		}
 
-        messagesDiv.appendChild(messageDiv);
+		messagesDiv.appendChild(messageDiv);
 
-        // Scroll to the bottom of the chat body
-        chatBody.scrollTop = chatBody.scrollHeight;
-    }
+		// Scroll to the bottom of the chat body
+		chatBody.scrollTop = chatBody.scrollHeight;
+	}
 
-    function refreshDashboard(data) {
-        refreshSafetyAnalysis("ContributingFactors", data.safetyAnalysis.contributingFactors);
-        refreshSafetyAnalysis("MitigationPlan", data.safetyAnalysis.mitigationPlan);
-        refreshSafetyAnalysis("LeadingIndicators", data.safetyAnalysis.leadingIndicators);
+	function refreshDashboard(data) {
+		refreshSafetyAnalysis("ContributingFactors", data.safetyAnalysis.contributingFactors);
+		refreshSafetyAnalysis("MitigationPlan", data.safetyAnalysis.mitigationPlan);
+		refreshSafetyAnalysis("LeadingIndicators", data.safetyAnalysis.leadingIndicators);
 
-        refreshRiskRegister("Critical", data.riskRegister.critical);
-        refreshRiskRegister("Low", data.riskRegister.low);
-        refreshRiskRegister("Negligible", data.riskRegister.negligible);
-        refreshRiskRegister("Serious", data.riskRegister.serious);
+		refreshRiskRegister("Critical", data.riskRegister.critical);
+		refreshRiskRegister("Low", data.riskRegister.low);
+		refreshRiskRegister("Negligible", data.riskRegister.negligible);
+		refreshRiskRegister("Serious", data.riskRegister.serious);
 
-        refreshSafetyScore(data.safetyAnalysis.riskCategory);
+		refreshSafetyScore(data.safetyAnalysis.riskCategory);
 
-        refreshRsikAnalysis("RiskProbabilityPrediction", data.rsikAnalysis.riskProbabilityPrediction);
-        refreshRsikAnalysis("RiskAnalysis", data.rsikAnalysis.riskAnalysis);
-        refreshRsikAnalysis("SummaryofRisks", data.rsikAnalysis.summaryofRisks);
-        refreshRsikAnalysis("Recommendations", data.rsikAnalysis.recommendations);
-    }
+		refreshRsikAnalysis("RiskProbabilityPrediction", data.rsikAnalysis.riskProbabilityPrediction);
+		refreshRsikAnalysis("RiskAnalysis", data.rsikAnalysis.riskAnalysis);
+		refreshRsikAnalysis("SummaryofRisks", data.rsikAnalysis.summaryofRisks);
+		refreshRsikAnalysis("Recommendations", data.rsikAnalysis.recommendations);
+	}
 
-    function refreshSafetyAnalysis(id,values) {
-        var $dropdown = $('#' + id);
-        $dropdown.empty(); // Clear existing options
-        $.each(values, function (index, v) {
-            if(v.trim().length > 0)
-            {
-                $dropdown.append($('<li></li>').text(v.trim()));
-            }
-           
-        });
-    }
+	function refreshSafetyAnalysis(id, values) {
+		var $dropdown = $('#' + id);
+		$dropdown.empty(); // Clear existing options
+		$.each(values, function (index, v) {
+			if (v.trim().length > 0) {
+				$dropdown.append($('<li></li>').text(v.trim()));
+			}
 
-    function refreshRiskRegister(id, value) {
-        var $dropdown = $('#' + id);
-        $dropdown.empty(); // Clear existing options
-        $dropdown.text(value);
-    }
+		});
+	}
 
-    function refreshSafetyScore(value) {
-        var safetyScore = value == "High Risk Score" ? { key: 'High', value: 85 } : value == "Medium Risk Score" ? { key: 'Medium', value: 63 } : { key: 'Low', value: 20 };
-        var dataSpeed = google.visualization.arrayToDataTable([
-            ['Label', 'Value'],
-            [safetyScore.key, safetyScore.value]
-        ]);
-        var optionsSpeed = {
-            width: 400, height: 200,
-            greenFrom: 0, greenTo: 40,
-            redFrom: 80, redTo: 120,
-            yellowFrom: 40, yellowTo: 80,
-            minorTicks: 5,
-            animation: { duration: 1000, easing: 'out' }
-        };
+	function refreshRiskRegister(id, value) {
+		var $dropdown = $('#' + id);
+		$dropdown.empty(); // Clear existing options
+		$dropdown.text(value);
+	}
 
-        var chart = new google.visualization.Gauge(document.getElementById('gauge_chart'));
-        chart.draw(dataSpeed, optionsSpeed);
-    }
+	function refreshSafetyScore(value) {
+		var safetyScore = value == "High Risk Score" ? { key: 'High', value: 85 } : value == "Medium Risk Score" ? { key: 'Medium', value: 63 } : { key: 'Low', value: 20 };
+		var dataSpeed = google.visualization.arrayToDataTable([
+			['Label', 'Value'],
+			[safetyScore.key, safetyScore.value]
+		]);
+		var optionsSpeed = {
+			width: 400, height: 200,
+			greenFrom: 0, greenTo: 40,
+			redFrom: 80, redTo: 120,
+			yellowFrom: 40, yellowTo: 80,
+			minorTicks: 5,
+			animation: { duration: 1000, easing: 'out' }
+		};
 
-    function refreshRsikAnalysis(id, value) {
-        var $dropdown = $('#' + id);
-        $dropdown.empty(); // Clear existing options
-        $dropdown.text(value);
-    }
+		var chart = new google.visualization.Gauge(document.getElementById('gauge_chart'));
+		chart.draw(dataSpeed, optionsSpeed);
+	}
 
-    function handleSiteChange(sitePk, siteName) {
-        // Make an Ajax API call
+	function refreshRsikAnalysis(id, value) {
+		var $dropdown = $('#' + id);
+		$dropdown.empty(); // Clear existing options
+		$dropdown.text(value);
+	}
 
-        $("#loader, #overlay").fadeIn();
+	function handleSiteChange(sitePk, siteName) {
+		// Make an Ajax API call
 
-        $.ajax({
-            url: '/Home/GetDashboardData',
-            method: 'GET',
-            data: { id: sitePk, siteName: siteName },
-            success: function (data) {
-                console.log(data);
-                refreshDashboard(data)
-                $("#loader, #overlay").fadeOut();
-            },
-            error: function (error) {
-                console.log(error);
-                $("#loader, #overlay").fadeOut();
-            }
-        });
-    }
+		$("#loader, #overlay").fadeIn();
 
-    userInput.addEventListener('keypress', function (event) {
-        if (event.key === 'Enter') {
-            sendMessage(); 
-            event.preventDefault(); // Prevent the default action (e.g., form submission)
-        }
-    });
+		$.ajax({
+			url: '/Home/GetDashboardData',
+			method: 'GET',
+			data: { id: sitePk, siteName: siteName },
+			success: function (data) {
+				console.log(data);
+				refreshDashboard(data)
+				$("#loader, #overlay").fadeOut();
+			},
+			error: function (error) {
+				console.log(error);
+				$("#loader, #overlay").fadeOut();
+			}
+		});
+	}
 
-    // Function to format bot messages for better readability
-    function formatBotMessage(message) {
-        // Example formatting: Replace specific patterns with HTML elements
-        // This is a basic example; you can adjust according to your needs
-        return message
-            .replace(/###/g, '') // Convert headings (if any)
-            .replace(/---/g, '<hr>') // Convert horizontal lines (if any)
-            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Convert *bold* text
-            .replace(/\*(.*?)\*/g, '<strong>$1</strong>') // Convert *bold* text
-            .replace(/\n/g, '<br>'); // Convert line breaks for better text formatting
-    }
+	userInput.addEventListener('keypress', function (event) {
+		if (event.key === 'Enter') {
+			sendMessage();
+			event.preventDefault(); // Prevent the default action (e.g., form submission)
+		}
+	});
+
+	// Function to format bot messages for better readability
+	function formatBotMessage(message) {
+		// Example formatting: Replace specific patterns with HTML elements
+		// This is a basic example; you can adjust according to your needs
+		return message
+			.replace(/###/g, '') // Convert headings (if any)
+			.replace(/---/g, '<hr>') // Convert horizontal lines (if any)
+			.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Convert *bold* text
+			.replace(/\*(.*?)\*/g, '<strong>$1</strong>') // Convert *bold* text
+			.replace(/\n/g, '<br>'); // Convert line breaks for better text formatting
+	}
 </script>
