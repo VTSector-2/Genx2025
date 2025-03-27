@@ -30,10 +30,11 @@ namespace Hackathon.Controllers
 		public IActionResult Privacy()
 		{
 			//default number of records are 50
-			var data = _dataService.GetRiskData(numberOfRecords: 50);
+			var data = _dataService.GetRiskData(0);
+			var selectedRisk = data.FirstOrDefault();
 
 			// Fetch data based on the id
-			var viewModel = _dataService.GetDashboardData(data, siteId: 29, siteName: "Site20");
+			var viewModel = _dataService.GetDashboardData(data, siteId: selectedRisk.Site_Pk, siteName: selectedRisk.SiteName);
 
             return View(viewModel);
         }
@@ -41,14 +42,24 @@ namespace Hackathon.Controllers
 		public DashboardViewModel? GetDashboardData(int id, string siteName)
 		{
 			//default number of records are 50
-			var data = _dataService.GetRiskData(numberOfRecords: 50);
+			var data = _dataService.GetRiskData(0);
 
 			// Fetch data based on the id
 			var viewModel = _dataService.GetDashboardData(data, siteId: id, siteName: siteName);
 			return viewModel;
 		}
 
-		public IActionResult DataLoader()
+        public DashboardViewModel? saveManualScore(int id, string siteName)
+        {
+            //default number of records are 50
+            var data = _dataService.GetRiskData(0);
+
+            // Fetch data based on the id
+            var viewModel = _dataService.GetDashboardData(data, siteId: id, siteName: siteName);
+            return viewModel;
+        }
+
+        public IActionResult DataLoader()
 		{
 			return View();
 		}

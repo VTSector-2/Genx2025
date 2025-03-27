@@ -18,9 +18,12 @@ namespace Hackathon.Services
 
 		public List<Risk> GetRiskData(int numberOfRecords)
 		{
-			// Get data from the database
-			var data = _dbContext.Risk.Take(numberOfRecords).ToList();
-			return data;
+			if(numberOfRecords == 0)
+			{
+               return _dbContext.Risk.ToList();
+            }
+            // Get data from the database
+            return _dbContext.Risk.Take(numberOfRecords).ToList();
 		}
 
 		public List<Site> GetSiteData(int numberOfRecords)
@@ -50,7 +53,7 @@ namespace Hackathon.Services
             var siteScore = _gptService.GetSiteDataAnalysis(siteId);
             var viewModel = new DashboardViewModel
 			{
-				Sites = data.Select(s => new Site() { Site_PK = s.SiteId_Pk, Site_Name = s.SiteName }).DistinctBy(d => d.Site_Name).ToList(),
+				Sites = data.Select(s => new Site() { Site_PK = s.Site_Pk, Site_Name = s.SiteName }).DistinctBy(d => d.Site_Name).ToList(),
 				RiskRegister = new RiskViewModel()
 				{
 					Critical = selectedRsik.Where(w => w.ImpactName == "Critical").Select(s => s.Count).FirstOrDefault(),

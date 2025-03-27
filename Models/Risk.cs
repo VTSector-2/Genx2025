@@ -17,5 +17,6 @@ namespace Hackathon.Models
         public string? RiskStatus { get; set; }
         public DateTime CreatedDateTime { get; set; }
         public DateTime LastUpdatedDateTime { get; set; }
+        public int Site_Pk { get; set; }
     }
 }

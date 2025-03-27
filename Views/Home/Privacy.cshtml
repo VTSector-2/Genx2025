@@ -430,7 +430,7 @@
                         <div class="header">
                             <div class="title-group">
                                 <div class="title-and-scope-switcher">
-                                    <div class="title">Safety Score</div>
+                                    <div class="title">Site Risk Score</div>
                                 </div>
                             </div>
                         </div>
@@ -557,7 +557,7 @@
                             <select id="site_address" class="input-container" onchange="handleSiteChange(this.value, this.options[this.selectedIndex].text)">
                                 @foreach (var item in Model.Sites)
                                 {
-                                    <option value="@item.Site_PK" selected="@item.Site_PK == 'Site2'">@item.Site_Name</option>
+                                    <option value="@item.Site_PK">@item.Site_Name</option>
                                 }
                             </select>
                         </div>
@@ -568,6 +568,27 @@
                             </div>
                         </div>
                     </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="frame-1321315205">
+            <div class="site-address">Feedback</div>
+            <div class="frame-24883">
+                <div class="input-dropdown-outlined">
+                    <div class="field">
+                        <div class="container">
+                            <select id="ManualScoreChange" class="input-container" onchange="handleManualScoreChange()">
+                                <option value="High Risk Score">High Risk Score</option>
+                                <option value="Midium Risk Score">Midium Risk Score</option>
+                                <option value="Low Risk Score">Low Risk Score</option>
+                            </select>
+                        </div>
+                        <div>
+                            <Button>Save</Button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -795,5 +816,28 @@
             .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Convert *bold* text
             .replace(/\*(.*?)\*/g, '<strong>$1</strong>') // Convert *bold* text
             .replace(/\n/g, '<br>'); // Convert line breaks for better text formatting
+    }
+
+    function handleManualScoreChange (){
+        var value = document.getElementById("ManualScoreChange").value;
+        console.log(value);
+        // Make an Ajax API call
+
+        $("#loader, #overlay").fadeIn();
+
+        $.ajax({
+            url: '/Home/GetDashboardData',
+            method: 'GET',
+            data: { id: sitePk, siteName: siteName },
+            success: function (data) {
+                console.log(data);
+                refreshDashboard(data)
+                $("#loader, #overlay").fadeOut();
+            },
+            error: function (error) {
+                console.log(error);
+                $("#loader, #overlay").fadeOut();
+            }
+        });
     }
 </script>
