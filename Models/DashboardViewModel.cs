@@ -4,7 +4,7 @@
     {
         public List<Site> Sites { get; set; }
         public RiskViewModel RiskRegister { get; set; }
-        public RiskAnalysisViewModel RsikAnalysis { get; set; }
+        public RiskAnalysisViewModel RiskAnalysis { get; set; }
         public SafetyAnalysisViewModel SafetyAnalysis { get; set; }
     }
 

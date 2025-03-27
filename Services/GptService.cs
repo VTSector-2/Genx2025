@@ -101,7 +101,7 @@ namespace Hackathon.Services
         public async Task<SafetyAnalysisViewModel> GetSiteDataAnalysis(int sitePK)
         {
             var siteParamData = _dbContext.SITE_SCORE_PARAM
-                                    .Where(site => site.SITE_PK == sitePK).FirstOrDefault();
+                                    .Where(site => site.SITE_PK == 20).FirstOrDefault();
             var json = JsonConvert.SerializeObject(siteParamData);
             var prompt = $"please provide some Contributing Factors, Mitigation Plan, Leading Indicators and Lagging Indicators along with only four and sort bulletin points without sub points for the given site data, do not add any special charactors and line change" + json;
 

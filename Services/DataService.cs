@@ -62,7 +62,7 @@ namespace Hackathon.Services
 					Negligible = selectedRsik.Where(w => w.ImpactName == "Negligible").Select(s => s.Count).FirstOrDefault(),
 					Serious = selectedRsik.Where(w => w.ImpactName == "Serious").Select(s => s.Count).FirstOrDefault()
 				},
-				RsikAnalysis = analysis.Result,
+				RiskAnalysis = analysis.Result,
 				SafetyAnalysis = siteScore.Result
             };
 
