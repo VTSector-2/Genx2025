@@ -2044,7 +2044,7 @@ site_address:focus, ManualScoreChange:focus {
     outline: none; /* Optional: Remove outline */
 }
 
-#gauge_chart [y="164"] {
+#gauge_chart [y="164"], #gauge_chart [text-anchor="end"], #gauge_chart [text-anchor="start"] {
     display: none;
 }
 
